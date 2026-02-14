@@ -5,6 +5,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>輕量科技 - 開箱你的虛擬技術長</title>
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet" />
   <style>
@@ -38,20 +41,24 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      opacity: 0;
+      transform: translateY(-100%);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .navbar.navbar-visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .navbar-logo {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-weight: 900;
-      font-size: 18px;
-      color: #e8491c;
     }
 
-    .navbar-logo svg {
-      width: 28px;
-      height: 28px;
+    .navbar-logo img {
+      height: 32px;
+      width: auto;
     }
 
     .navbar-links {
@@ -70,11 +77,11 @@
     }
 
     .navbar-links a:hover {
-      color: #e8491c;
+      color: #c12d20;
     }
 
     .btn-cta-nav {
-      background: #e8491c;
+      background: #c12d20;
       color: #fff;
       border: none;
       padding: 10px 24px;
@@ -86,7 +93,7 @@
     }
 
     .btn-cta-nav:hover {
-      background: #d13d12;
+      background: #a52619;
       transform: scale(1.04);
     }
 
@@ -128,6 +135,7 @@
       align-items: center;
       justify-content: flex-end;
       padding-bottom: 8vh;
+      background: linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.35) 100%);
     }
 
     .hero-intro {
@@ -151,29 +159,30 @@
     .hero-title {
       font-size: clamp(36px, 5.5vw, 72px);
       font-weight: 900;
-      color: #1a1a1a;
+      color: #fff;
       line-height: 1.25;
       letter-spacing: 0.04em;
       margin-bottom: 12px;
-      text-shadow: 0 2px 20px rgba(255, 255, 255, 0.8);
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 0, 0, 0.3);
     }
 
     .hero-subtitle {
       font-size: clamp(16px, 2vw, 22px);
-      color: #666;
+      color: rgba(255, 255, 255, 0.85);
       font-weight: 400;
       margin-bottom: 28px;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
     }
 
     .hero-intro .hero-subtitle {
-      color: #999;
+      color: rgba(255, 255, 255, 0.7);
       font-size: clamp(14px, 1.6vw, 18px);
       margin-bottom: 0;
     }
 
     .btn-cta {
       display: inline-block;
-      background: #e8491c;
+      background: #c12d20;
       color: #fff;
       border: none;
       padding: 16px 40px;
@@ -183,13 +192,13 @@
       cursor: pointer;
       text-decoration: none;
       transition: background .2s, transform .15s, box-shadow .2s;
-      box-shadow: 0 4px 20px rgba(232, 73, 28, 0.3);
+      box-shadow: 0 4px 20px rgba(193, 45, 32, 0.3);
     }
 
     .btn-cta:hover {
-      background: #d13d12;
+      background: #a52619;
       transform: scale(1.06);
-      box-shadow: 0 6px 28px rgba(232, 73, 28, 0.45);
+      box-shadow: 0 6px 28px rgba(193, 45, 32, 0.45);
     }
 
     /* --- Loading indicator --- */
@@ -222,7 +231,7 @@
     .loader-bar-fill {
       height: 100%;
       width: 0%;
-      background: #e8491c;
+      background: #c12d20;
       border-radius: 2px;
       transition: width 0.15s;
     }
@@ -270,11 +279,7 @@
   <!-- Nav -->
   <nav class="navbar">
     <div class="navbar-logo">
-      <svg viewBox="0 0 32 32" fill="none">
-        <rect width="32" height="32" rx="6" fill="#e8491c" /><text x="6" y="23" font-size="18" font-weight="900"
-          fill="#fff">C</text>
-      </svg>
-      輕量科技
+      <img src="assets/getclaw-logo-red.png" alt="GetClaw" />
     </div>
     <ul class="navbar-links">
       <li><a href="#">首頁</a></li>
@@ -339,6 +344,7 @@
       const loaderText = document.getElementById('loaderText');
       const heroIntro = document.getElementById('heroIntro');
       const heroText = document.getElementById('heroText');
+      const navbar = document.querySelector('.navbar');
 
       // ─── State ───────────────────────────────────────────
       const frames = new Array(TOTAL_FRAMES);
@@ -447,6 +453,13 @@
           drawFrame(frameIndex);
         }
         updateTextOverlays(frameIndex);
+
+        // Show navbar only after user starts scrolling
+        if (window.scrollY > 50) {
+          navbar.classList.add('navbar-visible');
+        } else {
+          navbar.classList.remove('navbar-visible');
+        }
       }
 
       // ─── Preload strategy ───────────────────────────────
