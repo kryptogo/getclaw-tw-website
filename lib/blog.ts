@@ -76,6 +76,27 @@ export function getAllPosts(): BlogPost[] {
   return posts.sort((a, b) => (a.date > b.date ? -1 : 1));
 }
 
+export interface BlogHeading {
+  id: string;
+  text: string;
+  level: number;
+}
+
+export function extractHeadings(content: string): BlogHeading[] {
+  const headings: BlogHeading[] = [];
+  const regex = /^(#{2,3})\s+(.+)$/gm;
+  let match;
+  while ((match = regex.exec(content)) !== null) {
+    const text = match[2].trim();
+    const id = text
+      .toLowerCase()
+      .replace(/[^\w\u4e00-\u9fff\u3400-\u4dbf]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    headings.push({ id, text, level: match[1].length });
+  }
+  return headings;
+}
+
 export function getPostBySlug(slug: string): BlogPost | null {
   const filePath = path.join(BLOG_DIR, `${slug}.md`);
   if (!fs.existsSync(filePath)) return null;
