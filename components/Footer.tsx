@@ -1,66 +1,114 @@
+import Link from "next/link";
+import SocialIcon from "./SocialIcon";
+
+const socialLinks = [
+  { icon: "instagram" as const, href: "https://www.instagram.com/getclaw.tw", label: "Instagram" },
+  { icon: "facebook" as const, href: "https://facebook.com/getclaw.tw", label: "Facebook" },
+  { icon: "linkedin" as const, href: "https://linkedin.com/company/kryptogo", label: "LinkedIn" },
+  { icon: "x" as const, href: "https://twitter.com/kryptogo_", label: "X (Twitter)" },
+  { icon: "medium" as const, href: "https://medium.com/kryptogo", label: "Medium" },
+  { icon: "youtube" as const, href: "https://www.youtube.com/@kryptogo_", label: "YouTube" },
+  { icon: "github" as const, href: "https://github.com/kryptogo", label: "GitHub" },
+];
+
 export default function Footer() {
   return (
     <footer className="bg-bg-dark text-white/50 pt-16 px-10 pb-10" role="contentinfo">
-      <div className="max-w-[1200px] mx-auto grid grid-cols-[2fr_1fr_1fr] gap-16 max-md:grid-cols-1 max-md:gap-10">
+      <div className="max-w-[1200px] mx-auto grid grid-cols-[2fr_1fr_1fr_1fr] gap-16 max-md:grid-cols-1 max-md:gap-10">
         <div>
           <img
             src="/assets/getclaw-logo-white.png"
-            alt="GetClaw 輕量科技"
+            alt="GetClaw"
             className="h-7 mb-4"
           />
           <p className="text-sm leading-[1.7] max-w-[320px]">
-            輕量科技股份有限公司
+            你的 AI 執行助理，部署在你自己的硬體上。
             <br />
-            你的虛擬技術長，為中小企業提供專業技術領導力。
+            專為創辦人與高管團隊打造的白手套部署服務。
+          </p>
+          <div className="flex items-center gap-3 mt-5">
+            {socialLinks.map((s) => (
+              <a
+                key={s.icon}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={s.label}
+                className="text-white/40 transition-colors hover:text-white/90"
+              >
+                <SocialIcon icon={s.icon} size={18} className="fill-current" />
+              </a>
+            ))}
+          </div>
+          <p className="text-xs text-white/30 mt-4">
+            Powered by KryptoGO — ISO 27001 / 27701 / SOC 2 Type 2
           </p>
         </div>
 
         <div>
           <h5 className="text-white/90 text-sm font-bold mb-4 tracking-wide">
-            服務
+            產品
           </h5>
           <ul className="list-none flex flex-col gap-2">
             <li>
-              <a href="#services" className="text-sm text-white/50 transition-colors hover:text-white/90">
-                系統架構規劃
-              </a>
+              <Link href="/use-cases" className="text-sm text-white/50 transition-colors hover:text-white/90">
+                使用場景
+              </Link>
             </li>
             <li>
-              <a href="#services" className="text-sm text-white/50 transition-colors hover:text-white/90">
-                技術團隊管理
-              </a>
+              <Link href="/security" className="text-sm text-white/50 transition-colors hover:text-white/90">
+                安全與合規
+              </Link>
             </li>
             <li>
-              <a href="#services" className="text-sm text-white/50 transition-colors hover:text-white/90">
-                外包品質把關
-              </a>
+              <Link href="/faq" className="text-sm text-white/50 transition-colors hover:text-white/90">
+                FAQ
+              </Link>
             </li>
             <li>
-              <a href="#services" className="text-sm text-white/50 transition-colors hover:text-white/90">
-                產品技術顧問
-              </a>
+              <Link href="/blog" className="text-sm text-white/50 transition-colors hover:text-white/90">
+                部落格
+              </Link>
             </li>
           </ul>
         </div>
 
         <div>
           <h5 className="text-white/90 text-sm font-bold mb-4 tracking-wide">
-            聯絡
+            資源
           </h5>
           <ul className="list-none flex flex-col gap-2">
             <li>
-              <a href="#" className="text-sm text-white/50 transition-colors hover:text-white/90">
-                hello@getclaw.com
-              </a>
+              <Link href="/collison-install" className="text-sm text-white/50 transition-colors hover:text-white/90">
+                Collison Install
+              </Link>
             </li>
             <li>
-              <a href="#" className="text-sm text-white/50 transition-colors hover:text-white/90">
-                LinkedIn
-              </a>
+              <Link href="/book" className="text-sm text-white/50 transition-colors hover:text-white/90">
+                預約諮詢
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 className="text-white/90 text-sm font-bold mb-4 tracking-wide">
+            法律
+          </h5>
+          <ul className="list-none flex flex-col gap-2">
+            <li>
+              <Link href="/terms" className="text-sm text-white/50 transition-colors hover:text-white/90">
+                服務條款
+              </Link>
             </li>
             <li>
-              <a href="#" className="text-sm text-white/50 transition-colors hover:text-white/90">
+              <Link href="/privacy" className="text-sm text-white/50 transition-colors hover:text-white/90">
                 隱私權政策
+              </Link>
+            </li>
+            <li>
+              <a href="mailto:hello@getclaw.com" className="text-sm text-white/50 transition-colors hover:text-white/90">
+                hello@getclaw.com
               </a>
             </li>
           </ul>
