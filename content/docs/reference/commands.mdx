@@ -1,0 +1,61 @@
+---
+title: 常用指令
+description: OpenClaw 和相關服務的常用管理指令速查表。
+---
+
+## 服務管理
+
+```bash
+# 重啟 OpenClaw
+sudo systemctl restart openclaw
+
+# 查看狀態
+sudo systemctl status openclaw
+
+# 查看日誌（最近 50 行）
+sudo journalctl -u openclaw -n 50 --no-pager
+
+# 重啟 Cloudflare Tunnel
+sudo systemctl restart cloudflared
+```
+
+## OpenClaw 指令
+
+```bash
+# 健康檢查
+openclaw doctor
+
+# 查看設定
+cat ~/.openclaw/openclaw.json
+
+# 查看 channels
+openclaw channels list
+
+# 配對 LINE
+openclaw pairing approve line <CODE>
+```
+
+## 完成檢查清單
+
+### 核心設定
+
+- [ ] VPS 可以 SSH 連線
+- [ ] 新使用者有 sudo 權限
+- [ ] Node.js 22+ 已安裝
+- [ ] OpenClaw 已安裝並可執行
+- [ ] Antigravity OAuth 已設定
+- [ ] 預設模型已設定
+- [ ] OpenClaw systemd 服務運行中
+- [ ] Cloudflare Tunnel 運行中
+- [ ] DNS 記錄已設定
+- [ ] LINE Plugin 已安裝
+- [ ] LINE Webhook 驗證成功
+- [ ] LINE 配對完成
+- [ ] 可以透過 LINE 與 Bot 對話
+
+### 進階設定（可選）
+
+- [ ] GitHub 私有倉庫已連接
+- [ ] 額外套件已安裝
+- [ ] 防火牆已啟用
+- [ ] 遠端 Dashboard 可存取

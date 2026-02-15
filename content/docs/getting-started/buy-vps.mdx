@@ -1,0 +1,29 @@
+---
+title: 購買 VPS
+description: 選擇並購買適合 OpenClaw 的 VPS 主機。建議至少 2GB RAM 的 Ubuntu 方案。
+---
+
+## 到 Hostinger 購買 VPS
+
+1. 前往 [Hostinger VPS](https://www.hostinger.com/vps-hosting)
+2. 選擇方案（建議至少 2GB RAM，月付約 $9.99，年方案月付約 $6.99）
+3. 選擇作業系統：**Ubuntu**
+4. 完成購買後，到 VPS 管理面板取得：
+   - **IP 位址**
+   - **root 密碼**（或設定 SSH Key）
+
+## 取得 SSH Access
+
+在 Hostinger 控制面板中找到 SSH 存取資訊：
+
+```bash
+ssh root@<VPS_IP>
+```
+
+確認你有：
+- ✅ VPS IP 位址
+- ✅ root 密碼或 SSH Key
+
+<Callout type="info">
+VPS 方案選擇建議：OpenClaw 在 2GB RAM 的環境下就能穩定運行。如果預計同時運行多個 Plugin（如 Playwright 瀏覽器自動化），建議升級到 4GB RAM。
+</Callout>

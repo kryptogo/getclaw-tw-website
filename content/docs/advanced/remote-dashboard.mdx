@@ -1,0 +1,60 @@
+---
+title: 設定遠端 Dashboard 存取
+description: 透過 SSH Tunnel 或 Cloudflare Access 遠端存取 OpenClaw Dashboard。
+---
+
+## 方式 A：SSH Tunnel（簡單）
+
+每次要存取時，在本機執行：
+
+```bash
+ssh -L 18789:127.0.0.1:18789 <USERNAME>@<VPS_IP>
+```
+
+然後瀏覽器開啟 `http://localhost:18789`。
+
+<Callout type="info">
+SSH Tunnel 的好處是不需要額外設定，缺點是每次都要手動建立連線。
+</Callout>
+
+## 方式 B：Cloudflare Access（方便）
+
+### 1. 更新 Tunnel 設定
+
+```bash
+cat > ~/.cloudflared/config.yml << 'EOF'
+tunnel: <TUNNEL_ID>
+credentials-file: /home/<USERNAME>/.cloudflared/<TUNNEL_ID>.json
+
+ingress:
+  - hostname: bot.<YOUR_DOMAIN>
+    service: http://localhost:18789
+  - hostname: dash.<YOUR_DOMAIN>
+    service: http://localhost:18789
+  - service: http_status:404
+EOF
+```
+
+### 2. 新增 DNS 記錄
+
+```bash
+cloudflared tunnel route dns openclaw-tunnel dash.<YOUR_DOMAIN>
+sudo systemctl restart cloudflared
+```
+
+### 3. 設定 Cloudflare Access
+
+1. 到 [Cloudflare Zero Trust](https://one.dash.cloudflare.com/)
+2. Access controls → Applications → Add an application
+3. 選擇 **Self-hosted**
+4. 設定：
+   - Application name: 自訂名稱
+   - Session Duration: 24 hours
+   - Add public hostname: `dash.<YOUR_DOMAIN>`
+5. Add a policy：
+   - Policy name: `Allow me`
+   - Action: Allow
+   - Include → Selector: Emails → 填入你的 Email
+6. Save
+
+之後打開 `https://dash.<YOUR_DOMAIN>` 會要求 Email 驗證，通過後即可存取 Dashboard。

@@ -1,0 +1,53 @@
+---
+title: OpenClaw 完全設定指南
+description: 從零開始，完整部署你自己的 AI 執行助理。本指南涵蓋 VPS 購買、安全設定、LINE 整合到進階功能的每個步驟。
+---
+
+本指南整理自 GetClaw 團隊的實際部署經驗，包含所有試錯紀錄和注意事項，確保你能一路順暢完成安裝。
+
+## 這份指南適合誰？
+
+- 想要自架 AI 執行助理的創辦人與團隊
+- 沒有終端機經驗也能跟著做——每一步都有明確引導
+- 想了解 GetClaw 白手套服務「實際做了什麼」的人
+
+## 指南結構
+
+### 核心設定（必要）
+
+從購買 VPS 到 LINE 整合，完成這些步驟你就有一個可運作的 AI 助理：
+
+1. [購買 VPS](/docs/getting-started/buy-vps) — 選擇主機方案
+2. [前置準備](/docs/getting-started/prerequisites) — 確認所需資源
+3. [SSH 連線](/docs/getting-started/ssh-connection) — 連上你的主機
+4. [建立使用者](/docs/getting-started/create-user) — 安全的權限管理
+5. [安裝 Node.js](/docs/getting-started/install-nodejs) — 執行環境設定
+6. [安裝 OpenClaw](/docs/core-setup/install-openclaw) — 核心程式安裝
+7. [設定 Antigravity OAuth](/docs/core-setup/antigravity-oauth) — AI 模型認證
+8. [設定 systemd 服務](/docs/core-setup/systemd-service) — 開機自動啟動
+9. [設定 Cloudflare Tunnel](/docs/core-setup/cloudflare-tunnel) — 安全的 HTTPS 通道
+10. [設定 LINE Channel](/docs/core-setup/line-channel) — LINE 機器人整合
+
+### 進階設定（可選）
+
+根據需求選擇性設定：
+
+- [連接 GitHub 私有倉庫](/docs/advanced/github-integration)
+- [安裝額外套件](/docs/advanced/extra-packages)
+- [安全加固設定](/docs/advanced/security-hardening)
+- [遠端 Dashboard 存取](/docs/advanced/remote-dashboard)
+
+### 參考資料
+
+- [常用指令](/docs/reference/commands)
+- [疑難排解](/docs/reference/troubleshooting)
+
+## 為什麼公開這份指南？
+
+我們相信透明是信任的基礎。把完整的技術細節公開，是為了讓你了解：
+
+1. **這不是「照著說明書幫你按設定」** — 每一步都經過我們實測與除錯
+2. **GetClaw 的價值在量身打造** — 根據你的工作流程，客製化 AI 助理的行為與整合
+3. **你可以自己做** — 但如果你的時間更值錢，我們幫你搞定
+
+> 看完這份指南後想讓我們代勞？[預約免費諮詢](/book)

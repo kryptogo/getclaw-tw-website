@@ -1,0 +1,10 @@
+{
+  "title": "開始安裝",
+  "pages": [
+    "buy-vps",
+    "prerequisites",
+    "ssh-connection",
+    "create-user",
+    "install-nodejs"
+  ]
+}

@@ -1,0 +1,48 @@
+---
+title: 設定 systemd 開機自動啟動
+description: 用 systemd 設定 OpenClaw 為系統服務，實現開機自動啟動、斷線不中斷、當掉自動重啟。
+---
+
+## 建立 OpenClaw 服務檔案
+
+```bash
+sudo tee /etc/systemd/system/openclaw.service << 'EOF'
+[Unit]
+Description=OpenClaw Gateway
+After=network.target
+
+[Service]
+Type=simple
+User=<USERNAME>
+WorkingDirectory=/home/<USERNAME>
+Environment="PATH=/usr/bin:/usr/local/bin"
+Environment="LINE_CHANNEL_SECRET=<YOUR_LINE_CHANNEL_SECRET>"
+Environment="LINE_CHANNEL_ACCESS_TOKEN=<YOUR_LINE_CHANNEL_ACCESS_TOKEN>"
+ExecStart=/usr/bin/openclaw gateway
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+<Callout type="info">
+記得把 `<USERNAME>`、`<YOUR_LINE_CHANNEL_SECRET>`、`<YOUR_LINE_CHANNEL_ACCESS_TOKEN>` 替換成你的實際值。LINE 相關的環境變數可以在設定 LINE Channel 後再補上。
+</Callout>
+
+## 啟用服務
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable openclaw
+sudo systemctl start openclaw
+
+# 確認狀態
+sudo systemctl status openclaw
+```
+
+看到 `Active: active (running)` 就表示成功。這個服務會：
+- **SSH 斷線** → Bot 繼續跑
+- **VPS 重開機** → 自動啟動
+- **程式當掉** → 10 秒後自動重啟

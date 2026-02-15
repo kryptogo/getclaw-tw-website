@@ -100,6 +100,11 @@ export default function Footer() {
           </h5>
           <ul className="list-none flex flex-col gap-2">
             <li>
+              <Link href="/docs" className="text-sm text-white/50 transition-colors hover:text-white/90">
+                完全設定指南
+              </Link>
+            </li>
+            <li>
               <Link href="/collison-install" className="text-sm text-white/50 transition-colors hover:text-white/90">
                 到府安裝理念
               </Link>

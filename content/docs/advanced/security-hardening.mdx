@@ -1,0 +1,37 @@
+---
+title: 安全加固設定
+description: 設定防火牆、限制存取，加強 VPS 安全性。
+---
+
+## 設定防火牆
+
+```bash
+sudo apt install -y ufw
+sudo ufw allow ssh
+sudo ufw enable
+# 詢問是否繼續，輸入 y
+
+# 確認狀態
+sudo ufw status
+# 應該只顯示 22/tcp ALLOW
+```
+
+<Callout type="info">
+Gateway port 18789 **不需要對外開放**，因為會透過 Cloudflare Tunnel 連線。
+</Callout>
+
+## 為什麼 loopback 綁定 + Cloudflare Tunnel 是安全的？
+
+這個架構設計確保了多層安全：
+
+- **Gateway 只接受本地連線**（127.0.0.1）
+- **Cloudflare Tunnel 從 VPS 內部主動連出去**
+- **外部無法直接連到 Gateway**
+
+訊息流程：
+
+```
+手機 → LINE 伺服器 → Cloudflare → VPS 內的 Tunnel → Gateway
+```
+
+即使有人掃描你的 VPS IP，也無法直接存取 Gateway 服務，因為它只監聽 localhost。

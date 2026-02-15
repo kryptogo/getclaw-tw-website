@@ -1,0 +1,44 @@
+---
+title: 安裝 OpenClaw
+description: 安裝 OpenClaw 核心程式並執行初始設定精靈。
+---
+
+## 正確的安裝指令
+
+<Callout type="warn">
+套件名稱是 `openclaw`，不是舊名 `moltbot`。
+</Callout>
+
+```bash
+sudo npm install -g openclaw@latest
+```
+
+## 確認安裝成功
+
+```bash
+openclaw --version
+# 應該顯示版本號如 2026.1.29
+```
+
+## 執行 Onboard 設定精靈
+
+```bash
+openclaw onboard --install-daemon
+```
+
+設定選項建議：
+- **Onboarding mode:** QuickStart
+- **Node manager:** npm
+- **Skills:** 根據需求選擇
+- **Hooks:** Skip for now
+
+<Callout type="info">
+如果顯示 "Systemd user services are unavailable"，這是正常的（因為是 SSH 進來的），之後會手動設定 system service。
+</Callout>
+
+## 為什麼 systemd user service 不可用？
+
+SSH 進來的 session 無法使用 user service，所以我們改用 system service（由 root 管理），效果一樣：
+- SSH 斷線 → Bot 繼續跑
+- VPS 重開機 → 自動啟動
+- 當掉 → 自動重啟

@@ -1,0 +1,9 @@
+{
+  "title": "進階設定",
+  "pages": [
+    "github-integration",
+    "extra-packages",
+    "security-hardening",
+    "remote-dashboard"
+  ]
+}

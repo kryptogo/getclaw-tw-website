@@ -1,0 +1,60 @@
+---
+title: 設定 LINE Channel
+description: 安裝 LINE Plugin 並設定 Webhook，讓你的 AI 助理可以透過 LINE 回應訊息。
+---
+
+## 安裝 LINE Plugin
+
+官方提供的指令：
+
+```bash
+openclaw plugins install @openclaw/line
+```
+
+<Callout type="info">
+如果指令執行後沒有反應，可以直接跟 OpenClaw 說：「幫我加入 LINE Plugin」，它會幫你完成安裝。
+</Callout>
+
+## 設定環境變數
+
+LINE Channel 資訊從 [LINE Developers Console](https://developers.line.biz/) 取得：
+- **Channel secret:** Basic settings 頁面
+- **Channel access token:** Messaging API 頁面，點 Issue 產生
+
+```bash
+echo 'export LINE_CHANNEL_SECRET="<YOUR_SECRET>"' >> ~/.bashrc
+echo 'export LINE_CHANNEL_ACCESS_TOKEN="<YOUR_TOKEN>"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+<Callout type="warn">
+注意不要搞混：`LINE_CHANNEL_SECRET` 是**短的**（32 字元），`LINE_CHANNEL_ACCESS_TOKEN` 是**長的**（結尾有 `=`）。
+</Callout>
+
+## 更新 systemd 服務
+
+確保 `/etc/systemd/system/openclaw.service` 包含 LINE 環境變數，然後：
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart openclaw
+```
+
+## 設定 LINE Webhook
+
+1. 登入 [LINE Developers Console](https://developers.line.biz/)
+2. 選擇你的 Messaging API Channel
+3. Webhook settings：
+   - **Webhook URL:** `https://bot.<YOUR_DOMAIN>/line/webhook`
+   - **Use webhook:** 開啟
+4. 點 **Verify** 測試
+
+## LINE 配對
+
+首次發送訊息給 Bot 時，會收到 Pairing code。在 VPS 上執行：
+
+```bash
+openclaw pairing approve line <PAIRING_CODE>
+```
+
+配對成功後，你就可以透過 LINE 與你的 AI 助理對話了。

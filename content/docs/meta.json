@@ -1,0 +1,14 @@
+{
+  "root": true,
+  "title": "完全設定指南",
+  "pages": [
+    "index",
+    "---核心設定---",
+    "getting-started",
+    "core-setup",
+    "---進階設定---",
+    "advanced",
+    "---參考資料---",
+    "reference"
+  ]
+}
