@@ -69,7 +69,7 @@ export default function CTASection() {
                       alt="GetClaw 整合 Gmail、Slack、Google Drive、HubSpot 等多種工具"
                       width={520}
                       height={346}
-                      className="w-full h-auto mix-blend-multiply"
+                      className="w-full h-auto mix-blend-multiply rounded-2xl"
                     />
                   </div>
                 </div>

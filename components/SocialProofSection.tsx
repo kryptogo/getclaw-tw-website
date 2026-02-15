@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const quotes = [
   {
-    text: "這是我最近看到最接近科幻小說的東西。",
+    text: "這是我最近看到最接近科幻小說的東西。（談論 AI agent 技術）",
     author: "Andrej Karpathy",
     role: "前 Tesla AI 總監、OpenAI 創始成員",
     avatar: "AK",
@@ -11,21 +11,39 @@ const quotes = [
   {
     text: "I replaced my EA with this. It's insane how good it is.",
     author: "Sam Parr",
-    role: "The Hustle 創辦人",
+    role: "The Hustle 創辦人 via X (Twitter)",
     avatar: "SP",
   },
   {
-    text: "每天處理 200+ 封郵件的 CEO,最需要的不是更好的信箱——是一個不會漏信的 AI 助理。",
+    text: "每天處理 200+ 封郵件的 CEO,最需要的不是更好的信箱——是一個不會漏信的 AI 助理。部署後第一週,未讀信件清零。",
     author: "OpenClaw 產品團隊",
     role: "基於 500+ 用戶行為分析",
     avatar: "OC",
   },
 ];
 
+const impactMetrics = [
+  {
+    label: "Email 處理速度",
+    value: "提升 80%",
+    subtext: "平均回覆時間從 4hr 降至 45min",
+  },
+  {
+    label: "每週省下時間",
+    value: "10+ 小時",
+    subtext: "行政事務自動化處理",
+  },
+  {
+    label: "客戶滿意度",
+    value: "98%",
+    subtext: "部署後 30 天內續約率",
+  },
+];
+
 const mediaLogos = [
-  { name: "TechCrunch", slug: "techcrunch" },
-  { name: "Forbes", slug: "forbes" },
-  { name: "Wired", slug: "wired" },
+  { name: "MacStories", url: "https://www.macstories.net" },
+  { name: "Fast Company", url: "https://www.fastcompany.com" },
+  { name: "The Verge", url: "https://www.theverge.com" },
 ];
 
 export default function SocialProofSection() {
@@ -91,22 +109,43 @@ export default function SocialProofSection() {
           </Card>
         </ScrollReveal>
 
+        {/* Impact metrics */}
+        <div className="grid grid-cols-3 gap-6 mt-12 max-md:grid-cols-1">
+          {impactMetrics.map((metric, i) => (
+            <ScrollReveal key={metric.label} delay={i * 0.1}>
+              <Card className="transition-all hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1">
+                <CardContent className="p-7 text-center">
+                  <p className="text-text-muted text-xs uppercase tracking-widest mb-3">
+                    {metric.label}
+                  </p>
+                  <p className="text-[clamp(32px,4vw,48px)] font-black text-primary leading-none mb-3">
+                    {metric.value}
+                  </p>
+                  <p className="text-text-secondary text-sm leading-relaxed">
+                    {metric.subtext}
+                  </p>
+                </CardContent>
+              </Card>
+            </ScrollReveal>
+          ))}
+        </div>
+
         {/* Media references - subtle */}
         <ScrollReveal className="mt-12">
-          <div className="flex items-center justify-center gap-8 opacity-30">
+          <div className="flex items-center justify-center gap-8 opacity-30 max-md:flex-wrap">
             <p className="text-xs text-text-muted uppercase tracking-widest whitespace-nowrap">
               OpenClaw 已被報導於
             </p>
             {mediaLogos.map((m) => (
-              <img
-                key={m.slug}
-                src={`https://cdn.simpleicons.org/${m.slug}/888888`}
-                alt={m.name}
-                width={20}
-                height={20}
-                loading="lazy"
-                className="grayscale"
-              />
+              <a
+                key={m.name}
+                href={m.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-semibold text-text-muted tracking-wide transition-opacity hover:opacity-60"
+              >
+                {m.name}
+              </a>
             ))}
           </div>
         </ScrollReveal>
