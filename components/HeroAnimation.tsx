@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import Link from "next/link";
 
 const TOTAL_FRAMES = 189;
 const FRAME_PATH = "/assets/hero-frames/frame_";
@@ -125,7 +126,6 @@ export default function HeroAnimation() {
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", sizeCanvas);
 
-    // Preload frames
     let loadedCount = 0;
 
     function loadImage(index: number): Promise<void> {
@@ -211,8 +211,8 @@ export default function HeroAnimation() {
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-max max-w-[90vw]"
             style={{ opacity: introOpacity, transition: "opacity 0.1s" }}
           >
-            <h1 className="text-[clamp(32px,5.5vw,72px)] font-black text-white leading-[1.2] tracking-wide mb-3 drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]">
-              開箱你的虛擬技術長
+            <h1 className="text-[clamp(28px,5vw,64px)] font-black text-white leading-[1.2] tracking-wide mb-3 drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]">
+              你的 AI 執行助理
             </h1>
             <p className="text-[clamp(14px,1.6vw,18px)] text-white/70 font-normal drop-shadow-[0_1px_8px_rgba(0,0,0,0.4)]">
               向下滾動，開始開箱
@@ -225,26 +225,38 @@ export default function HeroAnimation() {
               showScrollHint ? "opacity-100" : "opacity-0"
             }`}
           >
-            <div className="w-6 h-6 border-r-2 border-b-2 border-white/60 rotate-45 animate-[bounce-arrow_2s_infinite]" />
+            <svg
+              width="36"
+              height="36"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="rgba(255,255,255,0.7)"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="animate-[bounce-arrow_2s_infinite]"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
           </div>
 
-          {/* CTA text */}
+          {/* CTA text at end of scroll */}
           <div
             className="text-center w-max max-w-[90vw] pointer-events-auto"
             style={{ opacity: ctaOpacity, transition: "opacity 0.1s" }}
           >
-            <h1 className="text-[clamp(32px,5.5vw,72px)] font-black text-white leading-[1.2] tracking-wide mb-3 drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]">
-              開箱你的虛擬技術長
+            <h1 className="text-[clamp(28px,5vw,64px)] font-black text-white leading-[1.2] tracking-wide mb-3 drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]">
+              部署在你自己的硬體上
             </h1>
             <p className="text-[clamp(15px,2vw,22px)] text-white/85 font-normal mb-7 drop-shadow-[0_1px_8px_rgba(0,0,0,0.4)]">
-              當天部署，立即上工
+              從安裝到安全加固，我們全部搞定
             </p>
-            <a
-              href="#contact"
+            <Link
+              href="/book"
               className="inline-block bg-primary text-white border-none px-10 py-4 rounded-full text-[clamp(16px,1.8vw,20px)] font-bold cursor-pointer transition-all shadow-[0_4px_20px_rgba(193,45,32,0.3)] hover:bg-primary-dark hover:scale-105 hover:shadow-[0_6px_28px_rgba(193,45,32,0.45)]"
             >
-              免費諮詢
-            </a>
+              預約免費諮詢 →
+            </Link>
           </div>
         </div>
       </div>

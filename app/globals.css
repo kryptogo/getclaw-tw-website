@@ -52,9 +52,9 @@
   transform: translateY(0);
 }
 
-/* Hero scroll hint bounce */
+/* Hero scroll hint bounce — pure vertical motion */
 @keyframes bounce-arrow {
-  0%, 20%, 50%, 80%, 100% { transform: rotate(45deg) translateY(0); }
-  40% { transform: rotate(45deg) translateY(8px); }
-  60% { transform: rotate(45deg) translateY(4px); }
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(12px); }
+  60% { transform: translateY(6px); }
 }

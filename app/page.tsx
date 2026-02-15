@@ -1,9 +1,13 @@
 import Navbar from "@/components/Navbar";
 import HeroAnimation from "@/components/HeroAnimation";
-import ProblemSection from "@/components/ProblemSection";
-import ServicesSection from "@/components/ServicesSection";
-import HowItWorksSection from "@/components/HowItWorksSection";
-import AdvantagesSection from "@/components/AdvantagesSection";
+import HeroSection from "@/components/HeroSection";
+import AgentSection from "@/components/AgentSection";
+import WhyUsSection from "@/components/WhyUsSection";
+import PricingSection from "@/components/PricingSection";
+import ServiceFlowSection from "@/components/ServiceFlowSection";
+import UseCasesPreview from "@/components/UseCasesPreview";
+import SecurityPreview from "@/components/SecurityPreview";
+import SocialProofSection from "@/components/SocialProofSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 
@@ -21,10 +25,14 @@ export default function Home() {
 
       <main id="main">
         <HeroAnimation />
-        <ProblemSection />
-        <ServicesSection />
-        <HowItWorksSection />
-        <AdvantagesSection />
+        <HeroSection />
+        <AgentSection />
+        <WhyUsSection />
+        <PricingSection />
+        <ServiceFlowSection />
+        <UseCasesPreview />
+        <SecurityPreview />
+        <SocialProofSection />
         <CTASection />
       </main>
 

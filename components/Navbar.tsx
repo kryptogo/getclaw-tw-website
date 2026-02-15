@@ -1,6 +1,14 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
+
+const navLinks = [
+  { label: "使用場景", href: "/use-cases" },
+  { label: "定價", href: "#pricing" },
+  { label: "安全與合規", href: "/security" },
+  { label: "FAQ", href: "/faq" },
+];
 
 export default function Navbar() {
   const [visible, setVisible] = useState(false);
@@ -25,10 +33,6 @@ export default function Navbar() {
     });
   }, []);
 
-  const scrollToContact = useCallback(() => {
-    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-  }, []);
-
   return (
     <>
       <nav
@@ -41,56 +45,36 @@ export default function Navbar() {
         aria-label="主要導覽"
       >
         <div className="max-w-[1200px] mx-auto flex items-center justify-between h-16 px-6 mt-3 bg-white/95 backdrop-blur-[20px] rounded-xl border border-black/6 shadow-[0_2px_20px_rgba(0,0,0,0.06),0_0_0_1px_rgba(0,0,0,0.02)]">
-          <a href="#" className="flex items-center shrink-0">
+          <Link href="/" className="flex items-center shrink-0">
             <img
               src="/assets/getclaw-logo-red.png"
-              alt="GetClaw 輕量科技"
+              alt="GetClaw"
               className="h-7 w-auto"
             />
-          </a>
+          </Link>
 
           {/* Desktop links */}
           <ul className="hidden md:flex items-center gap-1 list-none">
-            <li>
-              <a
-                href="#services"
-                className="text-sm font-medium text-text-secondary px-4 py-2 rounded-lg transition-colors hover:text-text hover:bg-black/4"
-              >
-                服務項目
-              </a>
-            </li>
-            <li>
-              <a
-                href="#how"
-                className="text-sm font-medium text-text-secondary px-4 py-2 rounded-lg transition-colors hover:text-text hover:bg-black/4"
-              >
-                合作流程
-              </a>
-            </li>
-            <li>
-              <a
-                href="#advantages"
-                className="text-sm font-medium text-text-secondary px-4 py-2 rounded-lg transition-colors hover:text-text hover:bg-black/4"
-              >
-                為什麼選我們
-              </a>
-            </li>
+            {navLinks.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className="text-sm font-medium text-text-secondary px-4 py-2 rounded-lg transition-colors hover:text-text hover:bg-black/4"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
           </ul>
 
           {/* Desktop right buttons */}
           <div className="hidden md:flex items-center gap-2">
-            <button
-              onClick={scrollToContact}
-              className="bg-transparent border-none text-sm font-medium text-text-secondary px-4 py-2 rounded-lg cursor-pointer transition-colors hover:text-text hover:bg-black/4"
-            >
-              聯絡我們
-            </button>
-            <button
-              onClick={scrollToContact}
+            <Link
+              href="/book"
               className="bg-primary text-white border-none px-5 py-2 rounded-lg text-sm font-semibold cursor-pointer transition-all shadow-[0_1px_3px_rgba(193,45,32,0.2)] hover:bg-primary-dark hover:shadow-[0_2px_8px_rgba(193,45,32,0.35)]"
             >
-              免費諮詢 →
-            </button>
+              預約免費諮詢
+            </Link>
           </div>
 
           {/* Mobile hamburger */}
@@ -133,34 +117,23 @@ export default function Navbar() {
         role="dialog"
         aria-label="行動版選單"
       >
-        <a
-          href="#services"
-          onClick={closeMobile}
-          className="text-lg font-semibold text-text px-8 py-3 rounded-lg transition-colors hover:text-primary hover:bg-primary/4"
-        >
-          服務項目
-        </a>
-        <a
-          href="#how"
-          onClick={closeMobile}
-          className="text-lg font-semibold text-text px-8 py-3 rounded-lg transition-colors hover:text-primary hover:bg-primary/4"
-        >
-          合作流程
-        </a>
-        <a
-          href="#advantages"
-          onClick={closeMobile}
-          className="text-lg font-semibold text-text px-8 py-3 rounded-lg transition-colors hover:text-primary hover:bg-primary/4"
-        >
-          為什麼選我們
-        </a>
-        <a
-          href="#contact"
+        {navLinks.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            onClick={closeMobile}
+            className="text-lg font-semibold text-text px-8 py-3 rounded-lg transition-colors hover:text-primary hover:bg-primary/4"
+          >
+            {link.label}
+          </Link>
+        ))}
+        <Link
+          href="/book"
           onClick={closeMobile}
           className="bg-primary text-white px-10 py-3.5 rounded-lg text-base font-bold mt-6 shadow-[0_4px_20px_rgba(193,45,32,0.3)]"
         >
-          免費諮詢
-        </a>
+          預約免費諮詢
+        </Link>
       </div>
     </>
   );
