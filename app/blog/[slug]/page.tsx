@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = getPostBySlug(slug);
   if (!post) return { title: "Not Found" };
 
-  const ogImage = "/assets/og-image.png";
+  const ogImage = post.cover || "/assets/og-image.png";
 
   return {
     title: post.title,
@@ -102,6 +103,19 @@ export default async function BlogPostPage({ params }: Props) {
             >
               &larr; 回到部落格
             </Link>
+
+            {post.cover && (
+              <div className="relative aspect-[16/9] rounded-xl overflow-hidden mt-8 max-w-[700px]">
+                <Image
+                  src={post.cover}
+                  alt={post.title}
+                  fill
+                  className="object-cover"
+                  sizes="700px"
+                  priority
+                />
+              </div>
+            )}
 
             <div className="flex gap-12 mt-8">
               <article className="flex-1 min-w-0 max-w-[700px]">

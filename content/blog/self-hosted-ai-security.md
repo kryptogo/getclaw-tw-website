@@ -1,7 +1,8 @@
 ---
 title: "Self-hosted AI 的安全考量"
-date: "2025-02-01"
+date: "2026-02-01"
 description: "為什麼把 AI 助理部署在自己的硬體上比雲端方案更安全？本文分析 self-hosted AI 的安全優勢與注意事項。"
+cover: "/assets/blog/self-hosted-ai-security.png"
 tags: ["安全", "Self-hosted", "資安"]
 ---
 

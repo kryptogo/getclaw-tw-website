@@ -8,6 +8,7 @@ export interface BlogPost {
   title: string;
   date: string;
   description: string;
+  cover: string;
   tags: string[];
   content: string;
 }
@@ -68,6 +69,7 @@ export function getAllPosts(): BlogPost[] {
       title: (metadata.title as string) || slug,
       date: (metadata.date as string) || "",
       description: (metadata.description as string) || "",
+      cover: (metadata.cover as string) || "",
       tags: (metadata.tags as string[]) || [],
       content,
     };
@@ -109,6 +111,7 @@ export function getPostBySlug(slug: string): BlogPost | null {
     title: (metadata.title as string) || slug,
     date: (metadata.date as string) || "",
     description: (metadata.description as string) || "",
+    cover: (metadata.cover as string) || "",
     tags: (metadata.tags as string[]) || [],
     content,
   };
