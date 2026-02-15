@@ -1,24 +1,79 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 const navLinks = [
-  { label: "使用場景", href: "/use-cases" },
-  { label: "定價", href: "#pricing" },
-  { label: "安全與合規", href: "/security" },
-  { label: "FAQ", href: "/faq" },
+  { label: "使用場景", href: "/#use-cases", sectionId: "use-cases" },
+  { label: "定價", href: "/#pricing", sectionId: "pricing" },
+  { label: "安全與合規", href: "/#security", sectionId: "security" },
+  { label: "FAQ", href: "/#faq", sectionId: "faq" },
 ];
 
 export default function Navbar() {
-  const [visible, setVisible] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+  const isHome = pathname === "/";
+  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  // On homepage: hide until scroll > 50px (reveal on scroll)
+  // On other pages: always visible
+  const visible = isHome ? scrolled : true;
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 50);
+    if (!isHome) return;
+    const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [isHome]);
+
+  // Scroll spy — observe each section on homepage
+  useEffect(() => {
+    if (!isHome) {
+      setActiveSection(null);
+      return;
+    }
+
+    const sectionIds = navLinks.map((l) => l.sectionId);
+    const visibleSections = new Map<string, number>();
+
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            visibleSections.set(entry.target.id, entry.intersectionRatio);
+          } else {
+            visibleSections.delete(entry.target.id);
+          }
+        }
+        // Pick the section with highest visibility ratio
+        let best: string | null = null;
+        let bestRatio = 0;
+        for (const [id, ratio] of visibleSections) {
+          if (ratio > bestRatio) {
+            best = id;
+            bestRatio = ratio;
+          }
+        }
+        setActiveSection(best);
+      },
+      { threshold: [0, 0.3, 0.6], rootMargin: "-20% 0px -20% 0px" }
+    );
+
+    for (const id of sectionIds) {
+      const el = document.getElementById(id);
+      if (el) observerRef.current.observe(el);
+    }
+
+    return () => {
+      observerRef.current?.disconnect();
+    };
+  }, [isHome]);
 
   const closeMobile = useCallback(() => {
     setMobileOpen(false);
@@ -32,6 +87,25 @@ export default function Navbar() {
       return next;
     });
   }, []);
+
+  const handleNavClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
+      if (isHome) {
+        e.preventDefault();
+        const el = document.getElementById(sectionId);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth" });
+        }
+        closeMobile();
+      } else {
+        // On subpages, navigate back to homepage with hash
+        e.preventDefault();
+        closeMobile();
+        router.push(`/#${sectionId}`);
+      }
+    },
+    [isHome, closeMobile, router]
+  );
 
   return (
     <>
@@ -55,26 +129,33 @@ export default function Navbar() {
 
           {/* Desktop links */}
           <ul className="hidden md:flex items-center gap-1 list-none">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="text-sm font-medium text-text-secondary px-4 py-2 rounded-lg transition-colors hover:text-text hover:bg-black/4"
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.sectionId;
+              return (
+                <li key={link.sectionId}>
+                  <Link
+                    href={link.href}
+                    onClick={(e) => handleNavClick(e, link.sectionId)}
+                    className={`text-sm font-medium px-4 py-2 rounded-lg transition-colors ${
+                      isActive
+                        ? "text-primary bg-primary/8"
+                        : "text-text-secondary hover:text-text hover:bg-black/4"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
 
           {/* Desktop right buttons */}
           <div className="hidden md:flex items-center gap-2">
-            <Link
-              href="/book"
-              className="bg-primary text-white border-none px-5 py-2 rounded-lg text-sm font-semibold cursor-pointer transition-all shadow-[0_1px_3px_rgba(193,45,32,0.2)] hover:bg-primary-dark hover:shadow-[0_2px_8px_rgba(193,45,32,0.35)]"
-            >
-              預約免費諮詢
-            </Link>
+            <Button asChild>
+              <Link href="/book">
+                預約免費諮詢
+              </Link>
+            </Button>
           </div>
 
           {/* Mobile hamburger */}
@@ -117,23 +198,28 @@ export default function Navbar() {
         role="dialog"
         aria-label="行動版選單"
       >
-        {navLinks.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            onClick={closeMobile}
-            className="text-lg font-semibold text-text px-8 py-3 rounded-lg transition-colors hover:text-primary hover:bg-primary/4"
-          >
-            {link.label}
+        {navLinks.map((link) => {
+          const isActive = activeSection === link.sectionId;
+          return (
+            <Link
+              key={link.sectionId}
+              href={link.href}
+              onClick={(e) => handleNavClick(e, link.sectionId)}
+              className={`text-lg font-semibold px-8 py-3 rounded-lg transition-colors ${
+                isActive
+                  ? "text-primary bg-primary/8"
+                  : "text-text hover:text-primary hover:bg-primary/4"
+              }`}
+            >
+              {link.label}
+            </Link>
+          );
+        })}
+        <Button asChild size="lg" className="mt-6">
+          <Link href="/book" onClick={closeMobile}>
+            預約免費諮詢
           </Link>
-        ))}
-        <Link
-          href="/book"
-          onClick={closeMobile}
-          className="bg-primary text-white px-10 py-3.5 rounded-lg text-base font-bold mt-6 shadow-[0_4px_20px_rgba(193,45,32,0.3)]"
-        >
-          預約免費諮詢
-        </Link>
+        </Button>
       </div>
     </>
   );

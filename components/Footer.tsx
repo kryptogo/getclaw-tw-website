@@ -11,6 +11,11 @@ const socialLinks = [
   { icon: "github" as const, href: "https://github.com/kryptogo", label: "GitHub" },
 ];
 
+const lineLink = {
+  href: "https://line.me/R/ti/p/@377lrocj",
+  label: "LINE 官方帳號",
+};
+
 export default function Footer() {
   return (
     <footer className="bg-bg-dark text-white/50 pt-16 px-10 pb-10" role="contentinfo">
@@ -22,11 +27,27 @@ export default function Footer() {
             className="h-7 mb-4"
           />
           <p className="text-sm leading-[1.7] max-w-[320px]">
-            你的 AI 執行助理，部署在你自己的硬體上。
+            你的 AI 執行助理,部署在你自己的硬體上。
             <br />
             專為創辦人與高管團隊打造的白手套部署服務。
           </p>
           <div className="flex items-center gap-3 mt-5">
+            <a
+              href={lineLink.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={lineLink.label}
+              className="text-white/40 transition-colors hover:text-white/90"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://cdn.simpleicons.org/line/ffffff66"
+                alt="LINE"
+                width={18}
+                height={18}
+                className="opacity-100 transition-opacity hover:opacity-100"
+              />
+            </a>
             {socialLinks.map((s) => (
               <a
                 key={s.icon}
@@ -80,7 +101,7 @@ export default function Footer() {
           <ul className="list-none flex flex-col gap-2">
             <li>
               <Link href="/collison-install" className="text-sm text-white/50 transition-colors hover:text-white/90">
-                Collison Install
+                到府安裝理念
               </Link>
             </li>
             <li>
@@ -107,8 +128,8 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <a href="mailto:hello@getclaw.com" className="text-sm text-white/50 transition-colors hover:text-white/90">
-                hello@getclaw.com
+              <a href="mailto:contact@kryptogo.com" className="text-sm text-white/50 transition-colors hover:text-white/90">
+                contact@kryptogo.com
               </a>
             </li>
           </ul>
@@ -117,7 +138,7 @@ export default function Footer() {
 
       <div className="max-w-[1200px] mx-auto mt-10 pt-6 border-t border-white/8 text-[13px] flex justify-between items-center max-md:flex-col max-md:gap-2 max-md:text-center">
         <span>
-          &copy; 2025 輕量科技股份有限公司 GetClaw Inc. All rights reserved.
+          &copy; 2026 輕量科技股份有限公司 GetClaw Inc. All rights reserved.
         </span>
       </div>
     </footer>
