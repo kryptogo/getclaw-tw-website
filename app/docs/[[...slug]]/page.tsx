@@ -49,5 +49,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: page.data.title,
     description: page.data.description,
+    openGraph: {
+      title: `${page.data.title} | GetClaw Docs`,
+      description: page.data.description,
+      siteName: "GetClaw",
+      locale: "zh_TW",
+    },
   };
 }
