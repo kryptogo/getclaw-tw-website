@@ -219,31 +219,48 @@ export default function HeroAnimation() {
             </p>
           </div>
 
-          {/* Scroll hint */}
-          <div
-            className={`absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 transition-opacity duration-400 ${
-              showScrollHint ? "opacity-100" : "opacity-0"
+          {/* Scroll hint — clickable arrow to jump to main content */}
+          <a
+            href="#intro"
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById("intro")?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className={`absolute bottom-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 transition-all duration-400 cursor-pointer pointer-events-auto group ${
+              showScrollHint ? "opacity-100" : "opacity-0 !pointer-events-none"
             }`}
+            aria-label="跳到主要內容"
           >
-            <svg
-              width="36"
-              height="36"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="rgba(255,255,255,0.7)"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="animate-[bounce-arrow_2s_infinite]"
-            >
-              <polyline points="6 9 12 15 18 9" />
-            </svg>
-          </div>
+            <span className="text-white/40 text-xs tracking-wider transition-all duration-300 group-hover:text-white/90 group-hover:tracking-[0.15em]">
+              往下探索
+            </span>
+            <div className="relative flex items-center justify-center w-12 h-12 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm transition-all duration-300 group-hover:border-white/50 group-hover:bg-white/15 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="stroke-white/50 animate-[bounce-arrow_2s_infinite] transition-all duration-300 group-hover:stroke-white group-hover:animate-none group-hover:translate-y-0.5"
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
+            <span className="text-white/0 text-[11px] transition-all duration-300 group-hover:text-white/60">
+              點擊直達介紹
+            </span>
+          </a>
 
           {/* CTA text at end of scroll */}
           <div
-            className="text-center w-max max-w-[90vw] pointer-events-auto"
-            style={{ opacity: ctaOpacity, transition: "opacity 0.1s" }}
+            className="text-center w-max max-w-[90vw]"
+            style={{
+              opacity: ctaOpacity,
+              transition: "opacity 0.1s",
+              pointerEvents: ctaOpacity > 0.1 ? "auto" : "none",
+            }}
           >
             <h1 className="text-[clamp(28px,5vw,64px)] font-black text-white leading-[1.2] tracking-wide mb-3 drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]">
               部署在你自己的硬體上

@@ -58,3 +58,21 @@
   40% { transform: translateY(12px); }
   60% { transform: translateY(6px); }
 }
+
+/* Subtle gradient background texture for depth */
+.bg-subtle-grid {
+  background-image:
+    linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Smooth count-up animation for stats */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease forwards;
+}

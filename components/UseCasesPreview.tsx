@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import ScrollReveal from "./ScrollReveal";
 import { IconCEO, IconFinance, IconSales, IconHandshake } from "./icons";
 
@@ -7,7 +9,7 @@ const useCases = [
     Icon: IconCEO,
     role: "創辦人 / CEO",
     quote: "每天 200 封 email，AI 幫我分類、摘要、草擬回覆。重要的才通知我。",
-    capabilities: ["Email triage", "智慧排程", "會議 briefing", "跨時區管理"],
+    capabilities: ["信件分流", "智慧排程", "會議簡報", "跨時區管理"],
     delay: 0,
   },
   {
@@ -26,7 +28,7 @@ const useCases = [
   },
   {
     Icon: IconHandshake,
-    role: "行政 / EA",
+    role: "行政助理",
     quote: "共用信箱終於有人顧了。",
     capabilities: ["訪客接待", "會議室預訂", "行程協調"],
     delay: 0.3,
@@ -39,7 +41,7 @@ export default function UseCasesPreview() {
       <div className="max-w-[1200px] mx-auto">
         <ScrollReveal className="text-center mb-16">
           <span className="inline-block text-[13px] font-bold text-primary tracking-[0.12em] uppercase mb-4">
-            USE CASES
+            使用場景
           </span>
           <h2 className="text-[clamp(28px,4vw,48px)] font-black leading-[1.3] mb-4">
             每個角色，都有專屬的 AI 助理
@@ -49,7 +51,7 @@ export default function UseCasesPreview() {
         <div className="grid grid-cols-2 gap-6 max-md:grid-cols-1">
           {useCases.map((uc) => (
             <ScrollReveal key={uc.role} delay={uc.delay}>
-              <div className="bg-bg rounded-2xl p-8 border border-border h-full">
+              <Card className="p-8 h-full bg-bg">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                     <uc.Icon className="text-primary" size={20} />
@@ -59,17 +61,16 @@ export default function UseCasesPreview() {
                 <blockquote className="text-text-secondary text-sm italic mb-4 leading-relaxed border-l-2 border-primary/30 pl-4">
                   「{uc.quote}」
                 </blockquote>
-                <div className="flex flex-wrap gap-2">
-                  {uc.capabilities.map((cap) => (
-                    <span
-                      key={cap}
-                      className="text-xs text-text-muted bg-bg-white px-3 py-1 rounded-full border border-border"
-                    >
-                      {cap}
-                    </span>
-                  ))}
-                </div>
-              </div>
+                <CardContent className="p-0">
+                  <div className="flex flex-wrap gap-2">
+                    {uc.capabilities.map((cap) => (
+                      <Badge key={cap} variant="outline">
+                        {cap}
+                      </Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </ScrollReveal>
           ))}
         </div>

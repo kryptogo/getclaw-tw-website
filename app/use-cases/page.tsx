@@ -22,9 +22,9 @@ const useCases = [
     role: "創辦人 / CEO",
     quote: "每天 200 封 email，AI 幫我分類、摘要、草擬回覆。重要的才通知我。",
     capabilities: [
-      { title: "Email Triage", desc: "自動分類信件優先等級，摘要重點，只有重要的才推播通知" },
+      { title: "信件分流", desc: "自動分類信件優先等級，摘要重點，只有重要的才推播通知" },
       { title: "智慧排程", desc: "偵測行程衝突、自動建議時段、跨時區管理" },
-      { title: "會議 Briefing", desc: "會前自動整理議程、參與者背景、上次會議結論" },
+      { title: "會議簡報", desc: "會前自動整理議程、參與者背景、上次會議結論" },
       { title: "跨時區管理", desc: "根據對方時區智慧安排溝通時間" },
     ],
   },
@@ -69,7 +69,7 @@ export default function UseCasesPage() {
         <section className="py-20 px-10 bg-bg-white text-center max-md:px-6">
           <div className="max-w-[800px] mx-auto">
             <span className="inline-block text-[13px] font-bold text-primary tracking-[0.12em] uppercase mb-4">
-              USE CASES
+              使用場景
             </span>
             <h1 className="text-[clamp(32px,5vw,52px)] font-black leading-[1.25] mb-6">
               每個角色，都有專屬的 AI 助理

@@ -7,11 +7,11 @@ import { IconServer, IconShield, IconKey, IconClipboard, IconUser, IconCheck } f
 
 export const metadata: Metadata = {
   title: "安全與合規",
-  description: "你的資料，留在你的機器。Self-hosted AI 助理，完整安全加固，通過企業資安審查。ISO 27001 / SOC 2 / CAMS 團隊背景。",
+  description: "你的資料，留在你的機器。自主託管 AI 助理，完整安全加固，通過企業資安審查。ISO 27001 / SOC 2 / CAMS 團隊背景。",
   alternates: { canonical: "https://getclaw.tw/security" },
   openGraph: {
     title: "安全與合規 — GetClaw AI 執行助理",
-    description: "Self-hosted 架構確保敏感資料不離開你的硬體。完整安全加固，通過企業級資安審查。",
+    description: "自主託管架構確保敏感資料不離開你的硬體。完整安全加固，通過企業級資安審查。",
     url: "https://getclaw.tw/security",
   },
 };
@@ -19,13 +19,13 @@ export const metadata: Metadata = {
 const securityFeatures = [
   {
     Icon: IconServer,
-    title: "Self-hosted",
+    title: "自主託管",
     desc: "所有資料處理都在你自己的硬體上進行，不經過第三方雲端。你的 email、行事曆、文件——全部留在你的機器。",
   },
   {
     Icon: IconShield,
     title: "安全加固",
-    desc: "嚴格遵循官方 hardening guide 進行安全配置。包括防火牆規則、連接埠限制、SSL/TLS 設定、以及存取控制。",
+    desc: "嚴格遵循官方安全強化指南進行安全配置。包括防火牆規則、連接埠限制、SSL/TLS 設定、以及存取控制。",
   },
   {
     Icon: IconKey,
@@ -34,13 +34,13 @@ const securityFeatures = [
   },
   {
     Icon: IconClipboard,
-    title: "Audit Trail",
+    title: "操作軌跡",
     desc: "AI 的每一次操作都有完整紀錄可追溯。你可以隨時查看 Agent 做了什麼、讀了什麼、發了什麼。",
   },
   {
     Icon: IconUser,
     title: "身份隔離",
-    desc: "每個 Executive Agent 都是獨立的實例，綁定獨立身份。CEO Agent 無法存取 CFO Agent 的資料，反之亦然。",
+    desc: "每個執行助理都是獨立的實例，綁定獨立身份。CEO 助理無法存取 CFO 助理的資料，反之亦然。",
   },
   {
     Icon: IconCheck,
@@ -65,13 +65,13 @@ export default function SecurityPage() {
         <section className="py-20 px-10 bg-bg-dark text-white text-center max-md:px-6">
           <div className="max-w-[800px] mx-auto">
             <span className="inline-block text-[13px] font-bold text-primary-light tracking-[0.12em] uppercase mb-4">
-              SECURITY & COMPLIANCE
+              安全與合規
             </span>
             <h1 className="text-[clamp(32px,5vw,52px)] font-black leading-[1.25] mb-6">
               你的資料，留在你的機器。
             </h1>
             <p className="text-white/60 text-lg leading-relaxed">
-              Self-hosted 架構確保你的敏感資料不離開你的硬體。
+              自主託管架構確保你的敏感資料不離開你的硬體。
               <br />
               完整安全加固，能通過企業級資安審查。
             </p>

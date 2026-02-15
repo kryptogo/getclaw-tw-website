@@ -24,7 +24,7 @@ export default function TermsPage() {
                 <p>
                   GetClaw（以下稱「本服務」）由輕量科技股份有限公司（以下稱「本公司」）提供，
                   包括但不限於 OpenClaw AI 助理的部署安裝、安全加固、系統整合、工作流程設定，
-                  以及 Managed Care 持續維護服務。
+                  以及 託管維護持續服務。
                 </p>
               </section>
 
@@ -49,7 +49,7 @@ export default function TermsPage() {
               <section>
                 <h2 className="text-lg font-bold text-text mb-3">4. 資料與隱私</h2>
                 <p>
-                  本服務採用 self-hosted 架構，您的資料處理均在您自己的硬體上進行。
+                  本服務採用自主託管架構，您的資料處理均在您自己的硬體上進行。
                   本公司在部署過程中可能需要暫時存取您的系統，
                   部署完成後本公司不會保留您的任何資料。
                   詳細隱私權政策請參閱「隱私權政策」頁面。
@@ -60,7 +60,7 @@ export default function TermsPage() {
                 <h2 className="text-lg font-bold text-text mb-3">5. 費用與付款</h2>
                 <p>
                   服務費用依您選擇的方案而定。一次性部署費於部署完成後收取，
-                  Managed Care 月費方案於每月初收取。
+                  託管維護月費方案於每月初收取。
                   年約方案享有 2 個月免費優惠。
                   所有價格均為含稅價格（如適用）。
                 </p>
@@ -96,8 +96,8 @@ export default function TermsPage() {
                 <h2 className="text-lg font-bold text-text mb-3">9. 聯絡方式</h2>
                 <p>
                   如對本服務條款有任何疑問，請聯繫：
-                  <a href="mailto:hello@getclaw.com" className="text-primary hover:underline ml-1">
-                    hello@getclaw.com
+                  <a href="mailto:contact@kryptogo.com" className="text-primary hover:underline ml-1">
+                    contact@kryptogo.com
                   </a>
                 </p>
               </section>

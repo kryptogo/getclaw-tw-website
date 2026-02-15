@@ -30,7 +30,7 @@ export default function PrivacyPage() {
               <section>
                 <h2 className="text-lg font-bold text-text mb-3">2. 資料架構說明</h2>
                 <p>
-                  GetClaw 服務採用 <strong>self-hosted 架構</strong>。
+                  GetClaw 服務採用<strong>自主託管架構</strong>。
                   這代表您的 AI 助理處理的所有資料（包括 email、行事曆、文件等），
                   都在您自己的硬體上處理和儲存，不會傳輸到本公司或任何第三方伺服器。
                 </p>
@@ -52,7 +52,7 @@ export default function PrivacyPage() {
                 <p>
                   在部署過程中，本公司技術人員可能需要暫時存取您的系統以完成安裝與設定。
                   部署完成後，我們會建議您輪換所有憑證，
-                  確保本公司無法繼續存取您的系統（除非您選擇 Managed Care 方案並授權持續存取）。
+                  確保本公司無法繼續存取您的系統（除非您選擇 託管維護方案並授權持續存取）。
                 </p>
               </section>
 
@@ -97,8 +97,8 @@ export default function PrivacyPage() {
                 <h2 className="text-lg font-bold text-text mb-3">9. 聯絡方式</h2>
                 <p>
                   如對本隱私權政策有任何疑問，請聯繫：
-                  <a href="mailto:hello@getclaw.com" className="text-primary hover:underline ml-1">
-                    hello@getclaw.com
+                  <a href="mailto:contact@kryptogo.com" className="text-primary hover:underline ml-1">
+                    contact@kryptogo.com
                   </a>
                 </p>
               </section>

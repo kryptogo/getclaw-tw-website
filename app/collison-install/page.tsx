@@ -75,7 +75,7 @@ export default function CollisonInstallPage() {
                 <p className="text-text-secondary leading-[1.9] mb-6 text-[15px]">
                   我們做的就是 Collison Install——但升級版。
                   不只幫你裝好，還幫你做安全加固、整合工具、設定工作流程，
-                  然後用 14 天 hypercare 確保一切順暢。
+                  然後用 14 天密集調優確保一切順暢。
                 </p>
                 <p className="text-text-secondary leading-[1.9] mb-6 text-[15px]">
                   你的工程團隊不用碰，你的時間不用花。

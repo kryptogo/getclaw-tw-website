@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: "%s | GetClaw",
   },
   description:
-    "專為創辦人與高管團隊打造的 OpenClaw 白手套部署服務。從安裝到安全加固，當天上線，14 天調優。Self-hosted AI 助理，資料不離開你的硬體。",
+    "專為創辦人與高管團隊打造的 OpenClaw 白手套部署服務。從安裝到安全加固，當天上線，14 天調優。自主託管 AI 助理，資料不離開你的硬體。",
   keywords: [
     "AI 執行助理",
     "OpenClaw",

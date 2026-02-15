@@ -6,11 +6,11 @@ import { getAllPosts } from "@/lib/blog";
 
 export const metadata: Metadata = {
   title: "部落格",
-  description: "關於 AI 執行助理、OpenClaw、self-hosted AI、效率提升的最新文章與觀點。",
+  description: "關於 AI 執行助理、OpenClaw、自主託管 AI、效率提升的最新文章與觀點。",
   alternates: { canonical: "https://getclaw.tw/blog" },
   openGraph: {
     title: "部落格 — GetClaw AI 執行助理",
-    description: "AI 執行助理、OpenClaw、self-hosted AI 的最新文章與觀點。",
+    description: "AI 執行助理、OpenClaw、自主託管 AI 的最新文章與觀點。",
     url: "https://getclaw.tw/blog",
   },
 };
@@ -25,7 +25,7 @@ export default function BlogPage() {
         <section className="py-20 px-10 bg-bg-white text-center max-md:px-6">
           <div className="max-w-[800px] mx-auto">
             <span className="inline-block text-[13px] font-bold text-primary tracking-[0.12em] uppercase mb-4">
-              BLOG
+              部落格
             </span>
             <h1 className="text-[clamp(32px,5vw,52px)] font-black leading-[1.25] mb-6">
               部落格

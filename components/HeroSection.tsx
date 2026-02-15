@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 const integrations = [
   { name: "Gmail", icon: "https://cdn.simpleicons.org/gmail" },
@@ -15,14 +17,14 @@ const integrations = [
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-24 pb-16 bg-bg-dark text-white overflow-hidden">
+    <section id="intro" className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-24 pb-16 bg-bg-dark text-white overflow-hidden">
       {/* Background gradient accent */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(193,45,32,0.15)_0%,transparent_60%)]" />
 
       <div className="relative z-10 max-w-[900px] mx-auto text-center">
-        <span className="inline-block text-[13px] font-bold text-primary-light tracking-[0.15em] uppercase mb-6">
-          OpenClaw White-Glove Deployment
-        </span>
+        <Badge variant="highlight" className="mb-6 text-[13px] tracking-[0.15em] uppercase bg-primary/20 text-primary-light border-primary/30">
+          OpenClaw 白手套部署服務
+        </Badge>
 
         <h1 className="text-[clamp(28px,5vw,56px)] font-black leading-[1.25] mb-6 tracking-tight">
           你的 AI 執行助理，
@@ -30,25 +32,32 @@ export default function HeroSection() {
           部署在你自己的硬體上。
         </h1>
 
-        <p className="text-[clamp(16px,1.8vw,20px)] text-white/70 leading-[1.8] mb-10 max-w-[680px] mx-auto font-light">
+        <p className="text-[clamp(16px,1.8vw,20px)] text-white/70 leading-[1.8] mb-6 max-w-[680px] mx-auto font-light">
           專為創辦人與高管團隊打造的 OpenClaw 白手套部署服務。
           <br className="max-md:hidden" />
           不用燒工程資源、不用擔心資安風險——當天上線，14 天調優。
         </p>
 
+        {/* Social proof micro-nudge */}
+        <p className="text-white/40 text-sm mb-10 flex items-center justify-center gap-2">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400" />
+          </span>
+          已有企業主完成部署，平均省下每週 10+ 小時行政時間
+        </p>
+
         <div className="flex items-center justify-center gap-4 flex-wrap max-[480px]:flex-col">
-          <Link
-            href="/book"
-            className="inline-block bg-primary text-white border-none px-10 py-4 rounded-full text-[clamp(15px,1.6vw,18px)] font-bold cursor-pointer transition-all shadow-[0_4px_20px_rgba(193,45,32,0.4)] hover:bg-primary-dark hover:scale-105 hover:shadow-[0_6px_28px_rgba(193,45,32,0.55)] max-[480px]:w-full max-[480px]:text-center"
-          >
-            預約免費諮詢 →
-          </Link>
-          <a
-            href="#pricing"
-            className="inline-block bg-transparent text-white/90 border-2 border-white/20 px-9 py-3.5 rounded-full text-[clamp(15px,1.6vw,18px)] font-bold cursor-pointer transition-all hover:border-white/50 hover:bg-white/5 max-[480px]:w-full max-[480px]:text-center"
-          >
-            了解定價
-          </a>
+          <Button asChild size="xl">
+            <Link href="/book">
+              預約免費諮詢 →
+            </Link>
+          </Button>
+          <Button asChild size="xl" variant="outline-white">
+            <a href="#pricing">
+              了解定價
+            </a>
+          </Button>
         </div>
 
         {/* Karpathy quote */}
