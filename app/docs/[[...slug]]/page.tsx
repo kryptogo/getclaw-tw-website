@@ -9,6 +9,7 @@ import { notFound } from "next/navigation";
 import { source } from "@/lib/source";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 import type { TOCItemType } from "fumadocs-core/server";
+import { Mermaid } from "@/components/Mermaid";
 
 interface Props {
   params: Promise<{ slug?: string[] }>;
@@ -29,7 +30,7 @@ export default async function Page({ params }: Props) {
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
-        <MDX components={{ ...defaultMdxComponents }} />
+        <MDX components={{ ...defaultMdxComponents, Mermaid }} />
       </DocsBody>
     </DocsPage>
   );

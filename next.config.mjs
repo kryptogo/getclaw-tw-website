@@ -10,6 +10,7 @@ const withMDX = createMDX();
 const nextConfig = {
   output: "standalone",
   outputFileTracingRoot: __dirname,
+  serverExternalPackages: ["mermaid"],
 };
 
 export default withMDX(nextConfig);
