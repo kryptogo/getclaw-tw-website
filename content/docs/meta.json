@@ -3,12 +3,14 @@
   "title": "完全設定指南",
   "pages": [
     "index",
-    "---核心設定---",
-    "getting-started",
-    "core-setup",
-    "---進階設定---",
+    "hosting",
+    "setup",
+    "deployment",
+    "channels",
+    "interfaces",
+    "cost",
     "advanced",
-    "---參考資料---",
-    "reference"
+    "faq",
+    "conclusion"
   ]
 }

@@ -1,0 +1,181 @@
+---
+title: 首次啟動與驗證
+description: 安裝完成後的健康檢查、診斷工具、以及出問題時的 60 秒急救流程
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+恭喜，OpenClaw 已經裝好了。但「裝好」和「穩定運作」之間還有一段距離。這篇帶你走完健康檢查，確認所有元件都正常，然後教你出問題時怎麼快速診斷。
+
+---
+
+## 安裝完成後你擁有的
+
+走完前面的安裝流程後，你的環境應該有以下東西在運作：
+
+| 元件 | 說明 | 驗證方式 |
+|------|------|----------|
+| OpenClaw Gateway | 在背景持續運作的核心服務 | `openclaw status` |
+| Web Dashboard | 透過瀏覽器管理 Agent 和頻道的介面 | 打開 `http://127.0.0.1:18789/` |
+| Cloudflare Tunnel | 讓外部服務能連到你的 Gateway | 從手機打開 `https://agent.yourdomain.com` |
+| 開機自啟 | macOS launchd 或 Linux systemd | 重新開機後檢查 `openclaw status` |
+
+<Callout type="info">
+如果你跳過了 Cloudflare Tunnel 設定，Gateway 仍然可以在本機正常運作。但外部服務（LINE Webhook、Telegram Bot 等）無法連到你的 Gateway — 這代表你的 Agent 只能透過 Dashboard 手動互動。
+</Callout>
+
+---
+
+## 健康檢查清單
+
+OpenClaw 提供幾個不同層級的狀態檢查指令，從快速概覽到完整報告都有。
+
+### 快速概覽
+
+```bash
+openclaw status
+```
+
+這是你最常用的指令。它會顯示 Gateway 是否在運作、已連接的頻道數量、以及基本的健康狀態。
+
+### 完整報告
+
+```bash
+openclaw status --all
+```
+
+輸出所有元件的詳細狀態，包含：
+
+- Gateway 版本和運行時間
+- 已設定的 AI Provider 和模型
+- 各頻道的連線狀態
+- API Key 的有效性
+- 系統資源使用量
+
+<Callout type="info">
+`openclaw status --all` 的輸出格式設計成可以直接複製貼上。如果你需要在社群或客服中尋求協助，貼上這段輸出能大幅加快排查速度。
+</Callout>
+
+### Daemon 和 Port 狀態
+
+```bash
+openclaw gateway status
+```
+
+專門檢查 Gateway daemon 的狀態 — daemon 是否在運作、port 18789 是否正常監聽、PID 是多少。
+
+### Gateway 快照（JSON 格式）
+
+```bash
+openclaw health --json
+```
+
+輸出機器可讀的 JSON 格式健康報告。適合用於自動化監控腳本，或是需要程式解析狀態時使用。
+
+---
+
+## 出了問題？60 秒診斷法
+
+當你的 Agent 沒有回應、Dashboard 打不開、或是收到錯誤通知時，按照這四個步驟走。大部分問題在 60 秒內可以定位到原因。
+
+### 第 1 步：看狀態
+
+```bash
+openclaw status
+```
+
+**正常情況**：Gateway 顯示 `running`，各頻道顯示 `connected`。
+
+**如果 Gateway 不在運作**：
+
+```bash
+# Mac mini
+launchctl list | grep openclaw
+
+# VPS
+sudo systemctl status openclaw
+```
+
+### 第 2 步：看日誌
+
+```bash
+openclaw logs --follow
+```
+
+即時追蹤日誌輸出。送一條測試訊息給你的 Agent，觀察日誌中是否有錯誤訊息。
+
+常見錯誤模式：
+
+- `API key invalid` — API Key 過期或額度用完
+- `Connection refused` — 目標服務（LINE、Telegram 等）連線失敗
+- `Rate limited` — 請求頻率超過 AI Provider 限制
+
+按 `Ctrl+C` 停止追蹤。
+
+### 第 3 步：自動診斷
+
+```bash
+openclaw doctor
+```
+
+`doctor` 指令會自動檢查常見問題：
+
+- Node.js 版本是否符合要求
+- 設定檔格式是否正確
+- API Key 是否有效
+- Gateway port 是否可用
+- 網路連線是否正常
+
+它會輸出每項檢查的結果，以及建議的修復方式。
+
+### 第 4 步：深度檢查
+
+```bash
+openclaw status --deep
+```
+
+這是最完整的診斷指令。除了基本狀態外，還會：
+
+- 主動測試每個 AI Provider 的 API 連線
+- 驗證每個頻道的 Webhook URL 是否可達
+- 檢查磁碟空間和記憶體使用量
+- 驗證 SSL 憑證狀態
+
+<Callout type="warn">
+`--deep` 檢查會實際發送測試請求到各個外部服務，所以會花比較長的時間（通常 10-30 秒）。不要在正式環境頻繁使用 — 日常監控用 `openclaw status` 就夠了。
+</Callout>
+
+---
+
+## 環境變數參考
+
+如果你需要自訂 OpenClaw 的儲存位置或設定檔路徑，可以透過以下環境變數：
+
+| 變數 | 預設值 | 說明 |
+|------|--------|------|
+| `OPENCLAW_HOME` | `~/.openclaw` | OpenClaw 主目錄 |
+| `OPENCLAW_STATE_DIR` | `~/.openclaw/state` | 運行狀態儲存目錄 |
+| `OPENCLAW_CONFIG_PATH` | `~/.openclaw/config.json5` | 設定檔路徑 |
+
+<Callout type="info">
+OpenClaw 的設定檔格式是 JSON5 — 支援註解和尾隨逗號，比標準 JSON 寫起來舒服。
+</Callout>
+
+---
+
+## 下一步
+
+安裝和驗證都完成了。現在你的 OpenClaw Gateway 已經在穩定運作，是時候讓它真正開始工作了：
+
+- **連接你的第一個通訊頻道** — LINE、Telegram、WhatsApp... 選一個開始。前往 [通訊頻道設定](/docs/channels)
+- **認識操作介面** — Dashboard、CLI、API 三種操作方式，了解各自適合什麼場景。前往 [操作介面總覽](/docs/interfaces)
+
+---
+
+## GetClaw 觀點
+
+「裝好」只是起點。真正的挑戰從你開始日常使用的那天才開始 — Agent 為什麼突然不回了？日誌裡那串紅字什麼意思？上週還好好的怎麼今天就壞了？
+
+這就是我們把「60 秒診斷法」放在這麼前面的原因。你不需要一開始就理解 OpenClaw 的每個元件，但你需要知道出問題時怎麼快速找到原因。`openclaw status` → `openclaw logs` → `openclaw doctor` — 把這三個指令記住，能解決你 90% 的問題。
+
+剩下的 10%？那就是經驗的價值所在。而這正是 GetClaw 存在的意義。

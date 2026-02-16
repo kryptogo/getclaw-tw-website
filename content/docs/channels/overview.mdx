@@ -1,0 +1,69 @@
+---
+title: 頻道選擇策略
+description: LINE 和 Telegram 各有什麼優勢？為什麼我們推薦雙軌並行？一張表看清差異，做出正確選擇
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+OpenClaw 支援多種通訊頻道，但在台灣市場，真正值得投入的就兩個：LINE 和 Telegram。這篇幫你搞清楚它們的差異，做出適合你團隊的選擇。
+
+---
+
+## 台灣市場現實：LINE 是基礎設施
+
+LINE 在台灣的滲透率超過 95%。這不是因為它的 Bot API 有多好用 — 老實說，跟 Telegram 比起來差距明顯。但「每個人都有」這件事本身就是最強的護城河。
+
+你的客戶在 LINE 上、你的同事在 LINE 上、你媽也在 LINE 上。如果你的 AI Agent 要服務台灣使用者，LINE 不是選項，是必要條件。
+
+## Telegram：真正為 Bot 設計的平台
+
+Telegram 的 Bot API 是另一個層次的東西。原生 Markdown 支援、串流回應（AI 即時打字效果）、grammY 框架的成熟度 — 這些都讓開發體驗和使用體驗好上一截。
+
+技術團隊幾乎都偏好 Telegram，原因很實際：你能做的事情多太多了。
+
+---
+
+## 功能對比
+
+| 功能 | LINE | Telegram |
+|------|------|----------|
+| Markdown 支援 | 純文字（或 Flex Message） | 原生支援 |
+| 串流回應 | 等完整回覆才送出 | 即時打字效果 |
+| Bot API 成熟度 | 基本功能 | 豐富（grammY 框架） |
+| 台灣用戶量 | 95%+ 滲透率 | 技術社群為主 |
+| 群組功能 | 基本群組 | Forum Topics 分類討論 |
+| 訊息長度限制 | 5000 字元 | 4096 字元 |
+| 媒體支援 | 10MB 限制 | 較寬鬆 |
+| Inline 互動按鈕 | 有限支援 | 完整支援 |
+| Webhook 設定 | 需要 HTTPS 端點 | 支援 Long Polling（免公網 IP） |
+
+---
+
+## 我們推薦：LINE + Telegram 雙軌策略
+
+不要二選一。兩個頻道服務不同的人群：
+
+- **LINE**：面向客戶、非技術同事、外部合作夥伴 — 他們不會為了跟你的 AI Agent 對話而另外裝一個 App
+- **Telegram**：面向技術團隊、開發者、進階使用者 — 他們在意的是功能深度和操作體驗
+
+OpenClaw 的架構設計讓雙軌並行幾乎零額外成本 — 同一個 Agent、同一套知識庫、同一份設定，只是多接一個頻道而已。
+
+---
+
+## 如果你只能選一個
+
+**目標是台灣大眾市場** → LINE。沒有懸念。你的使用者不會因為你的 Bot 有多好用而去裝 Telegram。
+
+**目標是技術團隊或內部工具** → Telegram。串流回應、Markdown、Forum Topics — 這些功能在日常使用中的體驗差距是巨大的。
+
+---
+
+## GetClaw 觀點
+
+我們自己的 Agent 同時跑在 LINE 和 Telegram 上。坦白說，每次用 Telegram 的串流回應體驗之後再切回 LINE，都會有一種「等到天荒地老」的感覺。但我們不會因此就只用 Telegram — 因為客戶在 LINE 上，這就是最大的理由。
+
+技術上的「好」和商業上的「對」經常不是同一件事。雙軌策略的價值就在這裡：你不需要在兩者之間做取捨。
+
+<Callout type="info">
+準備好了嗎？接下來我們分別帶你設定 [LINE 頻道](/docs/channels/line) 和 [Telegram 頻道](/docs/channels/telegram)。建議兩個都設定 — 總共不到 20 分鐘。
+</Callout>

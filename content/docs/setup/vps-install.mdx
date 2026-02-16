@@ -1,0 +1,455 @@
+---
+title: VPS 完整安裝流程
+description: 從零開始在 Ubuntu VPS 上部署 OpenClaw — 含安全加固、Cloudflare Tunnel、systemd 自動啟動
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+在 VPS 上部署 OpenClaw 的完整流程。如果你選了 VPS 路線（不需要 iMessage、偏好雲端管理），這篇就是你的安裝手冊。
+
+本指南以 **Ubuntu 24.04 LTS** 為基準。Debian 12 的指令幾乎一樣；其他 Linux 發行版請自行調整套件管理指令。
+
+全程大約需要 30-45 分鐘。
+
+---
+
+## Step 1：VPS 初始化
+
+<Callout type="info">
+如果你的 VPS 供應商（如 DigitalOcean、Linode）有提供初始化腳本或 Cloud-Init 範本，可以跳過手動建立使用者的步驟。但安全加固建議還是走一遍。
+</Callout>
+
+### SSH 連線到 VPS
+
+```bash
+ssh root@<你的 VPS IP>
+```
+
+### 建立非 root 使用者
+
+永遠不要用 root 跑 OpenClaw。建立一個專用使用者：
+
+```bash
+adduser openclaw
+usermod -aG sudo openclaw
+```
+
+### 設定 SSH Key 認證
+
+在你的**本機**產生 SSH Key（如果還沒有的話）：
+
+```bash
+ssh-keygen -t ed25519 -C "openclaw-vps"
+```
+
+把公鑰複製到 VPS：
+
+```bash
+ssh-copy-id openclaw@<你的 VPS IP>
+```
+
+測試 Key 登入：
+
+```bash
+ssh openclaw@<你的 VPS IP>
+```
+
+### 關閉密碼登入
+
+確認 Key 登入沒問題後，關閉密碼認證：
+
+```bash
+sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+sudo sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+sudo systemctl restart sshd
+```
+
+### 基本安全設定
+
+安裝 fail2ban（防暴力破解）和 ufw（防火牆）：
+
+```bash
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y fail2ban ufw
+```
+
+設定防火牆：
+
+```bash
+sudo ufw allow OpenSSH
+sudo ufw enable
+```
+
+<Callout type="warn">
+執行 `ufw enable` 前，務必確認你已經 `allow OpenSSH`。否則你會把自己鎖在門外。如果你用了非標準 SSH port，用 `sudo ufw allow <port>/tcp` 替代。
+</Callout>
+
+啟動 fail2ban：
+
+```bash
+sudo systemctl enable fail2ban
+sudo systemctl start fail2ban
+```
+
+---
+
+## Step 2：安裝 Node.js
+
+以 `openclaw` 使用者登入後操作（以下所有步驟都用這個使用者）：
+
+```bash
+su - openclaw
+```
+
+### 安裝 nvm
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+```
+
+重新載入 shell：
+
+```bash
+source ~/.bashrc
+```
+
+### 安裝 Node.js 22
+
+```bash
+nvm install 22
+nvm use 22
+nvm alias default 22
+```
+
+### 驗證
+
+```bash
+node --version
+# v22.x.x
+
+npm --version
+# 10.x.x
+```
+
+---
+
+## Step 3：安裝 OpenClaw
+
+```bash
+npm install -g openclaw@latest
+```
+
+驗證安裝：
+
+```bash
+openclaw --version
+```
+
+如果需要替代安裝方式：
+
+```bash
+curl -fsSL https://openclaw.ai/install.sh | bash
+```
+
+---
+
+## Step 4：初始設定
+
+```bash
+openclaw onboard --install-daemon
+```
+
+依照提示完成設定：
+
+### API Key 設定
+
+```
+? Select your AI provider: Anthropic (Claude)
+? Enter your Anthropic API Key: sk-ant-xxxxx
+```
+
+### 選擇預設模型
+
+```
+? Select default model: claude-sonnet-4-20250514
+```
+
+### Gateway Token 設定
+
+```
+? Set your Gateway Token: [自動產生或手動輸入]
+```
+
+**記下這個 Token** — 之後登入 Dashboard 和 API 存取都需要它。
+
+<Callout type="info">
+在 VPS 上，你可能想要手動管理 systemd 服務（Step 6），所以也可以省略 `--install-daemon`，只執行 `openclaw onboard`。
+</Callout>
+
+---
+
+## Step 5：設定 Cloudflare Tunnel
+
+雖然 VPS 通常有固定的公網 IP，我們仍然推薦用 Cloudflare Tunnel。原因是：不需要開放任何 inbound port（除了 SSH），防火牆規則更簡單，安全性更好。
+
+### 安裝 cloudflared
+
+```bash
+# 下載最新版
+curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb -o cloudflared.deb
+sudo dpkg -i cloudflared.deb
+rm cloudflared.deb
+```
+
+### 登入 Cloudflare
+
+```bash
+cloudflared tunnel login
+```
+
+終端機會顯示一個 URL — 複製它到你本機的瀏覽器開啟，選擇網域並授權。
+
+### 建立 Tunnel + DNS
+
+```bash
+cloudflared tunnel create openclaw
+cloudflared tunnel route dns openclaw agent.yourdomain.com
+```
+
+把 `agent.yourdomain.com` 替換成你自己的子網域。
+
+### 建立設定檔
+
+```bash
+mkdir -p ~/.cloudflared
+nano ~/.cloudflared/config.yml
+```
+
+內容：
+
+```yaml
+tunnel: <你的 Tunnel ID>
+credentials-file: /home/openclaw/.cloudflared/<Tunnel ID>.json
+
+ingress:
+  - hostname: agent.yourdomain.com
+    service: http://localhost:18789
+  - service: http_status:404
+```
+
+### 設定 cloudflared 為 systemd 服務
+
+```bash
+sudo cloudflared service install
+sudo systemctl enable cloudflared
+sudo systemctl start cloudflared
+```
+
+### 驗證
+
+```bash
+sudo systemctl status cloudflared
+```
+
+狀態應該是 `active (running)`。
+
+---
+
+## Step 6：設定 systemd 開機自啟
+
+建立 OpenClaw Gateway 的 systemd service 檔案：
+
+```bash
+sudo nano /etc/systemd/system/openclaw.service
+```
+
+內容：
+
+```ini
+[Unit]
+Description=OpenClaw Gateway
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=openclaw
+Group=openclaw
+Environment=PATH=/home/openclaw/.nvm/versions/node/v22.0.0/bin:/usr/local/bin:/usr/bin:/bin
+Environment=HOME=/home/openclaw
+ExecStart=/home/openclaw/.nvm/versions/node/v22.0.0/bin/node /home/openclaw/.nvm/versions/node/v22.0.0/bin/openclaw gateway
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+```
+
+<Callout type="warn">
+Node.js 版本路徑（`v22.0.0`）會隨你安裝的具體版本而不同。用 `which node` 和 `which openclaw` 確認實際路徑，替換到設定檔中。
+</Callout>
+
+### 啟用並啟動服務
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable openclaw
+sudo systemctl start openclaw
+```
+
+### 驗證服務狀態
+
+```bash
+sudo systemctl status openclaw
+```
+
+你應該看到：
+
+```
+● openclaw.service - OpenClaw Gateway
+     Loaded: loaded (/etc/systemd/system/openclaw.service; enabled)
+     Active: active (running)
+```
+
+### 檢查日誌
+
+```bash
+sudo journalctl -u openclaw -f
+```
+
+---
+
+## Step 7：驗證
+
+### 完整狀態檢查
+
+```bash
+openclaw status --all
+```
+
+這會顯示 Gateway 狀態、已設定的頻道、API Key 可用性等完整資訊。
+
+### 外部存取測試
+
+從你的本機瀏覽器打開：
+
+```
+https://agent.yourdomain.com
+```
+
+應該看到 OpenClaw Dashboard 登入頁面。
+
+### 即時日誌
+
+```bash
+openclaw logs --follow
+```
+
+觀察是否有錯誤訊息。一切正常的話，日誌應該很安靜。
+
+---
+
+## 常見安裝問題
+
+### npm 權限問題
+
+```
+Error: EACCES: permission denied
+```
+
+**解法**：不要用 `sudo npm install -g`。確認你是用 nvm 安裝的 Node.js：
+
+```bash
+which npm
+# 應該顯示 /home/openclaw/.nvm/versions/node/v22.x.x/bin/npm
+# 而不是 /usr/bin/npm 或 /usr/local/bin/npm
+```
+
+如果路徑不對，重新用 nvm 安裝：
+
+```bash
+nvm install 22
+nvm use 22
+```
+
+### Gateway "already running" 錯誤
+
+```
+Error: Gateway is already running (PID: xxxx)
+```
+
+**解法**：
+
+```bash
+# 停止現有的 Gateway
+openclaw gateway stop
+
+# 如果停不了，強制終止
+kill -9 <PID>
+
+# 清理 PID 檔案（如果有的話）
+rm -f ~/.openclaw/gateway.pid
+
+# 重新啟動
+openclaw gateway
+```
+
+### systemd 服務啟動失敗
+
+```bash
+# 檢查詳細錯誤
+sudo journalctl -u openclaw -n 50 --no-pager
+```
+
+**常見原因**：
+
+1. **Node.js 路徑錯誤** — service 檔案中的路徑和實際不符
+   ```bash
+   which node
+   which openclaw
+   # 用輸出的路徑更新 service 檔案
+   ```
+
+2. **使用者權限問題** — 確認 openclaw 使用者有存取所有必要檔案的權限
+   ```bash
+   ls -la /home/openclaw/.openclaw/
+   ```
+
+3. **環境變數缺失** — nvm 在非互動式 shell 中不會自動載入，所以 service 檔案中需要完整的 PATH
+
+修改後記得重載：
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart openclaw
+```
+
+### Cloudflare Tunnel DNS 尚未生效
+
+如果子網域解析不到你的 Tunnel：
+
+1. 確認 DNS 記錄已建立：
+   ```bash
+   cloudflared tunnel route dns openclaw agent.yourdomain.com
+   ```
+
+2. 檢查 Cloudflare Dashboard → DNS → 確認有一筆 CNAME 記錄指向 `<Tunnel ID>.cfargotunnel.com`
+
+3. 等待 1-5 分鐘。Cloudflare 自家 DNS 通常秒級生效，但其他 DNS 解析器可能需要等快取過期
+
+4. 強制驗證：
+   ```bash
+   dig agent.yourdomain.com CNAME
+   ```
+
+---
+
+## GetClaw 觀點
+
+VPS 安裝比 Mac mini 多了 SSH 加固和 systemd 設定，但回報是你得到一台真正的伺服器 — 固定 IP、不怕停電、不用擔心家裡網路斷線。
+
+對於不需要 iMessage 的台灣用戶（主力用 LINE 和 Telegram），VPS 其實是更穩定的選擇。每月 NT$150-300 的 VPS 費用，換來的是少操心硬體維護。
+
+我們看到很多人會在 Step 1 的安全設定上偷懶 — 「先把東西跑起來再說」。請不要這樣做。一台暴露在公網上的 VPS，沒有基本安全防護，平均幾小時內就會被掃描和嘗試暴力破解。花五分鐘設好 ufw 和 fail2ban，能省下很多麻煩。

@@ -1,0 +1,176 @@
+---
+title: 終端機介面（TUI）— 開發者的 Debug 利器
+description: OpenClaw TUI 完整指南 — 啟動方式、介面組成、Agent 與 Session 概念、日常指令、Debug 技巧、快捷鍵一覽
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+如果 Web 控制台是給所有人用的，TUI 就是給「想掌控一切」的人用的。它的效率、資訊密度、操作彈性都遠超瀏覽器介面。
+
+---
+
+## 啟動
+
+### 本機使用
+
+```bash
+openclaw tui
+```
+
+直接連接本機的 Gateway，零設定。
+
+### 連接遠端 Gateway
+
+```bash
+openclaw tui --url ws://your-host:18789 --token your-gateway-token
+```
+
+如果遠端 Gateway 用密碼驗證：
+
+```bash
+openclaw tui --url ws://your-host:18789 --password
+```
+
+啟動後會提示你輸入密碼。
+
+---
+
+## 介面組成
+
+TUI 的畫面資訊密度很高，每個區域都有明確用途：
+
+- **Header（頂部）**：連線 URL、目前使用的 Agent、當前 Session
+- **Chat Log（主區域）**：使用者訊息、助理回覆、系統通知、工具呼叫卡片 — 所有互動都在這裡
+- **Status Line（狀態列）**：連線狀態，會即時顯示 connecting、running、streaming、idle、error
+- **Footer（底部）**：Agent 名稱、Session、模型、各種開關狀態、Token 消耗量
+- **Input Editor（輸入區）**：支援自動補全的輸入框
+
+Footer 的 Token 計數是即時更新的。你可以一邊對話，一邊觀察每次回應消耗了多少 Token — 這在控制成本時非常有用。
+
+---
+
+## Agent 與 Session 概念
+
+理解這兩個概念是高效使用 TUI 的前提：
+
+### Agent
+
+Agent 是你定義的 AI 角色，每個 Agent 有唯一的 slug（例如 `main`、`research`、`code-review`）。不同 Agent 可以有不同的系統提示、工具集、模型偏好。
+
+### Session
+
+Session 是 Agent 底下的對話上下文。同一個 Agent 可以有多個 Session，各自獨立。
+
+Session key 的格式：`agent:agentId:sessionKey`
+
+### Scope
+
+Session 有兩種作用範圍：
+
+- **per-sender（預設）**：每個使用者有自己的 Session，互不干擾
+- **global**：所有使用者共享同一個 Session，適合團隊協作場景
+
+---
+
+## 日常操作精選
+
+這些是你最常用的指令：
+
+| 指令 | 用途 |
+|------|------|
+| `/model` | 切換語言模型 |
+| `/agent` | 切換 Agent |
+| `/new` | 開始新對話（清空當前 Session） |
+| `/status` | 檢查 Gateway 和 Agent 狀態 |
+| `/compact` | 上下文摘要 — 把冗長的對話壓縮成精簡版，釋放 Token 空間 |
+| `/help` | 顯示所有可用指令 |
+
+`/compact` 值得特別說明：當對話太長導致 Token 接近上限時，這個指令會自動摘要前面的內容，讓你繼續對話而不會丟失重要上下文。
+
+---
+
+## Debug 重點
+
+這是 TUI 真正拉開差距的地方：
+
+### Ctrl+O：Toggle Tool Output
+
+這是 TUI 最強大的功能之一。開啟後，你能看到 AI 呼叫了哪些工具、傳了什麼參數、拿到什麼結果。Web 控制台只讓你看到最終回覆，TUI 讓你看到完整的推理過程。
+
+### Footer Token 計數
+
+即時顯示 Token 消耗。每次回應後數字會更新，讓你精確掌握成本。
+
+### `!` 前綴：直接執行 Shell 指令
+
+不需要離開 TUI。輸入 `!ls -la` 或 `!docker ps` 就能直接執行，結果顯示在聊天視窗中。
+
+### `/verbose`：詳細模式
+
+開啟後會顯示更多內部資訊，包括 API 請求細節和 Gateway 的處理流程。
+
+### `/deliver on`：啟用 Provider Delivery
+
+讓你觀察 Provider（模型供應商）層級的回應細節。
+
+---
+
+## 精選快捷鍵
+
+記住這幾個就夠應付 90% 的場景：
+
+| 快捷鍵 | 功能 |
+|--------|------|
+| Enter | 送出訊息 |
+| Esc | 中止當前操作 |
+| Ctrl+C | 清除輸入 / 退出 |
+| Ctrl+D | 退出 TUI |
+| Ctrl+L | 模型選擇器 |
+| Ctrl+G | Agent 選擇器 |
+| Ctrl+P | Session 選擇器 |
+| Ctrl+O | 切換 Tool Output 顯示 |
+| Ctrl+T | 切換 Thinking 模式 |
+
+<Callout type="info">
+**效率提示**：Ctrl+L、Ctrl+G、Ctrl+P 這三個快捷鍵讓你在模型、Agent、Session 之間瞬間切換，不需要輸入任何指令。習慣之後，你會覺得用滑鼠點選是在浪費生命。
+</Callout>
+
+---
+
+## CLI Options
+
+啟動 TUI 時可以帶的參數：
+
+| 參數 | 說明 |
+|------|------|
+| `--url` | Gateway 的 WebSocket URL |
+| `--token` | Gateway 驗證 Token |
+| `--password` | 啟用密碼驗證（啟動後提示輸入） |
+| `--session` | 指定 Session key |
+| `--deliver` | 啟用 Provider Delivery |
+| `--thinking` | 啟用 Thinking 模式 |
+| `--timeout-ms` | 連線逾時時間（毫秒） |
+| `--history-limit` | 載入的歷史訊息數量上限（預設 200） |
+
+---
+
+## 適合場景
+
+- **開發除錯**：Ctrl+O 看完整 Tool Output，快速定位問題
+- **進階設定調校**：即時切換模型、調整參數、觀察效果差異
+- **腳本化操作**：搭配 `!` 前綴執行系統指令，不需要切換視窗
+- **重度使用者**：快捷鍵驅動的操作流程，效率遠高於滑鼠點擊
+
+---
+
+## GetClaw 觀點
+
+TUI 是最被低估的 OpenClaw 功能。多數人只用 Web Dashboard，但 TUI 的效率是 Web 的好幾倍 — Ctrl+O 看到完整 tool output、`!` 直接跑指令、快捷鍵切換 model 和 agent，這些在 debug 和調校時省下大量時間。
+
+我們內部的開發流程是這樣的：用 Web Dashboard 做日常管理和展示，用 TUI 做所有跟開發、調校、除錯相關的事。一旦你習慣了 TUI 的節奏，回去用 Web 會覺得少了什麼。
+
+這不是說 Web 不好 — 它的角色是讓所有人都能用，而 TUI 的角色是讓懂的人用得更快。兩者互補，不要二選一。
+
+<Callout type="info">
+已經裝好 OpenClaw 了嗎？打開終端機輸入 `openclaw tui`，花五分鐘熟悉快捷鍵。你會發現這是你用過最順手的 AI 管理介面。
+</Callout>

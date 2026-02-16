@@ -1,0 +1,127 @@
+---
+title: Web 控制台（Control UI）
+description: 瀏覽器就能管理 Agent — 即時對話、模型切換、遠端存取，OpenClaw 內建的 Web Dashboard 完整指南
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+OpenClaw 內建一個完整的 Web 控制台，用瀏覽器就能管理你的 AI Agent。不需要額外安裝任何東西 — 啟動 Gateway 後直接打開網址就能用。
+
+---
+
+## 什麼是 Control UI
+
+Control UI 是 OpenClaw 的瀏覽器端管理介面，用 Vite + Lit 打造，輕量且反應快。
+
+預設網址：`http://127.0.0.1:18789/`
+
+如果你需要自訂路徑，可以在設定檔中調整 `gateway.controlUi.basePath`，例如把控制台掛在 `/admin` 底下。
+
+---
+
+## 能做什麼
+
+Control UI 不只是一個聊天視窗，它是完整的管理後台：
+
+- **即時對話**：直接在瀏覽器裡跟 Agent 對話，看到完整的回應過程
+- **Agent 管理與設定**：新增、編輯、切換不同的 Agent，每個 Agent 有獨立的人設和工具配置
+- **模型切換**：一鍵切換底層語言模型，不需要改設定檔或重啟服務
+- **即時監控**：觀察 Agent 的運作狀態、連線狀況、回應速度
+- **Session 管理**：瀏覽歷史對話、切換不同的對話上下文
+
+對多數使用者來說，Control UI 就是日常跟 OpenClaw 互動的主要介面。
+
+---
+
+## 遠端存取
+
+Gateway 預設只綁定 `127.0.0.1`，這代表你只能在本機存取。要從其他裝置連上來，有幾種做法：
+
+### 方法一：Tailscale Serve（推薦）
+
+最安全也最簡單的做法。Gateway 繼續綁在 loopback，由 Tailscale Serve 負責代理流量：
+
+```bash
+tailscale serve --bg 18789
+```
+
+這樣你的 Control UI 就能透過 Tailscale 網路（tailnet）從任何裝置存取，而且流量全程加密、不暴露公網。
+
+### 方法二：Tailnet 直接綁定 + Token 驗證
+
+把 Gateway 綁到 tailnet 介面，搭配 Token 驗證：
+
+```yaml
+gateway:
+  host: 100.x.x.x  # 你的 tailnet IP
+  auth:
+    token: "你的安全 token"
+```
+
+適合需要更細緻控制的場景，但設定稍微複雜一些。
+
+### 方法三：Tailscale Funnel（公網存取）
+
+如果你真的需要從公網存取（例如不在 tailnet 內的裝置），可以用 Funnel 模式：
+
+```bash
+tailscale funnel --bg 18789
+```
+
+<Callout type="warn">
+Funnel 會把你的 Control UI 暴露到公網。務必啟用密碼驗證（`gateway.auth.password`），否則任何人都能控制你的 Agent。
+</Callout>
+
+### 替代方案：Cloudflare Tunnel
+
+如果你的基礎設施已經在用 Cloudflare，也可以透過 Cloudflare Tunnel 做反向代理。效果類似 Tailscale Serve，但走的是 Cloudflare 的網路。
+
+---
+
+## 安全注意事項
+
+Control UI 有權限控制你的 AI Agent，安全不能馬虎：
+
+- **Gateway 驗證必須開啟**：Token、密碼、或 Tailscale 標頭驗證 — 至少啟用一種。裸奔的 Gateway 等於把家門打開
+- **Anti-clickjacking 標頭**：Gateway 預設送出 `X-Frame-Options` 防止被嵌入惡意頁面
+- **Same-origin WebSocket 驗證**：WebSocket 連線會檢查 Origin，防止跨站偽造
+- **環境變數支援**：Token 和密碼可以從環境變數讀取，不用寫死在設定檔裡
+
+```yaml
+gateway:
+  auth:
+    token: "${OPENCLAW_GATEWAY_TOKEN}"
+    password: "${OPENCLAW_GATEWAY_PASSWORD}"
+```
+
+---
+
+## 適合場景
+
+- **日常管理**：查看 Agent 狀態、瀏覽對話紀錄、調整設定
+- **非技術同事使用**：不需要懂終端機，打開瀏覽器就能跟 Agent 互動
+- **快速切換模型和 Agent**：測試不同模型的回應品質，或在多個 Agent 之間切換
+
+---
+
+## 自建 UI
+
+如果你想客製化 Control UI 的外觀或功能，可以自己建置：
+
+```bash
+pnpm ui:build
+```
+
+編譯完成的靜態檔案會放在 `dist/control-ui` 目錄。你可以修改原始碼後重新建置，或者完全替換成自己的前端。
+
+---
+
+## GetClaw 觀點
+
+Control UI 是大多數人接觸 OpenClaw 的第一個介面，也是日常使用頻率最高的。它的設計哲學很簡單：讓你不需要碰終端機就能完成 90% 的管理工作。
+
+但我們也要說實話 — 如果你是開發者或進階使用者，Control UI 在 debug 和精細調校上的效率比不上 TUI。兩者不是替代關係，而是互補。日常用 Web，調校用 TUI，這是我們自己摸索出來的最佳節奏。
+
+<Callout type="info">
+想要更高效的操作體驗？接下來看 [終端機介面（TUI）](/docs/interfaces/terminal-tui) — 開發者的 Debug 利器，效率是 Web 的好幾倍。
+</Callout>

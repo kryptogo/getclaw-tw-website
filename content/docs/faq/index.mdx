@@ -1,0 +1,172 @@
+---
+title: 常見問題
+description: 自架 AI Agent 最常被問到的 28 個問題 — 從基本觀念到費用試算，一次講清楚
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+我們整理了自架 OpenClaw 過程中最常被問到的問題。如果你的問題不在這裡，歡迎到 [GetClaw 社群](https://getclaw.tw) 提問。
+
+---
+
+## 基本觀念
+
+### OpenClaw 是什麼？
+
+OpenClaw 是一套你自己架設、自己控制的 AI Agent 系統。它不是另一個「網頁聊天室」— 它跑在你的機器上，接入你真正在用的通訊頻道（LINE、Telegram、iMessage），支援多模型切換、多 Agent 協作、記憶系統。簡單說：**真正的頻道，不是沙盒。**
+
+### 自架跟用 ChatGPT Plus 有什麼不同？
+
+差別在掌控權。ChatGPT Plus 給你一個有用量上限的聊天介面，資料存在 OpenAI 的伺服器上。自架 OpenClaw 意味著：沒有使用上限、資料留在你的機器、可以同時接 LINE 和 Telegram、可以跑自動化排程、有完整的記憶系統。代價是你需要花時間設定和維護 — 但這份指南已經把這條路鋪好了。
+
+### 我需要什麼技術能力？
+
+你不需要是 DevOps 工程師。但你需要會：用終端機（Terminal）操作基本指令、SSH 到遠端機器、編輯設定檔。如果你知道 `cd`、`ls`、`sudo` 是什麼意思，你就夠格了。這份指南的每一步都有完整的指令可以跟著做。
+
+### 最低硬體需求是什麼？
+
+最低門檻：1 vCPU、1GB RAM、20GB SSD。這夠你跑一個基本的 Agent。但我們推薦 2 vCPU、2GB RAM、40GB SSD — 多出來的空間讓你在跑記憶系統和日誌時不會捉襟見肘。如果你用 Mac mini，配備通常遠超這個門檻。
+
+### OpenClaw 跟 Dify、Coze 這類平台有什麼不同？
+
+Dify、Coze 是雲端平台，你的資料和工作流跑在他們的基礎設施上。OpenClaw 跑在你自己的機器上。更重要的差異是：OpenClaw 原生支援真實通訊頻道（LINE、Telegram、iMessage），不是只給你一個嵌入式 chatbot widget。你的 Agent 活在使用者已經在用的 App 裡，不需要他們多裝任何東西。
+
+---
+
+## 安裝與設定
+
+### 安裝大概要多久？
+
+有經驗的使用者：準備環境約 15 分鐘，安裝 OpenClaw 約 30 分鐘，設定頻道約 15 分鐘，總計一小時以內。第一次操作的人可能需要 1 到 2 小時，大部分時間花在理解每一步在做什麼。這很正常 — 理解比速度重要。
+
+### 支援哪些作業系統？
+
+macOS 和 Linux（推薦 Ubuntu 22.04+）。Windows 使用者可以透過 PowerShell 操作，但我們的文件和測試主要針對 macOS 和 Linux。如果你的環境是 Windows，建議用 WSL2 跑 Ubuntu。
+
+### 一定要用 Cloudflare Tunnel 嗎？
+
+不是必須，但強烈建議。Cloudflare Tunnel 讓你的伺服器不需要開放任何對外端口，所有連線都是由內向外建立的加密通道。替代方案包括 Tailscale（適合私人存取）和直接暴露端口（不建議，安全風險高）。我們見過太多人因為省這一步而在三個月後遇到安全事件。
+
+### Gateway 啟動失敗怎麼辦？
+
+最常見的原因是 port 18789 已經被佔用，通常是另一個 Gateway 實例還在跑。解法：先用 `openclaw status` 確認目前狀態，再用 `openclaw doctor` 跑一次診斷。如果問題持續，`openclaw logs --follow` 可以看到即時日誌，幫你定位具體的錯誤訊息。
+
+### Node.js 版本有限制嗎？
+
+OpenClaw 需要 Node.js 18 或更新版本。我們推薦用 `nvm` 管理 Node.js 版本，這樣不同專案之間不會互相干擾。安裝章節有完整的 nvm 設定步驟。
+
+---
+
+## AI 模型
+
+### 支援哪些 AI 模型？
+
+主流的都支援：Anthropic（Claude 全系列）、OpenAI（GPT-4o、o1）、Google（Gemini）、MiniMax、以及透過 Ollama 跑本地模型。如果你想要更多選擇，OpenRouter 讓你用同一個 API 存取 100 種以上的模型。
+
+### 推薦用哪個模型？
+
+取決於你的需求和預算。**Opus** 品質最好，適合關鍵任務和需要深度推理的場景。**Sonnet** 是最佳平衡點，日常 80% 的任務用它就夠了。**MiniMax / K2.5** 適合預算有限但想大量使用的人，品質意外地好。我們的建議：先用 Sonnet 起步，需要時再升級。
+
+### 可以同時用多個模型嗎？
+
+可以，而且這是 OpenClaw 的核心優勢之一。你可以讓不同的 Agent 使用不同的模型 — 例如日常對話用 Sonnet、程式碼用 Opus、翻譯用 MiniMax。系統也支援 auto-failover：如果某個模型的 API 暫時不可用，自動切換到備援模型。
+
+### 模型 API 費用大概多少？
+
+價差非常大。平價模型（MiniMax、K2.5）大約 $0.15/百萬 token，頂級模型（Opus）大約 $15/百萬 token — 差了 100 倍。以一般使用量來估，大部分使用者每月的 API 費用落在 NT$100 到 NT$500 之間。省錢攻略章節有完整的成本最佳化策略。
+
+### 怎麼切換模型？
+
+兩種方式。在 TUI（終端介面）裡用 `/model` 指令即可即時切換。在 Web Dashboard 的 Settings 面板裡也可以設定。模型格式是 `provider/model`，例如 `anthropic/claude-sonnet-4-20250514`。
+
+### 本地模型（Ollama）效果好嗎？
+
+取決於你的硬體和期望。如果你有 Apple Silicon 的 Mac（M1 以上），跑 7B 到 13B 參數的模型體驗不錯，適合不敏感的日常任務。但跟雲端的 Claude 或 GPT-4o 比，品質差距還是明顯的。本地模型最大的價值是：**完全零 API 費用，資料絕對不離開你的機器。**
+
+---
+
+## 頻道相關
+
+### 可以同時用 LINE + Telegram 嗎？
+
+可以，而且我們推薦這樣做。在台灣，LINE 覆蓋率最高，適合對外溝通和客戶互動。Telegram 功能更強，適合團隊內部和進階操作。雙頻道策略讓你同時覆蓋兩種使用場景，而且共享同一個 Agent 的記憶和設定。
+
+### LINE Bot 跟 LINE 官方帳號有什麼不同？
+
+LINE Bot 使用 Messaging API，你有完全的程式控制權，可以自訂回覆邏輯、串接外部服務。官方帳號有更多行銷功能（群發、優惠券、集點），但彈性低，而且高用量時費用驚人。OpenClaw 接的是 Messaging API — 我們要的是靈活度，不是行銷工具。
+
+### Telegram Bot 在群組裡怎麼運作？
+
+預設是 Privacy Mode + @mention 觸發：Bot 只會回應 @它 的訊息，不會讀取群組裡的每一則對話。你也可以關掉 Privacy Mode 讓它回應所有訊息。大型群組建議使用 Forum Topics 功能，讓不同話題在不同的討論串裡進行，避免訊息混亂。
+
+### 支援 iMessage 嗎？
+
+只在 macOS 上支援。iMessage 的協定是 Apple 專屬的，只有在 Mac 上才能跑。如果你用 Mac mini 當伺服器，可以同時跑 LINE + Telegram + iMessage 三個頻道。這是 Mac mini 方案的獨家優勢。
+
+### 一個 Agent 可以同時服務多少人？
+
+沒有硬性上限，瓶頸在 AI 模型的 API 回應速度和你伺服器的處理能力。以一般配置（2 vCPU、2GB RAM）來說，同時處理 10 到 20 個併發對話沒有問題。如果你預期更高的流量，可以透過多 Agent 分流或升級伺服器來應對。
+
+---
+
+## 安全性
+
+### 我的對話資料會外洩嗎？
+
+你的對話資料儲存在你的伺服器上，不經過任何第三方中繼。Cloudflare Tunnel 確保沒有對外開放的端口，Gateway 的認證機制阻擋未授權的存取。只要你的伺服器本身是安全的（系統更新、強密碼、SSH Key），資料外洩的風險極低。
+
+### AI 模型 API 會看到我的資料嗎？
+
+會。你發送給 AI 模型的 prompt 和對話內容會傳到模型提供商的 API。這是雲端 AI 模型的本質限制。如果這是你的紅線，有兩個選擇：使用 Ollama 跑本地模型（零外傳），或選擇有明確隱私承諾的提供商（例如 Anthropic 聲明不用 API 資料訓練模型）。
+
+### 怎麼控制誰能跟 Agent 對話？
+
+OpenClaw 有完整的存取控制系統。`dmPolicy` 控制私訊權限（pairing 配對制、allowlist 白名單、open 開放、disabled 關閉）。`groupPolicy` 控制群組行為。Pairing 機制要求新使用者先發送配對請求，經你批准後才能對話。這讓你精確控制每一個對話對象。
+
+### 需要自己處理 SSL 憑證嗎？
+
+如果你用 Cloudflare Tunnel，不需要。Tunnel 自動處理 SSL/TLS 加密，你連 certbot 都不用裝。這是我們推薦 Cloudflare Tunnel 的另一個原因 — 少一個你需要操心的東西。
+
+---
+
+## 維護
+
+### 需要常常更新嗎？
+
+OpenClaw 透過 npm 更新，指令很簡單。我們建議至少每月檢查一次是否有新版本，特別關注安全性修補。重大功能更新會在社群公告。更新通常只需要幾分鐘，不需要重新設定。
+
+### 伺服器重開機後 Agent 會自動啟動嗎？
+
+如果你照安裝指南設定了 systemd（Linux）或 launchd（macOS），是的，重開機後 Agent 會自動啟動。這是「設定完就忘記它」的關鍵一步，我們在安裝章節有完整說明。
+
+### 出問題了怎麼快速排查？
+
+60 秒排查法：先跑 `openclaw status` 看整體狀態，再用 `openclaw logs --follow` 看即時日誌，然後 `openclaw doctor` 跑自動診斷，最後 `openclaw status --deep` 做深度檢查。這四個指令能解決 90% 的問題。如果問題超出這個範圍，日誌裡通常會有明確的錯誤訊息可以拿去社群搜尋。
+
+### 日誌檔在哪裡？
+
+在 `$OPENCLAW_STATE_DIR` 目錄下，預設路徑是 `~/.openclaw`。用 `openclaw logs --follow` 可以即時追蹤最新日誌。如果你需要查看歷史日誌，直接到該目錄下找對應的 log 檔案。
+
+---
+
+## 費用
+
+### 總共要花多少錢？
+
+拆開來算：VPS 約 NT$150 到 NT$300/月 + AI API 約 NT$100 到 NT$500/月。大部分使用者的總成本落在 **NT$250 到 NT$800/月**。如果你用 Mac mini 放在家裡跑，VPS 費用歸零，只剩電費和 API 費用。
+
+### 有沒有比 API 直接付費更省的方法？
+
+有。OAuth 策略是最大的殺手鐧。透過 Antigravity 或 Claude Code 等工具取得的訂閱額度，可以讓你用固定月費享受大量 API 呼叫。另一招是用平價模型（MiniMax、K2.5）處理日常任務，只在關鍵任務時切換到 Opus 級模型。兩招並用，費用可以降低 70% 到 80%。詳見省錢攻略章節。
+
+### 跟找 GetClaw 服務的費用比呢？
+
+GetClaw 的服務涵蓋硬體選型、部署、頻道設定、安全強化、監控、持續維護和問題排除。你付的不只是「幫你裝一次」，而是持續的運營可靠性和省下的時間成本。如果你的時間值錢，或者你不想在半夜三點處理 Gateway 掛掉的問題 — 這筆帳很好算。
+
+### 免費試用 AI 模型的方法？
+
+部分模型提供商有免費額度：Google Gemini 有慷慨的免費層、Anthropic 和 OpenAI 新帳號通常有試用額度。Ollama 跑本地模型則完全免費（但需要夠力的硬體）。你可以先用免費額度體驗，確認自架適合你之後再投入。
+
+<Callout type="info">
+找不到你的問題？到 [GetClaw 社群](https://getclaw.tw) 發問，或直接[預約免費諮詢](https://getclaw.tw/contact) — 我們通常在 24 小時內回覆。
+</Callout>

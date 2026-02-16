@@ -1,0 +1,238 @@
+---
+title: LINE 頻道設定
+description: 從建立 LINE Developers 帳號到收到第一則 AI 回覆，完整的 LINE Bot 串接流程與踩坑指南
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+LINE 在台灣不是選擇題，是必答題。這篇帶你從零開始設定 LINE 頻道，包含我們踩過的坑和繞過的彎。
+
+---
+
+## LINE 在台灣的定位
+
+我們推薦 LINE 不是因為它的 Bot API 做得好 — 跟 Telegram 比起來，LINE 的開發體驗差了一大截。我們推薦它純粹是因為一個無法反駁的事實：**台灣 95% 以上的人都在用 LINE**。
+
+你的客戶不會為了跟你的 AI Agent 對話而去裝 Telegram。但他們的 LINE 裡面，隨時都有幾十個聊天室在跳通知。把你的 Agent 放進那個清單裡，阻力最小、觸及最大。
+
+---
+
+## 安裝 LINE Plugin
+
+```bash
+openclaw plugins install line
+```
+
+安裝完成後，OpenClaw 就具備了處理 LINE Webhook 和訊息收發的能力。
+
+---
+
+## Step 1：建立 LINE Developers 帳號
+
+1. 前往 [LINE Developers Console](https://developers.line.biz)
+2. 用你的 LINE 帳號登入
+3. 建立一個 **Provider**（通常用你的公司名稱或專案名稱）
+4. 在 Provider 底下建立一個 **Messaging API Channel**
+   - Channel 名稱就是你的 Bot 在 LINE 上顯示的名字
+   - 選擇適當的 Channel Icon（使用者會看到的大頭照）
+
+<Callout type="info">
+一個 Provider 底下可以建立多個 Channel。如果你有多個 Agent 需要各自獨立的 LINE Bot，在同一個 Provider 底下建立多個 Messaging API Channel 即可。
+</Callout>
+
+---
+
+## Step 2：取得 Channel 憑證
+
+在 LINE Developers Console 的 Channel 設定頁面，你需要取得兩個值：
+
+1. **Channel Access Token (long-lived)**
+   - 在 Messaging API 分頁底部，點選 **Issue** 產生
+   - 這是一串很長的字串，妥善保管
+
+2. **Channel Secret**
+   - 在 Basic Settings 分頁可以找到
+   - 用於驗證 Webhook 請求的來源
+
+把這兩個值記下來，下一步會用到。
+
+<Callout type="warn">
+這兩個憑證等同於你的 LINE Bot 的完整控制權。不要寫在任何會被 commit 到 Git 的檔案裡。
+</Callout>
+
+---
+
+## Step 3：設定 OpenClaw
+
+有三種方式可以設定 LINE 憑證，依你的偏好選擇。
+
+### 方式一：直接寫在設定檔
+
+編輯 `~/.openclaw/config.json5`：
+
+```json5
+{
+  channels: {
+    line: {
+      enabled: true,
+      channelAccessToken: "YOUR_CHANNEL_ACCESS_TOKEN",
+      channelSecret: "YOUR_CHANNEL_SECRET",
+      // DM 存取策略：pairing（需配對）、allowlist（白名單）、open（開放）
+      dmPolicy: "pairing",
+    }
+  }
+}
+```
+
+### 方式二：使用環境變數
+
+```bash
+export LINE_CHANNEL_ACCESS_TOKEN="YOUR_CHANNEL_ACCESS_TOKEN"
+export LINE_CHANNEL_SECRET="YOUR_CHANNEL_SECRET"
+```
+
+設定檔中對應的欄位留空，OpenClaw 會自動讀取環境變數。這是我們推薦的做法 — 憑證和設定分離，更安全。
+
+### 方式三：多帳號設定
+
+如果你需要同時跑多個 LINE Bot（例如一個對外客服、一個內部助手）：
+
+```json5
+{
+  channels: {
+    line: {
+      enabled: true,
+      accounts: [
+        {
+          name: "customer-support",
+          channelAccessToken: "TOKEN_1",
+          channelSecret: "SECRET_1",
+          dmPolicy: "open",
+          webhookPath: "/line/webhook/support",
+        },
+        {
+          name: "internal-assistant",
+          channelAccessToken: "TOKEN_2",
+          channelSecret: "SECRET_2",
+          dmPolicy: "pairing",
+          webhookPath: "/line/webhook/internal",
+        },
+      ]
+    }
+  }
+}
+```
+
+---
+
+## Step 4：設定 Webhook URL
+
+回到 LINE Developers Console：
+
+1. 進入你的 Channel 的 **Messaging API** 分頁
+2. 在 **Webhook URL** 欄位填入：
+   ```
+   https://your-domain/line/webhook
+   ```
+   （如果是多帳號設定，使用你自訂的 `webhookPath`）
+3. 點選 **Verify** 確認連線正常
+4. 將 **Use webhook** 切換為 **Enabled**
+
+<Callout type="warn">
+**重要**：在 LINE Official Account Manager 中，把以下功能**關閉**：
+- **自動回覆訊息** — 否則 LINE 會在你的 Agent 回覆之前先送出罐頭回應
+- **加入好友的歡迎訊息** — 除非你特別需要，否則讓 Agent 自己處理
+
+這兩個設定在 LINE Official Account Manager（不是 Developers Console）的「回應設定」中。
+</Callout>
+
+---
+
+## Step 5：驗證
+
+```bash
+# 確認 LINE 頻道已連線
+openclaw pairing list line
+```
+
+1. 用手機打開 LINE，加入你的 Bot 為好友
+2. 送一條測試訊息，例如「你好」
+3. 如果 `dmPolicy` 設定為 `pairing`，你需要核准配對請求：
+
+```bash
+openclaw pairing approve line <PAIRING_CODE>
+```
+
+看到 Agent 回覆了？恭喜，LINE 頻道設定完成。
+
+---
+
+## LINE 的限制你該知道的
+
+這些是文件裡不一定寫得很明顯，但實際使用一定會遇到的問題：
+
+### 訊息長度分割
+
+LINE 的單則訊息上限是 5000 字元。當 AI 的回覆超過這個長度，OpenClaw 會自動分割成多則訊息送出。使用者體驗上會看到回覆被拆成好幾段 — 不完美，但這是 LINE API 的硬限制。
+
+### 沒有 Markdown 支援
+
+LINE 的文字訊息就是純文字。AI 回覆中的 `**粗體**`、`# 標題`、`` `程式碼` `` 都會以原始文字的形式顯示。如果你需要格式化內容，得用 Flex Message（見進階章節）。
+
+### 媒體下載限制
+
+LINE 訊息中的圖片、檔案下載上限是 10MB。超過的檔案你的 Agent 無法取得。
+
+### 沒有 Reactions 和 Threads
+
+LINE 不支援訊息反應（emoji reaction）和討論串（thread）功能。每則訊息都是獨立的，這在群組對話中會讓 context 追蹤變得困難。
+
+### 緩衝式串流
+
+LINE 不支援真正的串流回應。即使 OpenClaw 設定了 streaming，在 LINE 頻道上使用者仍然要等 AI 完整生成回覆後才會收到訊息。這和 Telegram 的即時打字效果是根本性的差異。
+
+---
+
+## 進階：Flex Message 和 Rich Menu
+
+LINE 雖然不支援 Markdown，但提供了 Flex Message — 一種用 JSON 定義的卡片式訊息格式，可以做出漂亮的排版效果。
+
+### channelData.line
+
+在 OpenClaw 的回覆中，你可以透過 `channelData.line` 物件傳送 Flex Message：
+
+```json5
+{
+  channelData: {
+    line: {
+      type: "flex",
+      altText: "查詢結果",
+      contents: {
+        // Flex Message JSON 結構
+      }
+    }
+  }
+}
+```
+
+### /card 指令
+
+OpenClaw 內建 `/card` 指令，可以快速送出預設的 Flex Message 範本。這對客服場景特別實用 — 把常見的回覆格式做成卡片範本，一鍵送出。
+
+### Quick Replies
+
+LINE 支援在訊息底部附加快速回覆按鈕，讓使用者點選而非打字。適合用在需要使用者從有限選項中選擇的場景（例如「滿意 / 不滿意」、「轉接真人 / 繼續對話」）。
+
+<Callout type="info">
+Flex Message 的設計工具推薦使用 [LINE Flex Message Simulator](https://developers.line.biz/flex-simulator/)。先在模擬器裡拉好版面，再把 JSON 貼到 OpenClaw 設定中。
+</Callout>
+
+---
+
+## GetClaw 觀點
+
+LINE 的坑比 Telegram 多很多 — Webhook 驗證順序、訊息分割邏輯、API rate limit、自動回覆訊息的衝突... 這些在官方文件裡不明顯，但實際用起來每一個都會讓你卡住半小時。
+
+我們的建議是：**把 LINE 當作「觸及通道」而不是「主力平台」**。用它來接觸最多的使用者，但不要期待它能提供 Telegram 等級的互動體驗。在 LINE 上保持簡單 — 純文字對話、偶爾用 Flex Message 做重點呈現 — 反而是最穩定的策略。
+
+想要完整的 AI 對話體驗？那就把 [Telegram](/docs/channels/telegram) 也一起設定起來。

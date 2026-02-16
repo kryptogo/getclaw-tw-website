@@ -1,0 +1,243 @@
+---
+title: Telegram 頻道設定
+description: 串流回應、Markdown、Forum Topics — Telegram 是技術團隊的首選 AI Agent 頻道，設定只要五分鐘
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+如果說 LINE 是「不得不用」，Telegram 就是「用了就回不去」。這篇帶你五分鐘內把 Telegram Bot 接上 OpenClaw，然後體驗串流回應帶來的質感差距。
+
+---
+
+## 為什麼 Telegram 是技術人首選
+
+Telegram 的 Bot API 不是附帶功能，而是平台核心。幾個關鍵差異讓它在 AI Agent 場景中遙遙領先：
+
+- **grammY 框架**：成熟的 TypeScript Bot 框架，OpenClaw 底層就是用它。文件完整、社群活躍、更新頻繁
+- **原生 Markdown**：AI 回覆的格式化內容（標題、粗體、程式碼區塊）直接渲染，不是顯示原始符號
+- **串流回應**：AI 生成的文字即時推送到對話中，使用者看到的是「AI 正在打字」的即時效果，而不是等幾秒後突然跳出一大段
+- **Forum Topics**：群組中的分類討論功能，每個 Topic 有獨立的對話脈絡，大型團隊用起來不會亂成一團
+
+一句話總結：**Telegram 是目前最適合跑 AI Bot 的通訊平台，沒有之一。**
+
+---
+
+## Step 1：用 BotFather 建立 Bot
+
+1. 在 Telegram 中搜尋 **@BotFather** 並開啟對話
+2. 發送 `/newbot`
+3. 按提示輸入：
+   - **Bot 名稱**：使用者看到的顯示名稱（例如「我的 AI 助手」）
+   - **Bot username**：必須以 `bot` 結尾（例如 `my_ai_assistant_bot`）
+4. BotFather 會回覆一段包含 **Bot Token** 的訊息，格式類似：
+   ```
+   123456789:ABCdefGHIjklMNOpqrsTUVwxyz
+   ```
+5. 把這個 Token 記下來
+
+<Callout type="warn">
+Bot Token 等同於你的 Bot 的完整控制權。任何拿到這個 Token 的人都能以你的 Bot 身份收發訊息。妥善保管，不要寫進會被 commit 的檔案。
+</Callout>
+
+---
+
+## Step 2：設定 OpenClaw
+
+編輯 `~/.openclaw/config.json5`：
+
+```json5
+{
+  channels: {
+    telegram: {
+      enabled: true,
+      botToken: "YOUR_BOT_TOKEN",
+      // 或使用環境變數：process.env.TELEGRAM_BOT_TOKEN
+
+      // DM 存取策略
+      dmPolicy: "pairing",
+      // 可選值：
+      //   "pairing"  — 新使用者需要配對碼才能使用（預設，最安全）
+      //   "allowlist" — 只允許白名單中的使用者
+      //   "open"     — 任何人都能直接使用（適合公開服務）
+      //   "disabled" — 關閉 DM 功能
+    }
+  }
+}
+```
+
+<Callout type="info">
+我們推薦一開始用 `pairing` 策略。等確認一切正常後，再根據你的使用場景調整。公開服務用 `open`，內部團隊用 `allowlist`。
+</Callout>
+
+---
+
+## Step 3：啟動並驗證
+
+```bash
+# 啟動 Gateway（如果還沒啟動）
+openclaw gateway
+```
+
+1. 在 Telegram 中找到你的 Bot（用 Step 1 設定的 username 搜尋）
+2. 點選 **Start** 或直接發送一條訊息
+3. 如果 `dmPolicy` 是 `pairing`，Bot 會回覆一組配對碼
+
+```bash
+# 核准配對（配對碼有效期 1 小時）
+openclaw pairing approve telegram <PAIRING_CODE>
+```
+
+核准後再發一條訊息 — 你應該會看到 AI 的串流回應即時出現在對話中。那個「文字一個字一個字跳出來」的效果，就是 Telegram 的殺手級體驗。
+
+---
+
+## Step 4：群組設定（選擇性）
+
+如果你想讓 Bot 在群組中運作：
+
+### 加入群組
+
+1. 把你的 Bot 加入目標群組
+2. 透過 BotFather 設定隱私模式：
+   - 對 BotFather 發送 `/setprivacy`
+   - 選擇你的 Bot
+   - 選擇 **Disable** — 這樣 Bot 才能讀取群組中的所有訊息
+
+<Callout type="info">
+如果你希望 Bot 只在被 @mention 時回應，可以保持 Privacy Mode 為 Enable，然後在 OpenClaw 設定中調整觸發條件。
+</Callout>
+
+### 群組策略設定
+
+```json5
+{
+  channels: {
+    telegram: {
+      enabled: true,
+      botToken: "YOUR_BOT_TOKEN",
+      dmPolicy: "pairing",
+
+      // 群組存取策略
+      groupPolicy: "allowlist",
+      // 可選值同 dmPolicy
+
+      // 群組中的觸發方式
+      groupTrigger: "mention",
+      // "mention" — 只在被 @mention 時回應（預設）
+      // "always"  — 回應群組中的每一則訊息
+    }
+  }
+}
+```
+
+### 即時切換觸發模式
+
+在群組中發送 `/activation always` 可以讓 Bot 回應所有訊息（不需要 @mention）。發送 `/activation mention` 切換回只回應 @mention。
+
+這個指令對群組中的即時討論特別實用 — 需要 Bot 全程參與時打開，討論結束後關掉。
+
+---
+
+## Telegram 殺手級功能
+
+這些功能是 Telegram 作為 AI Agent 平台的核心優勢，也是 LINE 做不到的事情。
+
+### 串流回應
+
+AI 生成的文字即時推送到對話中，使用者看到的是「AI 正在打字、文字一段一段出現」的效果。體驗上的差距是質的飛躍 — 不再是傻等幾秒後突然跳出一整塊文字。
+
+```json5
+{
+  channels: {
+    telegram: {
+      streaming: {
+        // "off"     — 關閉串流，等完整回覆
+        // "partial" — 每隔幾秒更新一次（預設）
+        // "block"   — 以段落為單位更新
+        mode: "partial",
+      }
+    }
+  }
+}
+```
+
+<Callout type="info">
+`partial` 模式在大多數場景下體驗最好。`block` 模式適合回覆內容有明確段落結構的場景（例如步驟式教學），看起來更整齊。
+</Callout>
+
+### Inline 按鈕
+
+在訊息下方附加互動按鈕，讓使用者一鍵觸發動作。常見用途：確認/取消、多選項回覆、快捷指令。
+
+```json5
+{
+  channels: {
+    telegram: {
+      inlineButtons: {
+        // "off"   — 關閉
+        // "dm"    — 只在私訊中顯示
+        // "group" — 只在群組中顯示
+        // "all"   — 全部顯示
+        scope: "all",
+      }
+    }
+  }
+}
+```
+
+### Forum Topics
+
+Telegram 群組可以開啟 Forum 模式，把對話按主題分類到不同的 Topic 中。每個 Topic 有獨立的對話脈絡，Bot 在不同 Topic 中維持各自的 Session。
+
+適合大型團隊：
+- 「產品討論」Topic 裡問產品問題
+- 「技術支援」Topic 裡問技術問題
+- 「隨便聊」Topic 裡閒聊
+
+Bot 在每個 Topic 中都記得各自的對話歷史，不會混在一起。
+
+### Long Polling vs Webhook
+
+Telegram 支援兩種接收訊息的方式：
+
+| | Long Polling | Webhook |
+|--|-------------|---------|
+| 原理 | Bot 主動輪詢 Telegram 伺服器 | Telegram 主動推送到你的伺服器 |
+| 需要公網 IP | 不需要 | 需要（HTTPS 端點） |
+| 即時性 | 幾乎即時（毫秒級延遲） | 即時 |
+| 設定難度 | 零設定（預設） | 需要 SSL 憑證和域名 |
+| 適合場景 | 大多數使用者 | 高流量、低延遲需求 |
+
+**我們的建議**：除非你有明確的低延遲需求或每秒處理大量訊息，Long Polling 就夠了。它是 OpenClaw 的預設模式，不需要額外設定，也不需要公網 IP — 對於已經用 Cloudflare Tunnel 的使用者來說，Webhook 模式也很方便，但 Long Polling 的簡單性是實在的優勢。
+
+---
+
+## Telegram vs LINE 完整對比
+
+| 功能 | Telegram | LINE |
+|------|----------|------|
+| Markdown 渲染 | 原生支援，直接顯示格式化內容 | 純文字，格式符號原樣顯示 |
+| 串流回應 | 即時打字效果 | 等完整回覆 |
+| Bot 框架 | grammY（成熟、活躍、TypeScript） | LINE SDK（基本功能） |
+| 台灣使用者 | 技術社群為主 | 95%+ 市佔率 |
+| 群組功能 | Forum Topics、管理員權限細分 | 基本群組 |
+| 訊息長度 | 4096 字元 | 5000 字元 |
+| 媒體限制 | 較寬鬆（Bot 上傳 50MB） | 10MB |
+| 互動元素 | Inline 按鈕、Inline Query | Quick Reply、Flex Message |
+| 隱私模式 | 可控制 Bot 讀取群組訊息的權限 | Bot 預設讀取所有訊息 |
+| 開發體驗 | 文件清楚、除錯容易 | 文件分散、除錯困難 |
+| Long Polling | 支援（免公網 IP） | 不支援（必須 Webhook） |
+
+---
+
+## GetClaw 觀點
+
+Telegram 是我們最推薦給技術團隊的頻道 — 設定簡單、功能強大、串流回應讓使用體驗的質感直接拉滿。從 BotFather 拿到 Token 到收到第一則 AI 回覆，真的只要五分鐘。
+
+唯一的缺點是台灣使用者少，所以通常需要搭配 LINE 一起用。但如果你的團隊成員願意裝 Telegram（技術團隊通常都有），那日常的 AI 互動體驗會好上不止一個檔次。
+
+我們的實際做法是：**Telegram 當主力、LINE 當觸及**。團隊內部用 Telegram 享受完整功能，對外客戶服務走 LINE 確保覆蓋率。兩個頻道共用同一個 Agent，設定一次就搞定。
+
+<Callout type="info">
+設定完 Telegram，別忘了也把 [LINE](/docs/channels/line) 接上。雙軌策略的價值在於：你不需要在體驗和觸及之間做取捨。
+</Callout>

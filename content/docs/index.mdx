@@ -1,53 +1,105 @@
 ---
-title: OpenClaw 完全設定指南
-description: 從零開始，完整部署你自己的 AI 執行助理。本指南涵蓋 VPS 購買、安全設定、LINE 整合到進階功能的每個步驟。
+title: 總覽
+description: 資深架構顧問帶你從硬體規劃到進階應用，完整走過 OpenClaw AI Agent 的設定全程
 ---
 
-本指南整理自 GetClaw 團隊的實際部署經驗，包含所有試錯紀錄和注意事項，確保你能一路順暢完成安裝。
+import { Callout } from 'fumadocs-ui/components/callout'
 
-## 這份指南適合誰？
+## 為什麼自架 AI Agent
 
-- 想要自架 AI 執行助理的創辦人與團隊
-- 沒有終端機經驗也能跟著做——每一步都有明確引導
-- 想了解 GetClaw 白手套服務「實際做了什麼」的人
+把 AI Agent 交給 SaaS 平台，就像把公司的大腦寄放在別人的伺服器上 — 你付了月費，卻換來三個你遲早會踩到的問題。
 
-## 指南結構
+第一，**資料離開你的手就不再是你的**。今天的隱私條款明天可以改寫，你的對話紀錄、內部知識庫、客戶互動資料，全都成了別人訓練模型的潛在養分。自架意味著每一筆資料從頭到尾都在你的機器上，零例外。
 
-### 核心設定（必要）
+第二，**SaaS 的定價模型天生對重度使用者不利**。用量越大、付越多，而且漲價你只能被動接受。自架之後，你的固定成本就是一台機器和電費，變動成本只剩 AI 模型的 API 呼叫 — 這份指南會手把手教你把這筆錢壓到原本的三分之一。
 
-從購買 VPS 到 LINE 整合，完成這些步驟你就有一個可運作的 AI 助理：
+第三，**你需要的不只是一個聊天機器人，而是一個你能完全掌控的系統**。選什麼模型、怎麼配 prompt、誰有權存取、什麼時候升級 — 這些決策應該在你手上，不是在供應商的 roadmap 上。
 
-1. [購買 VPS](/docs/getting-started/buy-vps) — 選擇主機方案
-2. [前置準備](/docs/getting-started/prerequisites) — 確認所需資源
-3. [SSH 連線](/docs/getting-started/ssh-connection) — 連上你的主機
-4. [建立使用者](/docs/getting-started/create-user) — 安全的權限管理
-5. [安裝 Node.js](/docs/getting-started/install-nodejs) — 執行環境設定
-6. [安裝 OpenClaw](/docs/core-setup/install-openclaw) — 核心程式安裝
-7. [設定 Antigravity OAuth](/docs/core-setup/antigravity-oauth) — AI 模型認證
-8. [設定 systemd 服務](/docs/core-setup/systemd-service) — 開機自動啟動
-9. [設定 Cloudflare Tunnel](/docs/core-setup/cloudflare-tunnel) — 安全的 HTTPS 通道
-10. [設定 LINE Channel](/docs/core-setup/line-channel) — LINE 機器人整合
+## 這份指南帶你走完全程
 
-### 進階設定（可選）
+我們把整個設定流程拆成七個階段，每個階段都有明確的起點和終點。你可以一口氣讀完，也可以按需跳轉：
 
-根據需求選擇性設定：
+```
+選硬體 → 安裝 OpenClaw → 設定架構 → 串接 LINE / Telegram → 學會操作介面 → 省錢策略 → 進階功能
+```
 
-- [連接 GitHub 私有倉庫](/docs/advanced/github-integration)
-- [安裝額外套件](/docs/advanced/extra-packages)
-- [安全加固設定](/docs/advanced/security-hardening)
-- [遠端 Dashboard 存取](/docs/advanced/remote-dashboard)
+**選硬體**：Mac mini、雲端 VPS、還是家裡那台退役的桌機？我們會幫你算清楚每個選項的長期成本和效能天花板。
 
-### 參考資料
+**安裝 OpenClaw**：從作業系統準備到 OpenClaw 跑起來，每一步都有指令可以跟著做。
 
-- [常用指令](/docs/reference/commands)
-- [疑難排解](/docs/reference/troubleshooting)
+**設定架構**：Cloudflare Tunnel、反向代理、SSL — 讓你的 Agent 安全地暴露在公網上，同時不開放任何對外端口。
 
-## 為什麼公開這份指南？
+**串接 LINE / Telegram**：把 AI Agent 接進你團隊或客戶已經在用的通訊軟體，五分鐘內收到第一則回覆。
 
-我們相信透明是信任的基礎。把完整的技術細節公開，是為了讓你了解：
+**學會操作介面**：Web Dashboard 看全局、Terminal TUI 做精細操作，兩套介面各有所長。
 
-1. **這不是「照著說明書幫你按設定」** — 每一步都經過我們實測與除錯
-2. **GetClaw 的價值在量身打造** — 根據你的工作流程，客製化 AI 助理的行為與整合
-3. **你可以自己做** — 但如果你的時間更值錢，我們幫你搞定
+**省錢策略**：訂閱制 API Key、混合模型路由、快取機制 — 我們實測過的每一招都在這裡。
 
-> 看完這份指南後想讓我們代勞？[預約免費諮詢](/book)
+**進階功能**：記憶系統、多 Agent 協作、自動化排程 — 從「能用」走到「好用」的關鍵。
+
+## 架構一覽
+
+```mermaid
+graph TB
+    subgraph 使用者端
+        U1[LINE 使用者]
+        U2[Telegram 使用者]
+    end
+
+    subgraph 安全層
+        CF[Cloudflare Tunnel<br/>零開放端口]
+    end
+
+    subgraph 你的伺服器
+        GW[OpenClaw Gateway]
+        MEM[記憶與知識庫]
+        GW <--> MEM
+    end
+
+    subgraph AI 模型層
+        A1[Anthropic Claude]
+        A2[Google Gemini]
+        A3[OpenAI GPT]
+    end
+
+    U1 -->|Webhook| CF
+    U2 -->|Webhook| CF
+    CF -->|加密通道| GW
+    GW -->|API 呼叫| A1
+    GW -->|API 呼叫| A2
+    GW -->|API 呼叫| A3
+```
+
+整體運作邏輯很直覺：使用者在熟悉的通訊軟體上發送訊息，Cloudflare Tunnel 把請求安全地導進你的伺服器，OpenClaw Gateway 根據設定選擇最合適的 AI 模型生成回應，再原路送回。你的伺服器不需要暴露任何對外端口，所有連線都是由內向外建立的加密通道。
+
+## 誰適合這份指南
+
+**技術創辦人**：你不想在 AI 基礎設施上被綁定，想親手評估自架的可行性和投入產出比。這份指南給你完整的技術全景和決策依據。
+
+**企業 IT 團隊**：老闆說要導入 AI，你需要一份從硬體到部署到安全的完整方案，能直接拿去寫提案。這份指南就是你的起點。
+
+**進階玩家**：你玩過各種 AI 工具，現在想自己掌控整個 stack。這份指南帶你從「用別人的服務」跨到「跑自己的基礎設施」。
+
+你不需要是 DevOps 專家。能在終端機裡 `ssh` 到一台遠端機器、知道 `sudo` 是什麼意思，就夠了。
+
+## 我們為什麼公開這份指南
+
+GetClaw 團隊寫這份指南，不是因為我們覺得自架很簡單 — 恰好相反。
+
+**起步簡單，做好需要經驗。** 裝一個 OpenClaw 跑起來，大概一個下午的事。但要讓它穩定運作不掉線、安全設定滴水不漏、API 費用壓到合理範圍、真正融入團隊的日常工作流 — 這些是我們踩了無數坑之後才累積出來的經驗。
+
+我們選擇把這些經驗全部攤開來寫，是因為相信：**理解全貌的人，不管最後自己動手還是找專業團隊，都會做出更好的決定。**
+
+<Callout type="info">
+這份指南包含完整的逐步安裝指令與設定步驟 — 你可以從頭到尾跟著做，把整套系統架起來。我們的目標是讓你不只知道「怎麼做」，更理解「為什麼這樣做」。每一個設定背後的取捨和考量，我們都會說清楚。
+</Callout>
+
+## GetClaw 觀點
+
+我們見過太多團隊花了兩週把 AI Agent 架起來，卻在第三個月因為帳單失控、安全事件、或維運負擔而放棄。技術上讓它「跑起來」只是起點，讓它「持續穩定地為組織創造價值」才是真正的挑戰。
+
+這份指南把我們的實戰經驗毫無保留地交給你。如果你讀完之後決定自己來 — 你會少走很多彎路。如果你讀完之後決定讓 GetClaw 來 — 我們之間的對話會從「什麼是 Cloudflare Tunnel」直接跳到「你的業務需要什麼樣的 Agent 架構」。
+
+無論哪條路，你都贏了。
+
+準備好了嗎？從[硬體選擇](/docs/hosting/options)開始。

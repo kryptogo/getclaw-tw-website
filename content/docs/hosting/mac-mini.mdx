@@ -1,0 +1,68 @@
+---
+title: 為什麼社群推薦 Mac mini
+description: iMessage 是殺手級理由，但不是唯一理由 — 也不是每個人都需要
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+## 什麼人需要 Mac mini？
+
+先講結論：如果你不需要 iMessage，Mac mini 對你來說是「很好」但不是「必要」。在你往下讀之前，問自己這個問題：
+
+**你的 AI Agent 需要收發 iMessage 嗎？**
+
+- **需要** — Mac mini 是唯一選項。Apple 從未開放 iMessage 協定，macOS 是唯一能跑 iMessage 整合的作業系統。繼續往下讀，這篇是為你寫的。
+- **不需要** — LINE 和 Telegram 在任何作業系統上都跑得一樣好。Mac mini 依然是優秀的硬體選擇，但 VPS 可能更省心。你可以考慮直接看 [VPS 選購指南](/docs/hosting/vps-guide)。
+
+除了 iMessage，還有兩類人特別適合 Mac mini：
+
+1. **已經在 Apple 生態系裡的人** — Apple Calendar 整合、Finder 操作、macOS 原生通知，這些 macOS 專屬的 OpenClaw skill 和自動化工具只有在 Mac 上才能用。
+2. **對「資料不離開自己的設備」有強烈偏好的人** — 實體機器在你手邊，硬碟在你桌上，不經過任何第三方機房。
+
+## M4 Mac mini：硬體層面的甜蜜點
+
+目前社群的共識推薦是 **Mac mini M4 16GB RAM**，定價 NT 18,900。
+
+這台機器有幾個特質讓它特別適合當 24/7 的 AI Agent 主機。體積只有 12.7 x 12.7 cm — 一本平裝書的大小，塞在書架角落完全不礙事。Apple Silicon M4 晶片在滿載時功耗約 10W，待機更低，一整個月 24/7 運作的電費大約 NT 50。風扇在一般負載下根本不會轉，完全無聲。
+
+用一個比喻來想：它更像一台永遠開著的高效能路由器，而不是一台傳統意義上的電腦。
+
+<Callout type="warn">
+選 16GB，不要選 8GB。OpenClaw Gateway 本身記憶體需求不高，但如果你加上瀏覽器自動化（Playwright + Chromium），8GB 會被吃滿。16GB 給你足夠的空間同時跑多個頻道、Agent、和自動化任務。
+</Callout>
+
+## 家用網路：你真正要解決的問題
+
+Mac mini 硬體本身幾乎不需要操心，真正的挑戰在於它必須連上你家的網路。以下是你需要逐項確認的清單：
+
+### 網路穩定性檢查清單
+
+1. **浮動 IP 問題** — 台灣多數家用寬頻是浮動 IP，每次路由器重啟 IP 就可能變。解法：透過 Cloudflare Tunnel 建立安全通道，完全繞過 IP 變動的問題。這是標配，不是選配。
+2. **上傳頻寬瓶頸** — 家用方案的上傳通常只有下載的 1/10。OpenClaw 主要是 API 呼叫的 JSON 往返，資料量不大，但如果你跑瀏覽器自動化同時處理大量請求，上傳頻寬可能成為瓶頸。確認你的方案至少有 10Mbps 上傳。
+3. **停電保護** — 沒有 UPS（不斷電系統）的話，停電就等於 AI Agent 離線。一台基本的 UPS 大約 NT 1,500-3,000，能撐 15-30 分鐘，足夠讓系統安全關機或等待復電。
+4. **ISP 連線重設** — 電信商偶爾會重設連線。系統層級的 watchdog 和 Cloudflare Tunnel 的自動重連機制可以處理這個問題，但你需要確保它們有被正確設定。
+
+### 家用網路 vs 機房網路
+
+| | 家用網路 + Mac mini | 機房 VPS |
+|---|---|---|
+| 上線保證 (SLA) | 無保證 | 通常 99.9% 以上 |
+| 停電處理 | 需自備 UPS | 機房有備援電力 |
+| IP 穩定性 | 需 Cloudflare Tunnel | 固定公網 IP |
+| 維護責任 | 全部自己來 | 硬體層由機房負責 |
+
+這些問題每一個都有成熟的技術解法。但把它們全部設定好、測試過、確保自動恢復 — 這需要經驗，不只是需要教學文件。
+
+## 安裝 OpenClaw 到 Mac mini
+
+Mac mini 的實際安裝步驟（包含 Node.js >= 22 環境建置、OpenClaw Gateway port 18789 設定、Cloudflare Tunnel 配置、JSON5 設定檔撰寫）都收錄在 [setup 章節](/docs/setup) 裡。本篇聚焦在「為什麼選 Mac mini」以及選了之後要注意什麼。
+
+## GetClaw 觀點
+
+Mac mini 是一台出色的硬體 — 省電、安靜、效能好、體積小。社群推薦它是有道理的。但「買一台 Mac mini」和「讓 Mac mini 穩定跑 AI Agent 三百六十五天」之間，隔著一整套網路架構、監控機制、異常恢復的工程。起步很簡單，做好需要經驗。
+
+GetClaw 的 Mac mini 部署方案把這些工程全部包起來 — Cloudflare Tunnel 自動重連、systemd watchdog、斷線即時通知、定期健康檢查。讓你的 Mac mini 真正做到「放在角落，忘了它的存在」。
+
+<Callout type="info">
+想用 Mac mini 自架 OpenClaw 但不確定家裡的網路環境能不能撐住？GetClaw 提供免費的環境評估 — 告訴我們你的網路方案和使用場景，我們幫你判斷可行性並規劃完整的部署架構。
+</Callout>
