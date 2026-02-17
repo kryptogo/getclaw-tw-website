@@ -53,7 +53,27 @@ macOS 和 Linux（推薦 Ubuntu 22.04+）。Windows 使用者可以透過 PowerS
 
 ### Node.js 版本有限制嗎？
 
-OpenClaw 需要 Node.js 18 或更新版本。我們推薦用 `nvm` 管理 Node.js 版本，這樣不同專案之間不會互相干擾。安裝章節有完整的 nvm 設定步驟。
+OpenClaw 需要 Node.js 22 或更新版本。我們推薦用 `nvm` 管理 Node.js 版本，這樣不同專案之間不會互相干擾。安裝章節有完整的 nvm 設定步驟。
+
+### Claude Token 和 Anthropic API Key 有什麼不同？
+
+這是新手最容易搞混、也最花錢的錯誤。**Claude Token** 來自你的 Claude Pro/Max 訂閱（$20-100/月固定費），使用量包含在訂閱裡。**Anthropic API Key** 來自 Anthropic Console，是按 token 數量計費（用多少付多少）。用 OpenClaw 跑 Agent 的話，API 按量計費很容易在不知不覺中燒掉大量費用。用訂閱 Token 可以預測成本、避免帳單爆炸。
+
+### 安裝時遇到 HTTPS 錯誤怎麼辦？
+
+99% 的情況是 Claude Token 複製時帶了尾端空格。重新執行 `claude setup-token`，仔細複製（確認前後沒有空格），再重新 onboard 就好。
+
+### 什麼是 SOUL.md 和 USER.md？
+
+它們是定義你的 Agent 人格和記憶的核心檔案。`SOUL.md` 定義 Agent 的性格和說話風格，`USER.md` 記錄你的個人資訊和偏好，`MEMORY.md` 是 Agent 自動更新的長期記憶。沒有設定這些檔案的 Agent 會像客服機器人一樣泛用。最快的設定方式是讓 Agent 採訪你 — 詳見[首次啟動](/docs/setup/first-run)。
+
+### 該用多個 Agent 還是一個 Agent + Skills？
+
+先從一個 Agent + Skills 開始。社群中常見的錯誤是一開始就跑多個 Agent，結果 context 在 Agent 之間丟失，費用也翻倍。一個好的 Agent 配上搜尋、語音、記憶等 Skills，能覆蓋 90% 以上的場景。只有當你需要不同人格、不同安全邊界、或不同模型時，才拆分 Agent。
+
+### 為什麼要在一開始就安裝 QMD Skill？
+
+QMD（Quick Memory Dump）管理 Agent 的記憶和上下文。如果你在跟 Agent 大量對話之後才安裝，Agent 容易 reset 或遺忘之前的對話紀錄。從第一天就裝好，省得回頭。
 
 ---
 
@@ -146,6 +166,14 @@ OpenClaw 透過 npm 更新，指令很簡單。我們建議至少每月檢查一
 ### 日誌檔在哪裡？
 
 在 `$OPENCLAW_STATE_DIR` 目錄下，預設路徑是 `~/.openclaw`。用 `openclaw logs --follow` 可以即時追蹤最新日誌。如果你需要查看歷史日誌，直接到該目錄下找對應的 log 檔案。
+
+### Agent 一直 rate limit 怎麼辦？
+
+Rate limit（429 錯誤）是最常見的運行問題。先跑 `openclaw models status` 看哪個 provider 在冷卻中。最快的解法：**設定 fallback model**，讓 Agent 在某個 provider 被限速時自動切換到另一家。注意 fallback 要選不同 provider（例如從 Claude 切到 Gemini），同一家的不同模型會一起被限速。長期解法是升級 provider tier 或用訂閱 Token 取代 API Key。
+
+### `openclaw doctor` 和 `openclaw doctor --fix` 的差別？
+
+`openclaw doctor` 只做診斷，列出所有檢查結果和建議。`openclaw doctor --fix` 會在診斷的同時嘗試自動修復常見問題（API Key 格式、設定檔語法、port 衝突等）。遇到問題時建議先跑 `--fix`，它能解決大部分的配置錯誤。
 
 ---
 

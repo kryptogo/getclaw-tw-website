@@ -100,14 +100,23 @@ openclaw onboard --install-daemon
 
 這個指令會依序要求你設定：
 
-### 設定 AI Model API Key
+### 設定 AI Model
 
 ```
 ? Select your AI provider: Anthropic (Claude)
-? Enter your Anthropic API Key: sk-ant-xxxxx
 ```
 
-輸入你在[安裝前準備](/docs/setup/prerequisites)中取得的 API Key。
+接下來會出現三個選項 — 選擇 **Anthropic Token**（第一個選項），**不是** Anthropic API。
+
+```
+? Enter your Claude Token: [貼上你的 Token]
+```
+
+輸入你在[安裝前準備](/docs/setup/prerequisites)中取得的 Claude Token。
+
+<Callout type="error">
+**注意**：Claude Token 複製時很容易帶到尾端的空格，會導致 HTTPS 錯誤。貼上之後請確認沒有多餘的空格。如果 onboarding 過程中遇到 HTTPS 錯誤，幾乎都是這個原因 — 重新貼一次去掉空格就好。
+</Callout>
 
 ### 選擇預設模型
 
@@ -348,6 +357,24 @@ openclaw logs --follow
 ---
 
 ## 常見安裝問題
+
+### HTTPS 錯誤 / Token 認證失敗
+
+這是最常見的安裝問題。原因幾乎都是 Claude Token 複製時帶了尾端空格。
+
+**解法**：
+
+1. 重新執行 `claude setup-token`
+2. 仔細複製 Token，確認前後沒有多餘空格
+3. 重新執行 onboarding：`openclaw onboard`
+
+如果問題持續，在終端機中手動檢查 Token：
+
+```bash
+# 檢查 Token 是否有多餘空格
+echo -n "你的Token" | xxd | tail -1
+# 最後不應該有 '20'（空格的 hex 值）
+```
 
 ### Node.js 版本不對
 

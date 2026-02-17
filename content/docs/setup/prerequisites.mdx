@@ -74,9 +74,22 @@ npm --version
 
 OpenClaw 需要至少一個 AI Model 的 API Key 才能運作。你的 Agent 有多聰明，取決於你選的模型。
 
-### 我們推薦：Anthropic (Claude)
+<Callout type="error">
+**最常見的昂貴錯誤：搞混 Claude Token 和 Anthropic API Key。** 很多人直接去 Anthropic Console 申請 API Key，結果每次 Agent 回覆都是按 token 計費。有人因此在第一個月就燒了 $800 美元。正確做法是用 **Claude Pro/Max 訂閱的 Token**（固定月費），而非 Anthropic Console 的 pay-per-use API Key。詳見[省錢策略](/docs/cost/oauth-strategy)。
+</Callout>
 
-Claude 在長對話、指令遵循、中文理解上的表現目前是最好的。如果你只準備一把 Key，選 Anthropic。
+### 我們推薦：Claude Pro/Max 訂閱（而非 API 直接計費）
+
+Claude 在長對話、指令遵循、中文理解上的表現目前是最好的。如果你只準備一把 Key，選 Anthropic — 但請用**訂閱方案的 Token**，不是 API Key。
+
+**用 Claude 訂閱 Token（推薦）：**
+
+1. 訂閱 [Claude Pro](https://claude.ai/)（$20/月）或 Claude Max（$100/月）
+2. 安裝 Claude CLI：`curl -fsSL https://claude.ai/install.sh | bash`
+3. 執行 `claude setup-token` 取得你的 Token
+4. 記下 Token — **注意複製時不要帶到尾端的空格**，這是最常見的安裝錯誤
+
+**用 Anthropic API Key（按量計費，進階使用者）：**
 
 1. 前往 [Anthropic Console](https://console.anthropic.com/)
 2. 註冊帳號（需要信用卡）
@@ -93,6 +106,26 @@ Claude 在長對話、指令遵循、中文理解上的表現目前是最好的�
 <Callout type="info">
 你可以同時設定多把 API Key，讓不同的 Agent 使用不同的模型。這在後續的進階設定中會詳細說明。
 </Callout>
+
+### 語音辨識：Groq（免費，選擇性但推薦）
+
+如果你想用語音訊息跟 Agent 對話（而不是每次都打字），Groq 提供免費的語音轉文字服務。移動端的體驗是殺手級的 — 走路、開車時直接對 Agent 說話。
+
+1. 前往 [Groq Console](https://console.groq.com/) 註冊
+2. 建立 API Key
+3. 記下 Key
+
+<Callout type="info">
+Telegram 和 Discord 已內建語音訊息支援，搭配 Groq 就能讓 Agent 「聽懂」你說的話。很多使用者反映，用了語音訊息之後，跟 Agent 的互動頻率提高了 10 倍。
+</Callout>
+
+### 網頁搜尋：Brave Search（免費，選擇性）
+
+讓你的 Agent 能搜尋網頁，回答即時資訊。
+
+1. 前往 [Brave Search API](https://brave.com/search/api/) 註冊
+2. 取得 API Key
+3. 記下 Key
 
 ## 網域準備（選擇性但推薦）
 
@@ -120,10 +153,17 @@ Claude 在長對話、指令遵循、中文理解上的表現目前是最好的�
 
 - [ ] Node.js >= 22 已安裝（`node --version` 確認）
 - [ ] npm >= 10 已安裝（`npm --version` 確認）
-- [ ] 至少一把 AI Model API Key（推薦 Anthropic）
+- [ ] Claude Pro/Max 訂閱 Token **或** Anthropic API Key（推薦訂閱 Token）
+- [ ] Brave Search API Key（免費，選擇性）
+- [ ] Groq API Key（免費，選擇性但推薦）
+- [ ] Telegram Bot Token（透過 BotFather 取得，免費）
 - [ ] Cloudflare 帳號已建立（如果需要外部存取）
 - [ ] 網域已託管到 Cloudflare（如果需要外部存取）
 - [ ] SSH 連線已設定（如果安裝在 VPS 上）
+
+<Callout type="info">
+**Pro tip**：把所有 Key 和 Token 先存到筆記軟體裡，等下安裝時直接複製貼上。中途才去找 Key 是最容易卡關的地方 — 把準備工作和安裝工作分開做，省下大量心智切換的時間。
+</Callout>
 
 全部打勾了？接下來選擇你的安裝路線：
 

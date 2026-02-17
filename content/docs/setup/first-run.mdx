@@ -163,9 +163,59 @@ OpenClaw 的設定檔格式是 JSON5 — 支援註解和尾隨逗號，比標準
 
 ---
 
+## 安裝後必做：讓 Agent 變成「你的」
+
+技術上跑起來只是一半。如果你跳過這一步，你的 Agent 會像一個客服機器人 — 能用，但沒有靈魂。
+
+### 安裝 QMD Skill（強烈建議第一時間做）
+
+QMD（Quick Memory Dump）是 OpenClaw 的記憶管理 skill。**在你開始大量對話之前就裝好它**，否則 Agent 容易在對話中途 reset 或遺忘先前的上下文。
+
+直接在對話中告訴你的 Agent：
+
+> 「請安裝 QMD skill」
+
+Agent 會自動完成安裝。
+
+<Callout type="warn">
+很多使用者在跟 Agent 聊了一週之後才裝 QMD，結果發現 Agent 經常忘記之前的對話。先裝好，省得回頭。
+</Callout>
+
+### SOUL.md / USER.md — 你的 Agent 人格檔案
+
+OpenClaw 用三個檔案定義 Agent 的個性和記憶：
+
+| 檔案 | 位置 | 用途 |
+|------|------|------|
+| `SOUL.md` | `agents/<agentId>/agent/` | Agent 的性格、說話風格、關注的事 |
+| `USER.md` | `agents/<agentId>/agent/` | 你的個人資訊 — 姓名、職業、偏好、習慣 |
+| `MEMORY.md` | `agents/<agentId>/agent/` | 長期記憶，Agent 自動更新 |
+
+你可以手動編輯這些檔案，但更聰明的做法是**讓 Agent 採訪你**。在第一次對話中，發送類似這樣的訊息：
+
+> 「你剛上線，我希望你問我一些問題來認識我 — 我的名字、工作、目標、喜歡你怎麼跟我說話、每天用什麼工具、需要什麼幫助。一次問一個問題，然後用我的回答來填寫 SOUL.md 和 USER.md。」
+
+Agent 會問你 10-15 個問題。誠實回答。告訴它你的真實情況 — 工作、副業、行程、你想要多隨性的對話風格。
+
+**Pro tip**：用語音訊息回答，比打字更自然、更快、內容更豐富。
+
+完成之後，你的 Agent 就有了完整的上下文。它知道你是誰、記得你的偏好。這是「通用聊天機器人」和「你的 AI 助手」之間的本質差距。
+
+### 加入 Brave Search 和 Groq
+
+如果你在安裝前準備階段取得了這些 Key，現在直接告訴 Agent：
+
+> 「設定 Brave Search，這是我的 API Key：[貼上 Key]」
+
+> 「設定 Groq，這是我的 API Key：[貼上 Key]」
+
+Agent 會自動完成後續安裝。你的 Agent 現在能搜尋網頁、聽懂語音訊息了。
+
+---
+
 ## 下一步
 
-安裝和驗證都完成了。現在你的 OpenClaw Gateway 已經在穩定運作，是時候讓它真正開始工作了：
+安裝、驗證、和人格設定都完成了。現在你的 OpenClaw Agent 不只在跑，還知道你是誰。接下來：
 
 - **連接你的第一個通訊頻道** — LINE、Telegram、WhatsApp... 選一個開始。前往 [通訊頻道設定](/docs/channels)
 - **認識操作介面** — Dashboard、CLI、API 三種操作方式，了解各自適合什麼場景。前往 [操作介面總覽](/docs/interfaces)
