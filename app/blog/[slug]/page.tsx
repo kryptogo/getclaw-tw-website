@@ -9,6 +9,7 @@ import BlogNavigation from "@/components/BlogNavigation";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 import TableOfContents from "@/components/TableOfContents";
 import { getAllPosts, getPostBySlug, extractHeadings } from "@/lib/blog";
+import { getAllUseCases } from "@/lib/use-cases";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -57,6 +58,8 @@ export default async function BlogPostPage({ params }: Props) {
   if (!post) notFound();
 
   const headings = extractHeadings(post.content);
+
+  const useCases = getAllUseCases().slice(0, 3);
 
   const posts = getAllPosts();
   const currentIndex = posts.findIndex((p) => p.slug === slug);
@@ -144,6 +147,41 @@ export default async function BlogPostPage({ params }: Props) {
                 <MarkdownRenderer content={post.content} />
 
                 <BlogCTA />
+
+                {/* Cross-link to use cases */}
+                {useCases.length > 0 && (
+                  <section className="mt-12 pt-8 border-t border-border">
+                    <h2 className="text-xl font-bold mb-2">想看實際成效？</h2>
+                    <p className="text-sm text-text-muted mb-6">
+                      這些企業已經用 AI 執行助理省下大量時間——有數據為證。
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      {useCases.map((uc) => (
+                        <Link
+                          key={uc.slug}
+                          href={`/use-cases/${uc.slug}`}
+                          className="group rounded-xl border border-border p-5 hover:border-primary/40 hover:bg-bg transition-all"
+                        >
+                          <div className="flex items-baseline gap-2 mb-2">
+                            <span className="text-2xl font-black text-primary">
+                              {uc.metric}
+                            </span>
+                            <span className="text-xs text-text-muted">
+                              {uc.metricLabel}
+                            </span>
+                          </div>
+                          <p className="text-sm font-semibold text-text group-hover:text-primary transition-colors line-clamp-2">
+                            {uc.title}
+                          </p>
+                          <span className="text-xs text-text-muted mt-1 block">
+                            {uc.role}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </section>
+                )}
+
                 <BlogNavigation prevPost={prevPost} nextPost={nextPost} />
               </article>
 

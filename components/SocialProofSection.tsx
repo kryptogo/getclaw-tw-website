@@ -1,3 +1,4 @@
+import Link from "next/link";
 import ScrollReveal from "./ScrollReveal";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -15,28 +16,31 @@ const quotes = [
     avatar: "SP",
   },
   {
-    text: "每天處理 200+ 封郵件的 CEO,最需要的不是更好的信箱——是一個不會漏信的 AI 助理。部署後第一週,未讀信件清零。",
-    author: "OpenClaw 產品團隊",
-    role: "基於 500+ 用戶行為分析",
-    avatar: "OC",
+    text: "我自己部署 OpenClaw 兩週後，每週省下超過 10 小時行政工作。這不是理論——是我把它裝在 Mac Mini 上、實際跑了兩個 Agent 的真實體驗。",
+    author: "Kordan Ou",
+    role: "GetClaw 創辦人、KryptoGO CEO",
+    avatar: "KO",
   },
 ];
 
 const impactMetrics = [
   {
-    label: "Email 處理速度",
-    value: "提升 80%",
-    subtext: "平均回覆時間從 4hr 降至 45min",
+    label: "郵件處理時間",
+    value: "省 78%",
+    subtext: "2 小時 → 25 分鐘",
+    href: "/use-cases/email-triage-automation",
   },
   {
-    label: "每週省下時間",
-    value: "10+ 小時",
-    subtext: "行政事務自動化處理",
+    label: "客戶入職速度",
+    value: "12x",
+    subtext: "3-4 小時 → 15 分鐘",
+    href: "/use-cases/client-onboarding-automation",
   },
   {
-    label: "客戶滿意度",
-    value: "98%",
-    subtext: "部署後 30 天內續約率",
+    label: "KPI 報告產出",
+    value: "省 95%",
+    subtext: "4 小時 → 5 分鐘",
+    href: "/use-cases/kpi-report-automation",
   },
 ];
 
@@ -109,23 +113,28 @@ export default function SocialProofSection() {
           </Card>
         </ScrollReveal>
 
-        {/* Impact metrics */}
+        {/* Impact metrics — linked to use cases */}
         <div className="grid grid-cols-3 gap-6 mt-12 max-md:grid-cols-1">
           {impactMetrics.map((metric, i) => (
             <ScrollReveal key={metric.label} delay={i * 0.1}>
-              <Card className="transition-all hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1">
-                <CardContent className="p-7 text-center">
-                  <p className="text-text-muted text-xs uppercase tracking-widest mb-3">
-                    {metric.label}
-                  </p>
-                  <p className="text-[clamp(32px,4vw,48px)] font-black text-primary leading-none mb-3">
-                    {metric.value}
-                  </p>
-                  <p className="text-text-secondary text-sm leading-relaxed">
-                    {metric.subtext}
-                  </p>
-                </CardContent>
-              </Card>
+              <Link href={metric.href}>
+                <Card className="transition-all hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1 group cursor-pointer">
+                  <CardContent className="p-7 text-center">
+                    <p className="text-text-muted text-xs uppercase tracking-widest mb-3">
+                      {metric.label}
+                    </p>
+                    <p className="text-[clamp(32px,4vw,48px)] font-black text-primary leading-none mb-3">
+                      {metric.value}
+                    </p>
+                    <p className="text-text-secondary text-sm leading-relaxed">
+                      {metric.subtext}
+                    </p>
+                    <p className="text-primary text-xs font-bold mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                      看完整案例 →
+                    </p>
+                  </CardContent>
+                </Card>
+              </Link>
             </ScrollReveal>
           ))}
         </div>
