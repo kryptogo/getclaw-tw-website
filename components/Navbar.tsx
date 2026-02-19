@@ -10,6 +10,8 @@ const navLinks = [
   { label: "定價", href: "/#pricing", sectionId: "pricing" },
   { label: "安全與合規", href: "/#security", sectionId: "security" },
   { label: "FAQ", href: "/#faq", sectionId: "faq" },
+  { label: "技術文件", href: "/docs", sectionId: "docs" },
+  { label: "部落格", href: "/blog", sectionId: "blog" },
 ];
 
 export default function Navbar() {
@@ -89,19 +91,28 @@ export default function Navbar() {
   }, []);
 
   const handleNavClick = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
-      if (isHome) {
-        e.preventDefault();
-        const el = document.getElementById(sectionId);
-        if (el) {
-          el.scrollIntoView({ behavior: "smooth" });
+    (
+      e: React.MouseEvent<HTMLAnchorElement>,
+      href: string,
+      sectionId: string
+    ) => {
+      if (href.startsWith("/#")) {
+        if (isHome) {
+          e.preventDefault();
+          const el = document.getElementById(sectionId);
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth" });
+          }
+          closeMobile();
+        } else {
+          // On subpages, navigate back to homepage with hash
+          e.preventDefault();
+          closeMobile();
+          router.push(href);
         }
-        closeMobile();
       } else {
-        // On subpages, navigate back to homepage with hash
-        e.preventDefault();
+        // Normal navigation
         closeMobile();
-        router.push(`/#${sectionId}`);
       }
     },
     [isHome, closeMobile, router]
@@ -130,12 +141,17 @@ export default function Navbar() {
           {/* Desktop links */}
           <ul className="hidden md:flex items-center gap-1 list-none">
             {navLinks.map((link) => {
-              const isActive = activeSection === link.sectionId;
+              const isActive =
+                (link.href.startsWith("/#") &&
+                  activeSection === link.sectionId) ||
+                (!link.href.startsWith("/#") && pathname.startsWith(link.href));
               return (
                 <li key={link.sectionId}>
                   <Link
                     href={link.href}
-                    onClick={(e) => handleNavClick(e, link.sectionId)}
+                    onClick={(e) =>
+                      handleNavClick(e, link.href, link.sectionId)
+                    }
                     className={`text-sm font-medium px-4 py-2 rounded-lg transition-colors ${
                       isActive
                         ? "text-primary bg-primary/8"
@@ -199,12 +215,14 @@ export default function Navbar() {
         aria-label="行動版選單"
       >
         {navLinks.map((link) => {
-          const isActive = activeSection === link.sectionId;
+          const isActive =
+            (link.href.startsWith("/#") && activeSection === link.sectionId) ||
+            (!link.href.startsWith("/#") && pathname.startsWith(link.href));
           return (
             <Link
               key={link.sectionId}
               href={link.href}
-              onClick={(e) => handleNavClick(e, link.sectionId)}
+              onClick={(e) => handleNavClick(e, link.href, link.sectionId)}
               className={`text-lg font-semibold px-8 py-3 rounded-lg transition-colors ${
                 isActive
                   ? "text-primary bg-primary/8"

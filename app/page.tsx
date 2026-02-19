@@ -29,9 +29,9 @@ export default function Home() {
         <AgentSection />
         <WhyUsSection />
         <TrustBadges />
-        <PricingSection />
         <ServiceFlowSection />
         <UseCasesPreview />
+        <PricingSection />
         <SecurityPreview />
         <SocialProofSection />
         <FAQPreview />
