@@ -26,7 +26,7 @@ export default function SecurityPreview() {
             你的資料,留在你的機器。
           </h2>
           <p className="text-white/50 text-sm max-w-[500px] mx-auto">
-            部署團隊背景：ISO 27001 / 27701 / SOC 2 Type 2 / CAMS
+            部署團隊背景：ISO 27001 / 27701 / SOC 2 Type 2 / Cure53 等級滲透測試
           </p>
         </ScrollReveal>
 

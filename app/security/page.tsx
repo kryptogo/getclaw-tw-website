@@ -7,7 +7,7 @@ import { IconServer, IconShield, IconKey, IconClipboard, IconUser, IconCheck } f
 
 export const metadata: Metadata = {
   title: "安全與合規",
-  description: "你的資料，留在你的機器。自主託管 AI 助理，完整安全加固，通過企業資安審查。ISO 27001 / SOC 2 / CAMS 團隊背景。",
+  description: "你的資料，留在你的機器。自主託管 AI 助理，完整安全加固，通過企業資安審查。ISO 27001 / SOC 2 / Cure53 等級滲透測試團隊。",
   alternates: { canonical: "https://getclaw.tw/security" },
   openGraph: {
     title: "安全與合規 — GetClaw AI 執行助理",
@@ -53,7 +53,7 @@ const certifications = [
   { name: "ISO 27001", desc: "資訊安全管理系統" },
   { name: "ISO 27701", desc: "隱私資訊管理系統" },
   { name: "SOC 2 Type 2", desc: "服務組織控制報告" },
-  { name: "CAMS", desc: "反洗錢認證" },
+  { name: "Cure53 等級", desc: "滲透測試與安全稽核（與 1Password 同級別）" },
 ];
 
 export default function SecurityPage() {

@@ -71,7 +71,7 @@ export default function PrivacyPage() {
                 <h2 className="text-lg font-bold text-text mb-3">6. 資料保護</h2>
                 <p>
                   本公司採用業界標準的安全措施保護您的個人資料。
-                  我們的團隊具備 ISO 27001、ISO 27701、SOC 2 Type 2 與 CAMS 認證背景，
+                  我們的團隊具備 ISO 27001、ISO 27701、SOC 2 Type 2 認證背景與 Cure53 等級滲透測試經驗，
                   致力於維護最高標準的資訊安全。
                 </p>
               </section>

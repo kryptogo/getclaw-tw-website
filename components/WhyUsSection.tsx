@@ -30,7 +30,7 @@ const differentiators = [
   {
     Icon: IconLock,
     title: "合規優先",
-    desc: "團隊具備 ISO 27001/27701、CAMS 背景",
+    desc: "團隊具備 ISO 27001/27701 認證，Cure53 等級滲透測試經驗",
   },
   {
     Icon: IconBuilding,
@@ -187,7 +187,7 @@ export default function WhyUsSection() {
                   </td>
                   <td className="bg-primary/5 border border-primary/20 p-4 text-center text-2xl">
                     ✅
-                    <div className="text-xs text-text mt-1 font-medium">ISO 27001/CAMS</div>
+                    <div className="text-xs text-text mt-1 font-medium">ISO 27001 / Cure53 等級</div>
                   </td>
                 </tr>
                 <tr>
@@ -255,7 +255,7 @@ export default function WhyUsSection() {
                 feature: "合規背景",
                 diy: "❌",
                 cheap: "❌",
-                getclaw: "✅ ISO 27001/CAMS",
+                getclaw: "✅ ISO 27001 / Cure53 等級",
               },
               {
                 feature: "售後支援",
