@@ -40,12 +40,22 @@ export const metadata: Metadata = {
     type: "website",
     locale: "zh_TW",
     siteName: "GetClaw",
+    images: [
+      {
+        url: "https://getclaw.tw/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "GetClaw — AI 執行助理，部署在你自己的硬體上",
+        type: "image/png",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "GetClaw — AI 執行助理，部署在你自己的硬體上",
     description:
       "專為創辦人與高管團隊打造的 OpenClaw 白手套部署服務。當天上線，14 天調優。",
+    images: ["https://getclaw.tw/opengraph-image"],
   },
   robots: {
     index: true,

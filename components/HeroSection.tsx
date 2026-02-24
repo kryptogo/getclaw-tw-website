@@ -54,7 +54,7 @@ export default function HeroSection() {
             </Link>
           </Button>
           <Button asChild size="xl" variant="outline-white">
-            <a href="#pricing">
+            <a href="/pricing">
               了解定價
             </a>
           </Button>

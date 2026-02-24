@@ -6,10 +6,10 @@ import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 const navLinks = [
-  { label: "使用場景", href: "/#use-cases", sectionId: "use-cases" },
-  { label: "定價", href: "/#pricing", sectionId: "pricing" },
-  { label: "安全與合規", href: "/#security", sectionId: "security" },
-  { label: "FAQ", href: "/#faq", sectionId: "faq" },
+  { label: "使用場景", href: "/use-cases", sectionId: "use-cases" },
+  { label: "定價", href: "/pricing", sectionId: "pricing" },
+  { label: "安全與合規", href: "/security", sectionId: "security" },
+  { label: "FAQ", href: "/faq", sectionId: "faq" },
   { label: "技術文件", href: "/docs", sectionId: "docs" },
   { label: "部落格", href: "/blog", sectionId: "blog" },
 ];
@@ -90,32 +90,30 @@ export default function Navbar() {
     });
   }, []);
 
+  // Section IDs that exist on the homepage for smooth scrolling
+  const homeSections = new Set(["use-cases", "pricing", "security", "faq"]);
+
   const handleNavClick = useCallback(
     (
       e: React.MouseEvent<HTMLAnchorElement>,
       href: string,
       sectionId: string
     ) => {
-      if (href.startsWith("/#")) {
-        if (isHome) {
-          e.preventDefault();
-          const el = document.getElementById(sectionId);
-          if (el) {
-            el.scrollIntoView({ behavior: "smooth" });
-          }
-          closeMobile();
-        } else {
-          // On subpages, navigate back to homepage with hash
-          e.preventDefault();
-          closeMobile();
-          router.push(href);
+      if (isHome && homeSections.has(sectionId)) {
+        // On homepage: smooth scroll to section instead of navigating
+        e.preventDefault();
+        const el = document.getElementById(sectionId);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth" });
         }
+        closeMobile();
       } else {
-        // Normal navigation
+        // Normal navigation to dedicated route
         closeMobile();
       }
     },
-    [isHome, closeMobile, router]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [isHome, closeMobile]
   );
 
   return (
@@ -142,9 +140,9 @@ export default function Navbar() {
           <ul className="hidden md:flex items-center gap-1 list-none">
             {navLinks.map((link) => {
               const isActive =
-                (link.href.startsWith("/#") &&
+                (isHome && homeSections.has(link.sectionId) &&
                   activeSection === link.sectionId) ||
-                (!link.href.startsWith("/#") && pathname.startsWith(link.href));
+                (!isHome && pathname.startsWith(link.href));
               return (
                 <li key={link.sectionId}>
                   <Link

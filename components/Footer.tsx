@@ -77,6 +77,11 @@ export default function Footer() {
               </Link>
             </li>
             <li>
+              <Link href="/pricing" className="text-sm text-white/50 transition-colors hover:text-white/90">
+                定價方案
+              </Link>
+            </li>
+            <li>
               <Link href="/security" className="text-sm text-white/50 transition-colors hover:text-white/90">
                 安全與合規
               </Link>
