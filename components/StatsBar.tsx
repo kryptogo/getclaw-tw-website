@@ -77,7 +77,7 @@ function AnimatedNumber({ value, suffix }: { value: number; suffix: string }) {
 export default function StatsBar() {
   return (
     <section className="py-16 px-10 bg-bg-white border-y border-border max-md:py-12 max-md:px-6">
-      <div className="max-w-[1200px] mx-auto grid grid-cols-4 gap-8 max-md:grid-cols-2 max-[480px]:grid-cols-2 max-[480px]:gap-6">
+      <div className="max-w-[1200px] mx-auto grid grid-cols-4 gap-8 max-md:grid-cols-2 max-[400px]:grid-cols-1 max-[480px]:gap-6">
         {stats.map((stat) => (
           <div key={stat.label} className="text-center">
             <p className="text-[clamp(28px,4vw,44px)] font-black text-primary leading-none mb-2">

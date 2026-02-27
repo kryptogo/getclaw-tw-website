@@ -130,7 +130,7 @@ export default function Navbar() {
         <div className="max-w-[1200px] mx-auto flex items-center justify-between h-16 px-6 mt-3 bg-white/95 backdrop-blur-[20px] rounded-xl border border-black/6 shadow-[0_2px_20px_rgba(0,0,0,0.06),0_0_0_1px_rgba(0,0,0,0.02)]">
           <Link href="/" className="flex items-center shrink-0">
             <img
-              src="/assets/getclaw-logo-red.png"
+              src="/assets/getclaw-logo-red.webp"
               alt="GetClaw"
               className="h-7 w-auto"
             />

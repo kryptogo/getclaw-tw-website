@@ -55,6 +55,7 @@ export default function BookPage() {
                 className="w-full border-0"
                 style={{ height: "660px" }}
                 title="預約免費諮詢"
+                loading="lazy"
               />
               <p className="text-text-muted text-xs py-4 text-center">
                 如果預約系統未顯示，請{" "}

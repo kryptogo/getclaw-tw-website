@@ -19,10 +19,10 @@ const lineLink = {
 export default function Footer() {
   return (
     <footer className="bg-bg-dark text-white/50 pt-16 px-10 pb-10" role="contentinfo">
-      <div className="max-w-[1200px] mx-auto grid grid-cols-[2fr_1fr_1fr_1fr] gap-16 max-md:grid-cols-1 max-md:gap-10">
+      <div className="max-w-[1200px] mx-auto grid grid-cols-[2fr_1fr_1fr_1fr] gap-16 max-lg:grid-cols-2 max-lg:gap-10 max-md:grid-cols-1">
         <div>
           <img
-            src="/assets/getclaw-logo-white.png"
+            src="/assets/getclaw-logo-white.webp"
             alt="GetClaw"
             className="h-7 mb-4"
           />

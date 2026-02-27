@@ -257,17 +257,17 @@ export default function WhyUsSection() {
                     {row.feature}
                   </div>
                   <div className="p-4 space-y-3">
-                    <div className="flex justify-between items-center pb-3 border-b border-border">
-                      <span className="text-sm font-medium text-text-secondary">自己裝</span>
-                      <span className="text-sm text-text">{row.diy}</span>
+                    <div className="flex justify-between items-center gap-2 pb-3 border-b border-border">
+                      <span className="text-sm font-medium text-text-secondary shrink-0">自己裝</span>
+                      <span className="text-sm text-text text-right min-w-0">{row.diy}</span>
                     </div>
-                    <div className="flex justify-between items-center pb-3 border-b border-border">
-                      <span className="text-sm font-medium text-text-secondary">坊間安裝</span>
-                      <span className="text-sm text-text">{row.cheap}</span>
+                    <div className="flex justify-between items-center gap-2 pb-3 border-b border-border">
+                      <span className="text-sm font-medium text-text-secondary shrink-0">坊間安裝</span>
+                      <span className="text-sm text-text text-right min-w-0">{row.cheap}</span>
                     </div>
-                    <div className="flex justify-between items-center bg-primary/5 -mx-4 -mb-4 p-4">
-                      <span className="text-sm font-bold text-text">GetClaw 白手套</span>
-                      <span className="text-sm font-bold text-primary">{row.getclaw}</span>
+                    <div className="flex justify-between items-center gap-2 bg-primary/5 -mx-4 -mb-4 p-4">
+                      <span className="text-sm font-bold text-text shrink-0">GetClaw 白手套</span>
+                      <span className="text-sm font-bold text-primary text-right min-w-0">{row.getclaw}</span>
                     </div>
                   </div>
                 </CardContent>

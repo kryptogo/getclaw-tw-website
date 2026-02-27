@@ -4,7 +4,7 @@ import "./globals.css";
 
 const notoSansTC = Noto_Sans_TC({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "900"],
+  weight: ["400", "700", "900"],
   display: "swap",
   variable: "--font-sans",
 });
@@ -84,6 +84,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh-TW" className={notoSansTC.variable}>
+      <head>
+        <link rel="dns-prefetch" href="https://cdn.simpleicons.org" />
+        <link rel="preconnect" href="https://cdn.simpleicons.org" crossOrigin="anonymous" />
+      </head>
       <body>{children}</body>
     </html>
   );

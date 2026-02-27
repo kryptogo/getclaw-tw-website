@@ -65,7 +65,7 @@ export default function CTASection() {
                   {/* Integration visual */}
                   <div className="w-full max-w-[520px] mx-auto">
                     <Image
-                      src="/assets/getclaw-integration.png"
+                      src="/assets/getclaw-integration.webp"
                       alt="GetClaw 整合 Gmail、Slack、Google Drive、HubSpot 等多種工具"
                       width={520}
                       height={346}
