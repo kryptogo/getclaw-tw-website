@@ -45,7 +45,7 @@ const securityFeatures = [
   {
     Icon: IconCheck,
     title: "通過資安審查",
-    desc: "我們的部署流程設計為可通過企業資安審查。提供完整的安全文件、架構圖、與風險評估報告。",
+    desc: "我們的導入流程設計為可通過企業資安審查。提供完整的安全文件、架構圖、與風險評估報告。",
   },
 ];
 
@@ -101,7 +101,7 @@ export default function SecurityPage() {
         <section className="py-24 px-10 bg-bg max-md:px-6">
           <div className="max-w-[800px] mx-auto text-center">
             <ScrollReveal>
-              <h2 className="text-2xl font-black mb-4">部署團隊背景</h2>
+              <h2 className="text-2xl font-black mb-4">導入團隊背景</h2>
               <p className="text-text-secondary mb-10">
                 Powered by KryptoGO — 台灣首家同時取得 ISO 27001 與 ISO 27701 認證的區塊鏈公司
               </p>

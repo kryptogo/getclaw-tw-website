@@ -7,10 +7,10 @@ import { cn } from "@/lib/utils";
 
 const features = [
   { Icon: IconServer, label: "自主託管", desc: "資料不上雲" },
-  { Icon: IconShield, label: "安全加固", desc: "官方安全強化指南" },
+  { Icon: IconShield, label: "資安防護", desc: "企業級安全強化" },
   { Icon: IconKey, label: "最小權限", desc: "上線後輪換憑證" },
-  { Icon: IconClipboard, label: "Audit trail", desc: "AI 操作可追溯" },
-  { Icon: IconUser, label: "身份隔離", desc: "每個 Agent 獨立" },
+  { Icon: IconClipboard, label: "操作紀錄", desc: "AI 操作可追溯" },
+  { Icon: IconUser, label: "身份隔離", desc: "每個助理獨立" },
   { Icon: IconCheck, label: "資安審查", desc: "通過企業資安審查" },
 ];
 
@@ -26,7 +26,7 @@ export default function SecurityPreview() {
             你的資料,留在你的機器。
           </h2>
           <p className="text-white/50 text-sm max-w-[500px] mx-auto">
-            部署團隊背景：ISO 27001 / 27701 / SOC 2 Type 2 / Cure53 等級滲透測試
+            導入團隊背景：ISO 27001 / 27701 / SOC 2 Type 2 / 企業級滲透測試
           </p>
         </ScrollReveal>
 

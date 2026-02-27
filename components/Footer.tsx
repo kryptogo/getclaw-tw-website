@@ -27,9 +27,9 @@ export default function Footer() {
             className="h-7 mb-4"
           />
           <p className="text-sm leading-[1.7] max-w-[320px]">
-            你的 AI 執行助理,部署在你自己的硬體上。
+            讓 AI 真正幫你做事，不只是裝在你的電腦上。
             <br />
-            專為創辦人與高管團隊打造的白手套部署服務。
+            專為創辦人與高管團隊打造的白手套導入服務。
           </p>
           <div className="flex items-center gap-3 mt-5">
             <a
@@ -111,7 +111,7 @@ export default function Footer() {
             </li>
             <li>
               <Link href="/collison-install" className="text-sm text-white/50 transition-colors hover:text-white/90">
-                到府安裝理念
+                到府導入理念
               </Link>
             </li>
             <li>

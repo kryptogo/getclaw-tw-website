@@ -8,12 +8,12 @@ import CTASection from "@/components/CTASection";
 export const metadata: Metadata = {
   title: "定價方案",
   description:
-    "GetClaw AI 執行助理透明定價：一次性部署費 NT$48,000 起，託管維護月費 NT$25,000 起。年付享 2 個月免費。沒有隱藏費用。",
+    "GetClaw AI 執行助理透明定價：啟動導入費 NT$48,000 起（含 14 天陪跑），ClawCare 持續優化月費 NT$25,000 起。年付享 2 個月免費。",
   alternates: { canonical: "https://getclaw.tw/pricing" },
   openGraph: {
     title: "定價方案 — GetClaw AI 執行助理",
     description:
-      "一次性部署費 NT$48,000 起，託管維護月費 NT$25,000 起。透明定價，沒有隱藏費用。年付享 2 個月免費。",
+      "啟動導入費 NT$48,000 起（含 14 天陪跑），ClawCare 持續優化月費 NT$25,000 起。透明定價，沒有隱藏費用。",
     url: "https://getclaw.tw/pricing",
     type: "website",
     locale: "zh_TW",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "定價方案 — GetClaw AI 執行助理",
     description:
-      "一次性部署費 NT$48,000 起，託管維護月費 NT$25,000 起。透明定價，沒有隱藏費用。",
+      "啟動導入費 NT$48,000 起（含 14 天陪跑），ClawCare 月費 NT$25,000 起。透明定價。",
   },
 };
 

@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "預約免費諮詢",
-  description: "預約 15 分鐘免費諮詢，了解 AI 執行助理如何幫你自動化工作流程。我們會分析你的工作流程，建議最適合的 Agent 配置。",
+  description: "預約 15 分鐘免費諮詢，了解 AI 執行助理如何幫你自動化工作流程。我們會分析你的工作方式，建議最適合的助理配置。",
   alternates: { canonical: "https://getclaw.tw/book" },
   openGraph: {
     title: "預約免費諮詢 — GetClaw AI 執行助理",
@@ -40,11 +40,11 @@ export default function BookPage() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-primary mt-0.5">→</span>
-                建議最適合的 Agent 配置
+                建議最適合的助理配置
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-primary mt-0.5">→</span>
-                提供報價與部署時程
+                提供報價與導入時程
               </li>
             </ul>
 

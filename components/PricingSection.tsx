@@ -6,9 +6,9 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 const deploymentPlans = [
-  { label: "遠端部署", price: "NT$48,000", note: "全台灣皆可" },
-  { label: "到府部署(大台北)", price: "NT$88,000", note: "到場安裝" },
-  { label: "額外 Agent", price: "+NT$38,000", note: "每個 Agent" },
+  { label: "啟動導入（遠端）", price: "NT$48,000", note: "全台灣皆可" },
+  { label: "啟動導入（到府）", price: "NT$88,000", note: "大台北地區專人到場" },
+  { label: "額外助理", price: "+NT$38,000", note: "每個助理" },
   { label: "硬體 Mac mini", price: "~NT$19,900 起", note: "成本價代購" },
 ];
 
@@ -17,21 +17,21 @@ const managedPlans = [
     name: "基本版",
     price: "NT$25,000",
     period: "/月",
-    features: ["1–2 agents", "系統監控", "技術支援", "每月 1hr 諮詢"],
+    features: ["1–2 個助理", "系統監控與技術支援", "每月工作流程健檢", "指令持續調校", "每月 1 小時諮詢"],
     highlighted: false,
   },
   {
     name: "進階版",
     price: "NT$48,000",
     period: "/月",
-    features: ["最多 4 agents", "優先支援", "月度檢視", "每月 3hr 諮詢"],
+    features: ["最多 4 個助理", "優先支援", "月度工作流程深化會議", "主動發掘自動化機會", "每月 3 小時諮詢"],
     highlighted: true,
   },
   {
     name: "企業版",
     price: "NT$98,000+",
     period: "/月",
-    features: ["SLA 保證", "Fleet 標準化", "稽核紀錄", "資安審查支援"],
+    features: ["專屬顧問", "季度效益報告", "跨部門擴展規劃", "稽核紀錄", "資安審查支援"],
     highlighted: false,
   },
 ];
@@ -45,13 +45,14 @@ export default function PricingSection() {
             定價方案
           </span>
           <h2 className="text-[clamp(28px,4vw,48px)] font-black leading-[1.3] mb-4">
-            透明定價,沒有隱藏費用
+            透明定價，沒有隱藏費用
           </h2>
         </ScrollReveal>
 
-        {/* One-time deployment */}
+        {/* One-time setup */}
         <ScrollReveal className="mb-16">
-          <h3 className="text-xl font-bold mb-6">一次性部署費</h3>
+          <h3 className="text-xl font-bold mb-2">一次性啟動導入費</h3>
+          <p className="text-sm text-text-secondary mb-6">含量身規劃 + 安裝設置 + 資安防護 + 14 天密集陪跑</p>
           <div className="grid grid-cols-4 gap-4 max-lg:grid-cols-2 max-md:grid-cols-1">
             {deploymentPlans.map((plan) => (
               <Card key={plan.label}>
@@ -65,9 +66,10 @@ export default function PricingSection() {
           </div>
         </ScrollReveal>
 
-        {/* 託管維護月費 */}
+        {/* ClawCare plans */}
         <ScrollReveal>
-          <h3 className="text-xl font-bold mb-6">託管維護月費</h3>
+          <h3 className="text-xl font-bold mb-2">ClawCare 持續優化方案</h3>
+          <p className="text-sm text-text-secondary mb-6">啟動導入是開始，不是結束。讓 AI 越用越順、越來越懂你的業務。</p>
           <div className="grid grid-cols-3 gap-6 max-lg:grid-cols-1">
             {managedPlans.map((plan) => (
               <Card
@@ -125,7 +127,7 @@ export default function PricingSection() {
           </div>
 
           <p className="text-center text-sm text-text-muted mt-8">
-            💡 年約優惠：年付享 2 個月免費
+            年約優惠：年付享 2 個月免費
           </p>
         </ScrollReveal>
       </div>

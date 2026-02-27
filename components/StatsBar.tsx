@@ -9,10 +9,10 @@ interface StatItem {
 }
 
 const stats: StatItem[] = [
-  { value: 10000, suffix: "+", label: "可整合服務" },
-  { value: 8, suffix: "hr", label: "部署即上線" },
-  { value: 14, suffix: "天", label: "密集調優期" },
-  { value: 99.9, suffix: "%", label: "資料留在你的機器" },
+  { value: 10, suffix: "+小時/週", label: "平均為客戶省下的時間" },
+  { value: 14, suffix: "天", label: "專人密集陪跑" },
+  { value: 90, suffix: "%+", label: "導入後持續使用率" },
+  { value: 100, suffix: "%", label: "資料留在你的機器" },
 ];
 
 function AnimatedNumber({ value, suffix }: { value: number; suffix: string }) {

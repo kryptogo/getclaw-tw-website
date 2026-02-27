@@ -5,28 +5,28 @@ import { Badge } from "@/components/ui/badge";
 
 const agents = [
   {
-    role: "CEO Agent",
+    role: "CEO 助理",
     Icon: IconCEO,
     desc: "信件分流 + 行事曆管理 + 會議摘要",
     tasks: ["重要信件篩選與摘要", "智慧排程與衝突偵測", "會議簡報自動生成"],
     delay: 0,
   },
   {
-    role: "CFO Agent",
+    role: "CFO 助理",
     Icon: IconFinance,
     desc: "財務信件分類 + 報表提醒 + 審批通知",
     tasks: ["發票與帳單自動歸檔", "月結提醒與報表摘要", "審批流程通知"],
     delay: 0.1,
   },
   {
-    role: "業務 Agent",
+    role: "業務助理",
     Icon: IconSales,
     desc: "CRM 更新 + 客戶跟進 + 報價追蹤",
     tasks: ["CRM 資料自動同步", "客戶跟進排程提醒", "報價單狀態追蹤"],
     delay: 0.2,
   },
   {
-    role: "行政助理 Agent",
+    role: "行政助理",
     Icon: IconHandshake,
     desc: "共用信箱 + 訪客接待 + 行程協調",
     tasks: ["共用信箱分流處理", "訪客行程與接待安排", "跨部門行程協調"],
@@ -43,11 +43,10 @@ export default function AgentSection() {
             執行助理
           </span>
           <h2 className="text-[clamp(28px,4vw,48px)] font-black leading-[1.3] mb-4">
-            什麼是「執行助理 Agent」?
+            什麼是「AI 執行助理」?
           </h2>
           <p className="text-text-secondary text-[clamp(15px,1.4vw,18px)] leading-[1.8] max-w-[700px] mx-auto font-light">
-            1 個執行助理 Agent = 1 個 AI 助理實例。每個 Agent 綁定一個主要身份，
-            身份隔離確保安全邊界。大多數 5–50 人團隊部署 2–4 個 Agent。
+            每個助理負責一個角色，各自獨立、互不干擾。大多數 5–50 人團隊會導入 2–4 個助理。每個助理的工作流程都是我們根據你的實際需求量身設計的——不是套模板，是了解你怎麼工作之後，一個一個幫你打造。
           </p>
         </ScrollReveal>
 

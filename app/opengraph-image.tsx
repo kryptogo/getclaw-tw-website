@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "GetClaw — AI 執行助理，部署在你自己的硬體上";
+export const alt = "GetClaw — 讓 AI 真正幫你做事，不只是裝在你的電腦上";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -66,7 +66,7 @@ export default function Image() {
             marginBottom: "12px",
           }}
         >
-          AI 執行助理，部署在你自己的硬體上
+          讓 AI 真正幫你做事，不只是裝在你的電腦上
         </div>
 
         {/* Subtitle */}
@@ -76,7 +76,7 @@ export default function Image() {
             color: "#a89888",
           }}
         >
-          白手套部署 · 當天上線 · 資料不離開你的硬體
+          專人量身導入 · 14天密集陪跑 · 資料不離開你的硬體
         </div>
 
         {/* Bottom accent line */}

@@ -33,12 +33,12 @@ export default function CTASection() {
                     準備好讓 AI 接管瑣事了嗎？
                   </h2>
                   <p className="text-text-secondary text-[clamp(14px,1.3vw,17px)] leading-[1.8] mb-4 font-light max-w-[520px]">
-                    預約免費諮詢，告訴我們你的工作流程。
+                    預約免費諮詢，告訴我們你的工作方式。
                     <br className="max-md:hidden" />
-                    我們幫你規劃 Agent 配置，當天就能上線。
+                    我們幫你規劃 AI 助理配置，當天就能啟用。
                   </p>
                   <p className="text-sm text-primary font-bold mb-8">
-                    前 10 名客戶享早鳥優惠價（遠端部署 NT$28,000）
+                    前 10 名客戶享早鳥優惠價（遠端導入 NT$28,000）
                   </p>
                   <div className="flex items-center gap-3 flex-wrap justify-center mb-10">
                     <Button asChild size="lg">

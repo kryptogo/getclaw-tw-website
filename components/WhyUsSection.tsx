@@ -5,18 +5,18 @@ import { Badge } from "@/components/ui/badge";
 
 const painPoints = [
   {
-    pain: "設定要花工程師好幾小時",
-    solution: "我們 5–8hr 搞定,當天上線",
+    pain: "自己裝完，用了兩天就丟著——不知道怎麼設定才好用",
+    solution: "我們派專人了解你的工作方式，設定到你真正會用為止",
     delay: 0,
   },
   {
-    pain: "自己裝容易跳過安全步驟",
-    solution: "遵循官方安全強化指南，通過資安審查",
+    pain: "AI 回覆品質很差，問什麼都答不到重點",
+    solution: "14 天密集陪跑，幫你把指令和流程打磨到 AI 真的能幫上忙",
     delay: 0.1,
   },
   {
-    pain: "裝完還要持續維護更新",
-    solution: "託管維護月費方案幫你顧",
+    pain: "業務在變、團隊在調整，但 AI 還停在一開始的設定",
+    solution: "ClawCare 持續跟進：你的業務變了，我們幫你讓 AI 跟上",
     delay: 0.2,
   },
 ];
@@ -25,22 +25,22 @@ const differentiators = [
   {
     Icon: IconGlobe,
     title: "在地化整合",
-    desc: "LINE、台灣常用 SaaS、中文 prompt 調優",
+    desc: "LINE、台灣常用工具、中文指令調校",
   },
   {
     Icon: IconLock,
     title: "合規優先",
-    desc: "團隊具備 ISO 27001/27701 認證，Cure53 等級滲透測試經驗",
+    desc: "團隊具備 ISO 27001/27701 認證，企業級滲透測試經驗",
   },
   {
     Icon: IconBuilding,
-    title: "到府部署",
-    desc: "大台北地區到場安裝",
+    title: "到府導入",
+    desc: "大台北地區專人到場服務",
   },
   {
     Icon: IconMessageCircle,
     title: "全中文支援",
-    desc: "繁中文件、中文密集調優",
+    desc: "繁中文件、中文密集陪跑調校",
   },
 ];
 
@@ -53,7 +53,7 @@ export default function WhyUsSection() {
             為何選擇我們
           </span>
           <h2 className="text-[clamp(28px,4vw,48px)] font-black leading-[1.3] mb-4">
-            你可以自己裝,但你不應該自己裝。
+            OpenClaw 誰都能裝，<br className="max-md:hidden" />但讓它真正好用需要有人幫你。
           </h2>
         </ScrollReveal>
 
@@ -71,7 +71,7 @@ export default function WhyUsSection() {
                   </div>
                   <div className="border-t border-border pt-6">
                     <Badge variant="success" className="mb-3">
-                      GetClaw 解法
+                      GetClaw 怎麼幫你
                     </Badge>
                     <p className="text-text font-medium">{item.solution}</p>
                   </div>
@@ -84,10 +84,10 @@ export default function WhyUsSection() {
         {/* Comparison Table */}
         <ScrollReveal className="mb-20">
           <h3 className="text-center text-[clamp(24px,3vw,32px)] font-black mb-3">
-            為什麼不找便宜的？
+            差別不在安裝，在導入成效
           </h3>
           <p className="text-center text-text-secondary mb-8 max-w-2xl mx-auto">
-            表面省錢，長期付出更多時間成本與資安風險
+            同樣是 OpenClaw，有沒有專人量身設置，用起來天差地別
           </p>
 
           {/* Desktop table */}
@@ -99,10 +99,10 @@ export default function WhyUsSection() {
                     比較項目
                   </th>
                   <th className="bg-white border border-border p-4 text-center font-bold text-text">
-                    自己裝 DIY
+                    自己裝
                   </th>
                   <th className="bg-white border border-border p-4 text-center font-bold text-text">
-                    坊間廉價安裝
+                    坊間安裝
                   </th>
                   <th className="bg-primary border border-primary p-4 text-center font-bold text-white">
                     GetClaw 白手套
@@ -112,42 +112,59 @@ export default function WhyUsSection() {
               <tbody>
                 <tr>
                   <td className="bg-white border border-border p-4 font-medium text-text">
-                    安裝時間
+                    導入後真的在用的比例
                   </td>
                   <td className="bg-white border border-border p-4 text-center text-text-secondary">
-                    8-20 小時摸索
+                    &lt; 20%（多數裝完閒置）
                   </td>
                   <td className="bg-white border border-border p-4 text-center text-text-secondary">
-                    2-3 小時<br /><span className="text-xs">(跳過安全設定)</span>
+                    ~30%
                   </td>
                   <td className="bg-primary/5 border border-primary/20 p-4 text-center font-medium text-text">
-                    5-8hr 含安全強化
+                    &gt; 90%（陪跑到會用）
                   </td>
                 </tr>
                 <tr>
                   <td className="bg-white border border-border p-4 font-medium text-text">
-                    安全強化
+                    有沒有人了解你的業務
                   </td>
                   <td className="bg-white border border-border p-4 text-center text-2xl">
                     ❌
-                    <div className="text-xs text-text-secondary mt-1">多數人跳過</div>
+                    <div className="text-xs text-text-secondary mt-1">自己摸索</div>
                   </td>
                   <td className="bg-white border border-border p-4 text-center text-2xl">
                     ❌
-                    <div className="text-xs text-text-secondary mt-1">不含</div>
+                    <div className="text-xs text-text-secondary mt-1">照公版設定</div>
                   </td>
                   <td className="bg-primary/5 border border-primary/20 p-4 text-center text-2xl">
                     ✅
-                    <div className="text-xs text-text mt-1 font-medium">官方 hardening guide</div>
+                    <div className="text-xs text-text mt-1 font-medium">專人到場了解後量身打造</div>
                   </td>
                 </tr>
                 <tr>
                   <td className="bg-white border border-border p-4 font-medium text-text">
-                    持續維護
+                    AI 回覆品質
                   </td>
                   <td className="bg-white border border-border p-4 text-center text-2xl">
                     ❌
-                    <div className="text-xs text-text-secondary mt-1">自己來</div>
+                    <div className="text-xs text-text-secondary mt-1">自己寫指令</div>
+                  </td>
+                  <td className="bg-white border border-border p-4 text-center text-2xl">
+                    ❌
+                    <div className="text-xs text-text-secondary mt-1">套模板</div>
+                  </td>
+                  <td className="bg-primary/5 border border-primary/20 p-4 text-center text-2xl">
+                    ✅
+                    <div className="text-xs text-text mt-1 font-medium">針對你的情境持續調校</div>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="bg-white border border-border p-4 font-medium text-text">
+                    導入後還有人管嗎
+                  </td>
+                  <td className="bg-white border border-border p-4 text-center text-2xl">
+                    ❌
+                    <div className="text-xs text-text-secondary mt-1">靠自己</div>
                   </td>
                   <td className="bg-white border border-border p-4 text-center text-2xl">
                     ❌
@@ -155,54 +172,24 @@ export default function WhyUsSection() {
                   </td>
                   <td className="bg-primary/5 border border-primary/20 p-4 text-center text-2xl">
                     ✅
-                    <div className="text-xs text-text mt-1 font-medium">託管月費方案</div>
+                    <div className="text-xs text-text mt-1 font-medium">ClawCare 每月持續優化</div>
                   </td>
                 </tr>
                 <tr>
                   <td className="bg-white border border-border p-4 font-medium text-text">
-                    LINE 整合
+                    業務變了怎麼辦
                   </td>
                   <td className="bg-white border border-border p-4 text-center text-2xl">
                     ❌
-                    <div className="text-xs text-text-secondary mt-1">需自行研究</div>
+                    <div className="text-xs text-text-secondary mt-1">自己重來</div>
                   </td>
                   <td className="bg-white border border-border p-4 text-center text-2xl">
-                    ❓
-                    <div className="text-xs text-text-secondary mt-1">不確定</div>
+                    ❌
+                    <div className="text-xs text-text-secondary mt-1">另外收費</div>
                   </td>
                   <td className="bg-primary/5 border border-primary/20 p-4 text-center text-2xl">
                     ✅
-                    <div className="text-xs text-text mt-1 font-medium">台灣在地整合</div>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="bg-white border border-border p-4 font-medium text-text">
-                    合規背景
-                  </td>
-                  <td className="bg-white border border-border p-4 text-center text-2xl">
-                    ❌
-                  </td>
-                  <td className="bg-white border border-border p-4 text-center text-2xl">
-                    ❌
-                  </td>
-                  <td className="bg-primary/5 border border-primary/20 p-4 text-center text-2xl">
-                    ✅
-                    <div className="text-xs text-text mt-1 font-medium">ISO 27001 / Cure53 等級</div>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="bg-white border border-border p-4 font-medium text-text">
-                    售後支援
-                  </td>
-                  <td className="bg-white border border-border p-4 text-center text-2xl">
-                    ❌
-                  </td>
-                  <td className="bg-white border border-border p-4 text-center text-2xl">
-                    ❌
-                  </td>
-                  <td className="bg-primary/5 border border-primary/20 p-4 text-center text-2xl">
-                    ✅
-                    <div className="text-xs text-text mt-1 font-medium">14天+專屬群組</div>
+                    <div className="text-xs text-text mt-1 font-medium">含在 ClawCare 方案內</div>
                   </td>
                 </tr>
                 <tr>
@@ -228,40 +215,34 @@ export default function WhyUsSection() {
           <div className="md:hidden space-y-6">
             {[
               {
-                feature: "安裝時間",
-                diy: "8-20 小時摸索",
-                cheap: "2-3 小時 (跳過安全設定)",
-                getclaw: "5-8hr 含安全強化",
+                feature: "導入後真的在用的比例",
+                diy: "< 20%（多數裝完閒置）",
+                cheap: "~30%",
+                getclaw: "✅ > 90%（陪跑到會用）",
               },
               {
-                feature: "安全強化",
-                diy: "❌ 多數人跳過",
-                cheap: "❌ 不含",
-                getclaw: "✅ 官方 hardening guide",
+                feature: "有沒有人了解你的業務",
+                diy: "❌ 自己摸索",
+                cheap: "❌ 照公版設定",
+                getclaw: "✅ 專人到場量身打造",
               },
               {
-                feature: "持續維護",
-                diy: "❌ 自己來",
+                feature: "AI 回覆品質",
+                diy: "❌ 自己寫指令",
+                cheap: "❌ 套模板",
+                getclaw: "✅ 針對你的情境調校",
+              },
+              {
+                feature: "導入後還有人管嗎",
+                diy: "❌ 靠自己",
                 cheap: "❌ 裝完不管",
-                getclaw: "✅ 託管月費方案",
+                getclaw: "✅ ClawCare 月度優化",
               },
               {
-                feature: "LINE 整合",
-                diy: "❌ 需自行研究",
-                cheap: "❓ 不確定",
-                getclaw: "✅ 台灣在地整合",
-              },
-              {
-                feature: "合規背景",
-                diy: "❌",
-                cheap: "❌",
-                getclaw: "✅ ISO 27001 / Cure53 等級",
-              },
-              {
-                feature: "售後支援",
-                diy: "❌",
-                cheap: "❌",
-                getclaw: "✅ 14天+專屬群組",
+                feature: "業務變了怎麼辦",
+                diy: "❌ 自己重來",
+                cheap: "❌ 另外收費",
+                getclaw: "✅ 含在 ClawCare 方案內",
               },
               {
                 feature: "到府服務",
@@ -277,11 +258,11 @@ export default function WhyUsSection() {
                   </div>
                   <div className="p-4 space-y-3">
                     <div className="flex justify-between items-center pb-3 border-b border-border">
-                      <span className="text-sm font-medium text-text-secondary">自己裝 DIY</span>
+                      <span className="text-sm font-medium text-text-secondary">自己裝</span>
                       <span className="text-sm text-text">{row.diy}</span>
                     </div>
                     <div className="flex justify-between items-center pb-3 border-b border-border">
-                      <span className="text-sm font-medium text-text-secondary">坊間廉價安裝</span>
+                      <span className="text-sm font-medium text-text-secondary">坊間安裝</span>
                       <span className="text-sm text-text">{row.cheap}</span>
                     </div>
                     <div className="flex justify-between items-center bg-primary/5 -mx-4 -mb-4 p-4">

@@ -23,19 +23,19 @@ export default function HeroSection() {
 
       <div className="relative z-10 max-w-[900px] mx-auto text-center">
         <Badge variant="highlight" className="mb-6 text-[13px] tracking-[0.15em] uppercase bg-primary/20 text-primary-light border-primary/30">
-          OpenClaw 白手套部署服務
+          OpenClaw 白手套導入服務
         </Badge>
 
         <h1 className="text-[clamp(28px,5vw,56px)] font-black leading-[1.25] mb-6 tracking-tight">
-          你的 AI 執行助理，
+          讓 AI 真正幫你做事，
           <br className="max-md:hidden" />
-          部署在你自己的硬體上。
+          不只是裝在你的電腦上。
         </h1>
 
         <p className="text-[clamp(16px,1.8vw,20px)] text-white/70 leading-[1.8] mb-6 max-w-[680px] mx-auto font-light">
-          專為創辦人與高管團隊打造的 OpenClaw 白手套部署服務。
+          專人到府了解你的工作方式，量身打造你的 AI 執行助理。
           <br className="max-md:hidden" />
-          不用燒工程資源、不用擔心資安風險——當天上線，14 天調優。
+          14 天密集陪跑，調到你離不開為止。
         </p>
 
         {/* Social proof micro-nudge */}
@@ -44,7 +44,7 @@ export default function HeroSection() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400" />
           </span>
-          已有企業主完成部署，平均省下每週 10+ 小時行政時間
+          已有企業主導入使用，平均省下每週 10+ 小時行政時間
         </p>
 
         <div className="flex items-center justify-center gap-4 flex-wrap max-[480px]:flex-col">

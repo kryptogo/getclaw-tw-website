@@ -12,30 +12,30 @@ const notoSansTC = Noto_Sans_TC({
 export const metadata: Metadata = {
   metadataBase: new URL("https://getclaw.tw"),
   title: {
-    default: "GetClaw — AI 執行助理，部署在你自己的硬體上",
+    default: "GetClaw — 讓 AI 真正幫你做事，不只是裝在你的電腦上",
     template: "%s | GetClaw",
   },
   description:
-    "專為創辦人與高管團隊打造的 OpenClaw 白手套部署服務。從安裝到安全加固，當天上線，14 天調優。自主託管 AI 助理，資料不離開你的硬體。",
+    "專人到府了解你的工作方式，量身打造 AI 執行助理。14 天密集陪跑，讓你離不開為止。ClawCare 持續優化，資料不離開你的硬體。",
   keywords: [
     "AI 執行助理",
     "OpenClaw",
     "AI assistant",
     "self-hosted AI",
-    "白手套部署",
+    "白手套導入",
     "GetClaw",
+    "ClawCare",
     "AI 自動化",
     "企業 AI",
-    "email 自動化",
     "行政助理 AI",
   ],
   alternates: {
     canonical: "https://getclaw.tw",
   },
   openGraph: {
-    title: "GetClaw — AI 執行助理，部署在你自己的硬體上",
+    title: "GetClaw — 讓 AI 真正幫你做事，不只是裝在你的電腦上",
     description:
-      "專為創辦人與高管團隊打造的 OpenClaw 白手套部署服務。當天上線，14 天調優。資料不離開你的硬體。",
+      "專人到府量身打造 AI 執行助理。14 天密集陪跑，ClawCare 持續優化。資料不離開你的硬體。",
     url: "https://getclaw.tw",
     type: "website",
     locale: "zh_TW",
@@ -45,16 +45,16 @@ export const metadata: Metadata = {
         url: "https://getclaw.tw/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "GetClaw — AI 執行助理，部署在你自己的硬體上",
+        alt: "GetClaw — 讓 AI 真正幫你做事，不只是裝在你的電腦上",
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "GetClaw — AI 執行助理，部署在你自己的硬體上",
+    title: "GetClaw — 讓 AI 真正幫你做事，不只是裝在你的電腦上",
     description:
-      "專為創辦人與高管團隊打造的 OpenClaw 白手套部署服務。當天上線，14 天調優。",
+      "專人到府量身打造 AI 執行助理。14 天密集陪跑，ClawCare 持續優化。",
     images: ["https://getclaw.tw/opengraph-image"],
   },
   robots: {

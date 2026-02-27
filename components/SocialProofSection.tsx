@@ -16,7 +16,7 @@ const quotes = [
     avatar: "SP",
   },
   {
-    text: "我自己部署 OpenClaw 兩週後，每週省下超過 10 小時行政工作。這不是理論——是我把它裝在 Mac Mini 上、實際跑了兩個 Agent 的真實體驗。",
+    text: "導入 OpenClaw 兩週後，每週省下超過 10 小時行政工作。這不是理論——是專人幫我量身設定後，實際跑了兩個助理的真實體驗。",
     author: "Kordan Ou",
     role: "GetClaw 創辦人、KryptoGO CEO",
     avatar: "KO",

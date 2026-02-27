@@ -5,28 +5,34 @@ import ScrollReveal from "./ScrollReveal";
 const steps = [
   {
     number: 1,
-    title: "啟動會議",
+    title: "了解你的工作方式",
     time: "30 分鐘",
-    items: ["了解工作流程、常用工具、痛點", "決定部署幾個 Agent"],
+    items: ["聊聊你每天怎麼工作、哪些事情最煩", "一起決定要設幾個 AI 助理、各自負責什麼"],
     delay: 0,
   },
   {
     number: 2,
-    title: "部署上線",
-    time: "5–8hr，當天上線",
+    title: "專人到場量身設置",
+    time: "當天完成",
     items: [
-      "安裝 + 安全加固",
-      "信件 / 行事曆 / 通訊軟體整合",
-      "最多 3 個關鍵工作流程",
+      "到你的辦公室（或遠端連線），把 AI 裝好、資安做到位",
+      "根據你的工作方式，串接信箱、行事曆、通訊軟體",
+      "幫你建好最重要的 3 個工作流程",
       "完整文件交付",
     ],
     delay: 0.15,
   },
   {
     number: 3,
-    title: "密集調優",
-    time: "14 天",
-    items: ["每日監控 + 微調", "專屬 LINE / Slack 頻道即時支援"],
+    title: "14 天密集陪跑",
+    time: "這是重點",
+    items: [
+      "第 1-3 天：觀察你實際怎麼用，找出 AI 卡住的地方",
+      "第 4-7 天：調整指令和流程，讓回覆品質大幅提升",
+      "第 8-14 天：深化更多工作場景，加入新的自動化流程",
+      "全程專屬群組，有問題隨時問、當天回覆",
+      "結束時交付《你的 AI 工作流程手冊》",
+    ],
     delay: 0.3,
   },
 ];
@@ -40,19 +46,19 @@ export default function ServiceFlowSection() {
             服務流程
           </span>
           <h2 className="text-[clamp(28px,4vw,48px)] font-black leading-[1.3] mb-4">
-            三步驟，當天上線
+            三階段，從認識你到你離不開
           </h2>
         </ScrollReveal>
 
         <div className="grid grid-cols-3 gap-8 mt-16 max-lg:grid-cols-1">
           {steps.map((step, i) => (
             <ScrollReveal key={step.number} delay={step.delay}>
-              <Card className="relative p-8 h-full">
-                <div className="w-12 h-12 rounded-full bg-primary text-white text-xl font-black flex items-center justify-center mb-6">
+              <Card className={`relative p-8 h-full ${step.number === 3 ? "ring-2 ring-primary/30 bg-primary/[0.02]" : ""}`}>
+                <div className={`w-12 h-12 rounded-full ${step.number === 3 ? "bg-primary" : "bg-primary"} text-white text-xl font-black flex items-center justify-center mb-6`}>
                   {step.number}
                 </div>
                 <h3 className="text-xl font-bold mb-1">{step.title}</h3>
-                <Badge variant="highlight" className="mb-4">
+                <Badge variant={step.number === 3 ? "default" : "highlight"} className="mb-4">
                   {step.time}
                 </Badge>
                 <CardContent className="p-0">
@@ -74,6 +80,16 @@ export default function ServiceFlowSection() {
             </ScrollReveal>
           ))}
         </div>
+
+        {/* ClawCare teaser */}
+        <ScrollReveal className="mt-12">
+          <div className="text-center bg-bg-dark rounded-2xl p-8 max-md:p-6">
+            <p className="text-white/90 font-bold text-lg mb-2">陪跑結束之後？ClawCare 持續優化</p>
+            <p className="text-white/50 text-sm max-w-[500px] mx-auto">
+              這不是結束，而是開始。每月工作流程健檢、新場景開發、指令持續調校——你的業務在變，AI 也跟著變。
+            </p>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );

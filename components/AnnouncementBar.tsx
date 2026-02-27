@@ -18,7 +18,7 @@ export default function AnnouncementBar() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400" />
           </span>
-          本週剩餘名額：<strong className="font-bold">5 位</strong>　早鳥價 NT$28,000（原價 NT$48,000）
+          本週剩餘名額：<strong className="font-bold">5 位</strong>　早鳥導入價 NT$28,000（原價 NT$48,000）
         </span>
         <Button asChild size="sm" variant="secondary" className="bg-white text-primary hover:bg-white/90 hover:scale-105">
           <Link href="/book">
