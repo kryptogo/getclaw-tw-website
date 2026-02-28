@@ -3,6 +3,16 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 
+// Pick the best supported video format
+function getVideoUrl(): { url: string; type: string } {
+  if (typeof document === "undefined") return { url: "/assets/hero-animation.mp4", type: "video/mp4" };
+  const v = document.createElement("video");
+  if (v.canPlayType("video/webm; codecs=vp9")) {
+    return { url: "/assets/hero-animation.webm", type: "video/webm" };
+  }
+  return { url: "/assets/hero-animation.mp4", type: "video/mp4" };
+}
+
 export default function HeroAnimation() {
   const heroRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -10,6 +20,7 @@ export default function HeroAnimation() {
   const readyRef = useRef(false);
 
   const [loaded, setLoaded] = useState(false);
+  const [loadProgress, setLoadProgress] = useState(0);
   const [introOpacity, setIntroOpacity] = useState(1);
   const [ctaOpacity, setCtaOpacity] = useState(0);
   const [showScrollHint, setShowScrollHint] = useState(false);
@@ -17,8 +28,12 @@ export default function HeroAnimation() {
   const markReady = useCallback(() => {
     if (readyRef.current) return;
     readyRef.current = true;
-    setLoaded(true);
-    setTimeout(() => setShowScrollHint(true), 600);
+    setLoadProgress(100);
+    // Small delay so user sees 100% before overlay fades
+    setTimeout(() => {
+      setLoaded(true);
+      setTimeout(() => setShowScrollHint(true), 400);
+    }, 300);
   }, []);
 
   const render = useCallback(() => {
@@ -27,11 +42,6 @@ export default function HeroAnimation() {
     const video = videoRef.current;
     if (!hero || !video) return;
 
-    // If duration is available, mark ready (handles late-firing events)
-    if (video.duration && video.duration > 0) {
-      markReady();
-    }
-
     const heroRect = hero.getBoundingClientRect();
     const sectionTop = -heroRect.top;
     const scrollableHeight = hero.offsetHeight - window.innerHeight;
@@ -39,7 +49,6 @@ export default function HeroAnimation() {
 
     const progress = Math.max(0, Math.min(1, sectionTop / scrollableHeight));
 
-    // Only scrub if duration is known
     if (video.duration && video.duration > 0) {
       video.currentTime = progress * video.duration;
     }
@@ -47,44 +56,89 @@ export default function HeroAnimation() {
     setIntroOpacity(Math.max(0, 1 - progress / 0.1));
     setShowScrollHint(progress < 0.02);
     setCtaOpacity(Math.max(0, Math.min(1, (progress - 0.85) / 0.15)));
-  }, [markReady]);
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+    let cancelled = false;
 
-    // Listen to multiple events — mobile may only fire the earlier ones
-    const onReady = () => {
-      markReady();
-      render();
-    };
-    video.addEventListener("loadedmetadata", onReady);
-    video.addEventListener("canplay", onReady);
-    video.addEventListener("canplaythrough", onReady);
+    // Fetch video with progress tracking, then assign as blob URL
+    const el = video; // non-null alias for async closure
+    async function loadVideo() {
+      const { url, type } = getVideoUrl();
 
-    // Timeout fallback: dismiss loading overlay after 4s even if video stalls
-    const fallbackTimer = setTimeout(() => {
-      markReady();
-      render();
-    }, 4000);
+      try {
+        const res = await fetch(url);
+        const contentLength = Number(res.headers.get("content-length") || 0);
+        const reader = res.body?.getReader();
 
-    // If already loaded (cached), fire immediately
-    if (video.readyState >= 1) {
-      onReady();
+        if (!reader) {
+          el.src = url;
+          el.load();
+          return;
+        }
+
+        const chunks: BlobPart[] = [];
+        let received = 0;
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done || cancelled) break;
+          chunks.push(value);
+          received += value.length;
+
+          if (contentLength > 0) {
+            setLoadProgress(Math.min(95, Math.round((received / contentLength) * 100)));
+          }
+        }
+
+        if (cancelled) return;
+
+        const blob = new Blob(chunks, { type });
+        const blobUrl = URL.createObjectURL(blob);
+
+        el.src = blobUrl;
+        el.load();
+
+        // Wait for video to be ready after blob assignment
+        const onReady = () => {
+          if (!cancelled) {
+            markReady();
+            render();
+          }
+          el.removeEventListener("loadeddata", onReady);
+        };
+        el.addEventListener("loadeddata", onReady);
+
+        // If already ready (fast cache hit)
+        if (el.readyState >= 2) onReady();
+      } catch {
+        if (cancelled) return;
+        el.src = getVideoUrl().url;
+        el.load();
+        setTimeout(() => {
+          if (!cancelled) markReady();
+        }, 2000);
+      }
     }
 
-    // Lazy load: use IntersectionObserver to set video src only when near viewport
+    // Start loading when section is near viewport
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          // Trigger load on mobile by calling load() explicitly
-          video.load();
+          loadVideo();
           observer.disconnect();
         }
       },
       { rootMargin: "200px" }
     );
     observer.observe(video);
+
+    // Timeout fallback: show content after 8s no matter what
+    const fallbackTimer = setTimeout(() => {
+      if (!cancelled) markReady();
+    }, 8000);
 
     const onScroll = () => {
       if (!tickingRef.current) {
@@ -96,10 +150,8 @@ export default function HeroAnimation() {
     window.addEventListener("scroll", onScroll, { passive: true });
 
     return () => {
+      cancelled = true;
       clearTimeout(fallbackTimer);
-      video.removeEventListener("loadedmetadata", onReady);
-      video.removeEventListener("canplay", onReady);
-      video.removeEventListener("canplaythrough", onReady);
       window.removeEventListener("scroll", onScroll);
       observer.disconnect();
     };
@@ -113,16 +165,13 @@ export default function HeroAnimation() {
           className="block w-full h-full object-cover bg-bg"
           muted
           playsInline
-          preload="metadata"
+          preload="none"
           aria-hidden="true"
-        >
-          <source src="/assets/hero-animation.webm" type="video/webm" />
-          <source src="/assets/hero-animation.mp4" type="video/mp4" />
-        </video>
+        />
 
-        {/* Loading overlay */}
+        {/* Loading overlay with real progress */}
         <div
-          className={`absolute inset-0 z-20 flex flex-col items-center justify-center bg-bg transition-opacity duration-400 ease-out ${
+          className={`absolute inset-0 z-20 flex flex-col items-center justify-center bg-bg transition-opacity duration-500 ease-out ${
             loaded ? "opacity-0 pointer-events-none" : ""
           }`}
           role="status"
@@ -130,12 +179,12 @@ export default function HeroAnimation() {
         >
           <div className="w-[200px] h-[3px] bg-black/8 rounded-sm overflow-hidden">
             <div
-              className="h-full bg-primary rounded-sm animate-pulse"
-              style={{ width: "60%" }}
+              className="h-full bg-primary rounded-sm transition-all duration-300 ease-out"
+              style={{ width: `${loadProgress}%` }}
             />
           </div>
           <div className="text-[13px] text-text-muted mt-2 tracking-widest">
-            載入中...
+            {loadProgress < 100 ? `${loadProgress}%` : "準備就緒"}
           </div>
         </div>
 
