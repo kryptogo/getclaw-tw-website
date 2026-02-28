@@ -17,13 +17,13 @@ export default function BookPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-24">
-        <section className="py-20 px-10 bg-bg-white max-md:px-6">
+      <main className="pt-24 bg-bg-white">
+        <section className="py-20 px-10 max-md:px-6">
           <div className="max-w-[700px] mx-auto text-center">
             <span className="inline-block text-[13px] font-bold text-primary tracking-[0.12em] mb-4">
               預約諮詢
             </span>
-            <h1 className="text-[clamp(32px,5vw,48px)] font-black leading-[1.25] mb-6">
+            <h1 className="text-[clamp(32px,5vw,48px)] font-black leading-[1.25] mb-6 text-text">
               預約免費諮詢
             </h1>
             <p className="text-text-secondary text-lg leading-relaxed mb-4">
