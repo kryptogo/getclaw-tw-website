@@ -7,17 +7,30 @@ export default function HeroAnimation() {
   const heroRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const tickingRef = useRef(false);
+  const readyRef = useRef(false);
 
   const [loaded, setLoaded] = useState(false);
   const [introOpacity, setIntroOpacity] = useState(1);
   const [ctaOpacity, setCtaOpacity] = useState(0);
   const [showScrollHint, setShowScrollHint] = useState(false);
 
+  const markReady = useCallback(() => {
+    if (readyRef.current) return;
+    readyRef.current = true;
+    setLoaded(true);
+    setTimeout(() => setShowScrollHint(true), 600);
+  }, []);
+
   const render = useCallback(() => {
     tickingRef.current = false;
     const hero = heroRef.current;
     const video = videoRef.current;
-    if (!hero || !video || !video.duration) return;
+    if (!hero || !video) return;
+
+    // If duration is available, mark ready (handles late-firing events)
+    if (video.duration && video.duration > 0) {
+      markReady();
+    }
 
     const heroRect = hero.getBoundingClientRect();
     const sectionTop = -heroRect.top;
@@ -25,24 +38,53 @@ export default function HeroAnimation() {
     if (scrollableHeight <= 0) return;
 
     const progress = Math.max(0, Math.min(1, sectionTop / scrollableHeight));
-    video.currentTime = progress * video.duration;
+
+    // Only scrub if duration is known
+    if (video.duration && video.duration > 0) {
+      video.currentTime = progress * video.duration;
+    }
 
     setIntroOpacity(Math.max(0, 1 - progress / 0.1));
     setShowScrollHint(progress < 0.02);
     setCtaOpacity(Math.max(0, Math.min(1, (progress - 0.85) / 0.15)));
-  }, []);
+  }, [markReady]);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    const onCanPlay = () => {
-      setLoaded(true);
-      setTimeout(() => setShowScrollHint(true), 600);
+    // Listen to multiple events — mobile may only fire the earlier ones
+    const onReady = () => {
+      markReady();
       render();
     };
+    video.addEventListener("loadedmetadata", onReady);
+    video.addEventListener("canplay", onReady);
+    video.addEventListener("canplaythrough", onReady);
 
-    video.addEventListener("canplaythrough", onCanPlay);
+    // Timeout fallback: dismiss loading overlay after 4s even if video stalls
+    const fallbackTimer = setTimeout(() => {
+      markReady();
+      render();
+    }, 4000);
+
+    // If already loaded (cached), fire immediately
+    if (video.readyState >= 1) {
+      onReady();
+    }
+
+    // Lazy load: use IntersectionObserver to set video src only when near viewport
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          // Trigger load on mobile by calling load() explicitly
+          video.load();
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    observer.observe(video);
 
     const onScroll = () => {
       if (!tickingRef.current) {
@@ -54,10 +96,14 @@ export default function HeroAnimation() {
     window.addEventListener("scroll", onScroll, { passive: true });
 
     return () => {
-      video.removeEventListener("canplaythrough", onCanPlay);
+      clearTimeout(fallbackTimer);
+      video.removeEventListener("loadedmetadata", onReady);
+      video.removeEventListener("canplay", onReady);
+      video.removeEventListener("canplaythrough", onReady);
       window.removeEventListener("scroll", onScroll);
+      observer.disconnect();
     };
-  }, [render]);
+  }, [render, markReady]);
 
   return (
     <section ref={heroRef} className="relative w-full h-[300vh]" id="hero">
@@ -67,7 +113,7 @@ export default function HeroAnimation() {
           className="block w-full h-full object-cover bg-bg"
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
           aria-hidden="true"
         >
           <source src="/assets/hero-animation.webm" type="video/webm" />
