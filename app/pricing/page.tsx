@@ -6,14 +6,14 @@ import PricingSection from "@/components/PricingSection";
 import CTASection from "@/components/CTASection";
 
 export const metadata: Metadata = {
-  title: "定價方案",
+  title: "ClawCare 企業 AI 方案定價",
   description:
-    "GetClaw AI 執行助理透明定價：啟動導入費 NT$48,000 起（含 14 天陪跑），ClawCare 持續優化月費 NT$25,000 起。年付享 2 個月免費。",
+    "比聘一位特助便宜 75%，比顧問公司快 10 倍。ClawCare 月費 NT$25,000 起，包含真人顧問持續優化、工具選型、流程升級——企業 AI 大腦的完整方案。",
   alternates: { canonical: "https://getclaw.tw/pricing" },
   openGraph: {
-    title: "定價方案 — GetClaw AI 執行助理",
+    title: "GetClaw ClawCare 定價｜企業 AI 特助月費 NT$25,000 起",
     description:
-      "啟動導入費 NT$48,000 起（含 14 天陪跑），ClawCare 持續優化月費 NT$25,000 起。透明定價，沒有隱藏費用。",
+      "不是安裝費，不是軟體授權。ClawCare 讓你的公司多一位全年無休的 AI 特助，月費比請人便宜 75%。",
     url: "https://getclaw.tw/pricing",
     type: "website",
     locale: "zh_TW",
@@ -21,9 +21,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "定價方案 — GetClaw AI 執行助理",
+    title: "企業 AI 特助年費制｜GetClaw ClawCare",
     description:
-      "啟動導入費 NT$48,000 起（含 14 天陪跑），ClawCare 月費 NT$25,000 起。透明定價。",
+      "月費 NT$25,000 起，相當於人力成本的四分之一。含真人顧問、持續優化、工作流程升級。",
   },
 };
 
