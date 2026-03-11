@@ -12,11 +12,11 @@ const notoSansTC = Noto_Sans_TC({
 export const metadata: Metadata = {
   metadataBase: new URL("https://getclaw.tw"),
   title: {
-    default: "GetClaw — 讓 AI 真正幫你做事，不只是裝在你的電腦上",
+    default: "GetClaw — 有人懂你的業務幫你設計 AI，跟自己亂試天差地別",
     template: "%s | GetClaw",
   },
   description:
-    "專人到府了解你的工作方式，量身打造 AI 執行助理。14 天密集陪跑，讓你離不開為止。ClawCare 持續優化，資料不離開你的硬體。",
+    "專人到府了解你的工作方式，量身打造 AI 執行助理。幫你建立個人知識庫，讓 AI 越用越懂你。14 天密集陪跑，ClawCare 持續優化。",
   keywords: [
     "AI 執行助理",
     "OpenClaw",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     canonical: "https://getclaw.tw",
   },
   openGraph: {
-    title: "GetClaw — 讓 AI 真正幫你做事，不只是裝在你的電腦上",
+    title: "GetClaw — 有人懂你的業務幫你設計 AI，跟自己亂試天差地別",
     description:
       "專人到府量身打造 AI 執行助理。14 天密集陪跑，ClawCare 持續優化。資料不離開你的硬體。",
     url: "https://getclaw.tw",
@@ -45,14 +45,14 @@ export const metadata: Metadata = {
         url: "https://getclaw.tw/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "GetClaw — 讓 AI 真正幫你做事，不只是裝在你的電腦上",
+        alt: "GetClaw — 有人懂你的業務幫你設計 AI，跟自己亂試天差地別",
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "GetClaw — 讓 AI 真正幫你做事，不只是裝在你的電腦上",
+    title: "GetClaw — 有人懂你的業務幫你設計 AI，跟自己亂試天差地別",
     description:
       "專人到府量身打造 AI 執行助理。14 天密集陪跑，ClawCare 持續優化。",
     images: ["https://getclaw.tw/opengraph-image"],

@@ -4,22 +4,22 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const quotes = [
   {
-    text: "這是我最近看到最接近科幻小說的東西。（談論 AI agent 技術）",
-    author: "Andrej Karpathy",
-    role: "前 Tesla AI 總監、OpenAI 創始成員",
-    avatar: "AK",
+    text: "趕快趕快我要我要！之前自己裝了用兩天就放棄，今天聽完才知道原來可以做到這種程度。",
+    author: "AAMA 學員",
+    role: "傳產企業主",
+    avatar: "A1",
   },
   {
-    text: "I replaced my EA with this. It's insane how good it is.",
-    author: "Sam Parr",
-    role: "The Hustle 創辦人 via X (Twitter)",
-    avatar: "SP",
+    text: "聽到開車時用語音就能完成一篇貼文然後自動發布，我整個人都震撼了。我每天有多少想法是在通勤時想到卻沒記下來的？",
+    author: "AAMA 學員",
+    role: "自媒體創作者 / 企業主",
+    avatar: "A2",
   },
   {
-    text: "導入 OpenClaw 兩週後，每週省下超過 10 小時行政工作。這不是理論——是專人幫我量身設定後，實際跑了兩個助理的真實體驗。",
-    author: "Kordan Ou",
-    role: "GetClaw 創辦人、KryptoGO CEO",
-    avatar: "KO",
+    text: "每天早上收到 Daily Brief——行程、天氣、專案進度、重要 Email 全部整理好——這比請一個秘書還準時。三個團購有優惠嗎？",
+    author: "AAMA 學員",
+    role: "新創公司 CEO",
+    avatar: "A3",
   },
 ];
 
@@ -59,10 +59,10 @@ export default function SocialProofSection() {
             客戶評價
           </span>
           <h2 className="text-[clamp(24px,3.5vw,40px)] font-black leading-[1.3] mb-3">
-            被全球頂尖 AI 領袖推薦
+            聽過的人都說：「趕快，我要！」
           </h2>
           <p className="text-text-secondary text-[clamp(14px,1.3vw,16px)] font-light">
-            不只是我們說好——看看業界怎麼說
+            來自企業主親身體驗後的真實反應
           </p>
         </ScrollReveal>
 

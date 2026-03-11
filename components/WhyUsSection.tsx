@@ -5,18 +5,24 @@ import { Badge } from "@/components/ui/badge";
 
 const painPoints = [
   {
-    pain: "自己裝完，用了兩天就丟著——不知道怎麼設定才好用",
-    solution: "我們派專人了解你的工作方式，設定到你真正會用為止",
+    layer: "第一層",
+    pain: "裝了不會用——自己裝完用兩天就丟著",
+    solution: "專人了解你的工作方式，設定到你真正會用為止",
+    insight: "這是最表面的問題，任何人都能幫你「裝好」",
     delay: 0,
   },
   {
-    pain: "AI 回覆品質很差，問什麼都答不到重點",
-    solution: "14 天密集陪跑，幫你把指令和流程打磨到 AI 真的能幫上忙",
+    layer: "第二層",
+    pain: "不知道 AI 能幫我做什麼——缺的是想像力，不是工具",
+    solution: "我們帶著三年的 AI 實戰經驗，幫你發現「原來這個也能自動化」的場景",
+    insight: "大多數人不是不想用，是沒想到 AI 可以這樣用",
     delay: 0.1,
   },
   {
-    pain: "業務在變、團隊在調整，但 AI 還停在一開始的設定",
-    solution: "ClawCare 持續跟進：你的業務變了，我們幫你讓 AI 跟上",
+    layer: "第三層",
+    pain: "AI 不懂我——同樣的 Prompt 每個人結果都一樣",
+    solution: "幫你建立個人知識庫，讓 AI 累積 Context，越用越懂你的業務與風格",
+    insight: "這才是長期價值：你的 AI 會跟別人的不一樣",
     delay: 0.2,
   },
 ];
@@ -53,7 +59,7 @@ export default function WhyUsSection() {
             為何選擇我們
           </span>
           <h2 className="text-[clamp(28px,4vw,48px)] font-black leading-[1.3] mb-4">
-            OpenClaw 誰都能裝，<br className="max-md:hidden" />但讓它真正好用需要有人幫你。
+            你以為問題是「不會裝」，<br className="max-md:hidden" />其實是這三層。
           </h2>
         </ScrollReveal>
 
@@ -63,11 +69,17 @@ export default function WhyUsSection() {
             <ScrollReveal key={item.pain} delay={item.delay}>
               <Card className="h-full">
                 <CardContent className="p-8">
+                  <Badge variant="outline" className="mb-4 text-xs">
+                    {item.layer}
+                  </Badge>
                   <div className="mb-6">
                     <Badge variant="destructive" className="mb-3">
                       痛點
                     </Badge>
                     <p className="text-text font-medium">{item.pain}</p>
+                    <p className="text-text-muted text-xs mt-2 italic">
+                      {item.insight}
+                    </p>
                   </div>
                   <div className="border-t border-border pt-6">
                     <Badge variant="success" className="mb-3">

@@ -6,24 +6,39 @@ const steps = [
   {
     number: 1,
     title: "了解你的工作方式",
-    time: "30 分鐘",
-    items: ["聊聊你每天怎麼工作、哪些事情最煩", "一起決定要設幾個 AI 助理、各自負責什麼"],
+    time: "15 分鐘",
+    items: [
+      "聊聊你每天怎麼工作、哪些事情最煩",
+      "一起決定要設幾個 AI 助理、各自負責什麼",
+    ],
     delay: 0,
   },
   {
     number: 2,
-    title: "專人到場量身設置",
-    time: "當天完成",
+    title: "累積你的 Context",
+    time: "知識飛輪的起點",
     items: [
-      "到你的辦公室（或遠端連線），把 AI 裝好、資安做到位",
-      "根據你的工作方式，串接信箱、行事曆、通訊軟體",
-      "幫你建好最重要的 3 個工作流程",
-      "完整文件交付",
+      "建立你的個人知識庫：會議錄音、筆記、常用文件",
+      "讓 AI 學習你的溝通風格、業務術語、決策邏輯",
+      "串接信箱、行事曆、通訊軟體，讓資料自動匯入",
+      "這是讓你的 AI「跟別人不一樣」的關鍵步驟",
     ],
     delay: 0.15,
   },
   {
     number: 3,
+    title: "專人到場量身設置",
+    time: "當天完成",
+    items: [
+      "到你的辦公室（或遠端連線），把 AI 裝好、資安做到位",
+      "根據你的工作方式，設計專屬工作流程",
+      "幫你建好最重要的 3 個自動化場景",
+      "完整文件交付",
+    ],
+    delay: 0.3,
+  },
+  {
+    number: 4,
     title: "14 天密集陪跑",
     time: "這是重點",
     items: [
@@ -33,7 +48,7 @@ const steps = [
       "全程專屬群組，有問題隨時問、當天回覆",
       "結束時交付《你的 AI 工作流程手冊》",
     ],
-    delay: 0.3,
+    delay: 0.45,
   },
 ];
 
@@ -46,15 +61,15 @@ export default function ServiceFlowSection() {
             服務流程
           </span>
           <h2 className="text-[clamp(28px,4vw,48px)] font-black leading-[1.3] mb-4">
-            三階段，從認識你到你離不開
+            四階段，從認識你到 AI 越來越懂你
           </h2>
         </ScrollReveal>
 
-        <div className="grid grid-cols-3 gap-8 mt-16 max-lg:grid-cols-1">
+        <div className="grid grid-cols-4 gap-6 mt-16 max-lg:grid-cols-2 max-md:grid-cols-1">
           {steps.map((step, i) => (
             <ScrollReveal key={step.number} delay={step.delay}>
-              <Card className={`relative p-8 h-full ${step.number === 3 ? "ring-2 ring-primary/30 bg-primary/[0.02]" : ""}`}>
-                <div className={`w-12 h-12 rounded-full ${step.number === 3 ? "bg-primary" : "bg-primary"} text-white text-xl font-black flex items-center justify-center mb-6`}>
+              <Card className={`relative p-6 h-full ${step.number === 2 ? "ring-2 ring-primary/30 bg-primary/[0.02]" : ""}`}>
+                <div className={`w-10 h-10 rounded-full bg-primary text-white text-lg font-black flex items-center justify-center mb-4`}>
                   {step.number}
                 </div>
                 <h3 className="text-xl font-bold mb-1">{step.title}</h3>
@@ -84,9 +99,10 @@ export default function ServiceFlowSection() {
         {/* ClawCare teaser */}
         <ScrollReveal className="mt-12">
           <div className="text-center bg-bg-dark rounded-2xl p-8 max-md:p-6">
-            <p className="text-white/90 font-bold text-lg mb-2">陪跑結束之後？ClawCare 持續優化</p>
-            <p className="text-white/50 text-sm max-w-[500px] mx-auto">
-              這不是結束，而是開始。每月工作流程健檢、新場景開發、指令持續調校——你的業務在變，AI 也跟著變。
+            <p className="text-white/90 font-bold text-lg mb-2">知識飛輪：你的 AI 會越來越聰明</p>
+            <p className="text-white/50 text-sm max-w-[560px] mx-auto">
+              陪跑結束只是開始。隨著你持續使用，AI 累積的 Context 越多，回答品質就越好。
+              ClawCare 每月幫你健檢工作流、開發新場景、持續調校——讓你的 AI 跟別人的越來越不一樣。
             </p>
           </div>
         </ScrollReveal>

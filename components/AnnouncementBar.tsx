@@ -5,10 +5,13 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 
+// Set to true to show the announcement bar
+const SHOW_ANNOUNCEMENT = false;
+
 export default function AnnouncementBar() {
   const [dismissed, setDismissed] = useState(false);
 
-  if (dismissed) return null;
+  if (!SHOW_ANNOUNCEMENT || dismissed) return null;
 
   return (
     <div className="hidden md:flex fixed bottom-0 left-0 right-0 z-[700] bg-gradient-to-r from-primary-dark/95 via-primary/95 to-primary-dark/95 backdrop-blur-md text-white text-center text-sm font-medium py-3 px-4 border-t border-white/10 shadow-[0_-4px_20px_rgba(0,0,0,0.15)]">

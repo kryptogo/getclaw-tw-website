@@ -38,7 +38,7 @@ export default function CTASection() {
                     我們幫你規劃 AI 助理配置，當天就能啟用。
                   </p>
                   <p className="text-sm text-primary font-bold mb-8">
-                    前 10 名客戶享早鳥優惠價（遠端導入 NT$28,000）
+                    15 分鐘免費諮詢，了解 AI 能幫你做什麼
                   </p>
                   <div className="flex items-center gap-3 flex-wrap justify-center mb-10">
                     <Button asChild size="lg">
