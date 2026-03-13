@@ -4,8 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { HighlightGroup, HighlighterItem, Particles } from "@/components/ui/highlighter";
 import ScrollReveal from "./ScrollReveal";
-import Image from "next/image";
-import { Mail, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export default function CTASection() {
   return (
@@ -30,47 +29,31 @@ export default function CTASection() {
                     立即開始
                   </span>
                   <h2 className="text-[clamp(28px,4vw,40px)] font-black mb-4 leading-[1.3]">
-                    準備好讓 AI 接管瑣事了嗎？
+                    準備好讓 AI 員工到職了嗎？
                   </h2>
-                  <p className="text-text-secondary text-[clamp(14px,1.3vw,17px)] leading-[1.8] mb-4 font-light max-w-[520px]">
-                    預約免費諮詢，告訴我們你的工作方式。
+                  <p className="text-text-secondary text-[clamp(14px,1.3vw,17px)] leading-[1.8] mb-8 font-light max-w-[520px]" id="ai-fit-check">
+                    預約 15 分鐘免費諮詢，告訴我們你的工作方式。
                     <br className="max-md:hidden" />
-                    我們幫你規劃 AI 助理配置，當天就能啟用。
+                    當天就能啟用，Token 費用全包、不滿意隨時退。
                   </p>
-                  <p className="text-sm text-primary font-bold mb-8">
-                    15 分鐘免費諮詢，了解 AI 能幫你做什麼
-                  </p>
-                  <div className="flex items-center gap-3 flex-wrap justify-center mb-10">
+                  <div className="flex flex-col items-center gap-3">
                     <Button asChild size="lg">
                       <Link href="/book">
                         預約免費諮詢
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>
-                    <Button asChild size="lg" variant="outline">
-                      <a href="https://line.me/R/ti/p/@377lrocj" target="_blank" rel="noopener noreferrer">
+                    <div className="flex items-center gap-4 text-sm text-text-muted">
+                      <a href="https://line.me/R/ti/p/@377lrocj" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:text-text transition-colors">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src="https://cdn.simpleicons.org/line" alt="" width={16} height={16} className="mr-2" />
+                        <img src="https://cdn.simpleicons.org/line" alt="" width={14} height={14} />
                         LINE 諮詢
                       </a>
-                    </Button>
-                    <Button asChild size="lg" variant="outline">
-                      <a href="mailto:contact@kryptogo.com">
-                        <Mail className="mr-2 h-4 w-4" />
+                      <span className="text-border">|</span>
+                      <a href="mailto:contact@kryptogo.com" className="hover:text-text transition-colors">
                         寄信聯繫
                       </a>
-                    </Button>
-                  </div>
-
-                  {/* Integration visual */}
-                  <div className="w-full max-w-[520px] mx-auto">
-                    <Image
-                      src="/assets/getclaw-integration.webp"
-                      alt="GetClaw 整合 Gmail、Slack、Google Drive、HubSpot 等多種工具"
-                      width={520}
-                      height={346}
-                      className="w-full h-auto mix-blend-multiply rounded-2xl"
-                    />
+                    </div>
                   </div>
                 </div>
               </div>

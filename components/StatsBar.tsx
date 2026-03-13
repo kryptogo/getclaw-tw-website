@@ -10,7 +10,7 @@ interface StatItem {
 
 const stats: StatItem[] = [
   { value: 10, suffix: "+小時/週", label: "平均為客戶省下的時間" },
-  { value: 14, suffix: "天", label: "專人密集陪跑" },
+  { value: 1, suffix: "天", label: "AI 員工當天到職" },
   { value: 90, suffix: "%+", label: "導入後持續使用率" },
   { value: 100, suffix: "%", label: "資料留在你的機器" },
 ];

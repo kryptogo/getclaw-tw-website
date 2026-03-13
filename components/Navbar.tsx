@@ -23,9 +23,8 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
-  // On homepage: hide until scroll > 50px (reveal on scroll)
-  // On other pages: always visible
-  const visible = isHome ? scrolled : true;
+  // Always visible on all pages
+  const visible = true;
 
   useEffect(() => {
     if (!isHome) return;

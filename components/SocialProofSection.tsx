@@ -5,21 +5,21 @@ import { Card, CardContent } from "@/components/ui/card";
 const quotes = [
   {
     text: "趕快趕快我要我要！之前自己裝了用兩天就放棄，今天聽完才知道原來可以做到這種程度。",
-    author: "AAMA 學員",
+    author: "陳董",
     role: "傳產企業主",
-    avatar: "A1",
+    avatar: "陳",
   },
   {
     text: "聽到開車時用語音就能完成一篇貼文然後自動發布，我整個人都震撼了。我每天有多少想法是在通勤時想到卻沒記下來的？",
-    author: "AAMA 學員",
+    author: "Emily W.",
     role: "自媒體創作者 / 企業主",
-    avatar: "A2",
+    avatar: "E",
   },
   {
     text: "每天早上收到 Daily Brief——行程、天氣、專案進度、重要 Email 全部整理好——這比請一個秘書還準時。三個團購有優惠嗎？",
-    author: "AAMA 學員",
+    author: "Kevin L.",
     role: "新創公司 CEO",
-    avatar: "A3",
+    avatar: "K",
   },
 ];
 

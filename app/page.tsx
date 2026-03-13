@@ -3,6 +3,7 @@ import AnnouncementBar from "@/components/AnnouncementBar";
 import HeroAnimation from "@/components/HeroAnimation";
 import HeroSection from "@/components/HeroSection";
 import StatsBar from "@/components/StatsBar";
+import FamiliarToolsBar from "@/components/FamiliarToolsBar";
 import RealStoriesSection from "@/components/RealStoriesSection";
 import WhyUsSection from "@/components/WhyUsSection";
 import TrustBadges from "@/components/TrustBadges";
@@ -11,6 +12,7 @@ import AgentSection from "@/components/AgentSection";
 import PricingSection from "@/components/PricingSection";
 import SecurityPreview from "@/components/SecurityPreview";
 import SocialProofSection from "@/components/SocialProofSection";
+import ScenarioTagWall from "@/components/ScenarioTagWall";
 import UseCasesPreview from "@/components/UseCasesPreview";
 import FAQPreview from "@/components/FAQPreview";
 import CTASection from "@/components/CTASection";
@@ -27,11 +29,13 @@ export default function Home() {
         <HeroAnimation />
         <HeroSection />
         <StatsBar />
+        <FamiliarToolsBar />
         <RealStoriesSection />
         <WhyUsSection />
         <TrustBadges />
         <ServiceFlowSection />
         <AgentSection />
+        <ScenarioTagWall />
         <PricingSection />
         <SecurityPreview />
         <SocialProofSection />

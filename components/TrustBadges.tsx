@@ -57,6 +57,27 @@ export default function TrustBadges() {
           <p className="text-center text-xs text-text-muted uppercase tracking-[0.15em] mb-6">
             Powered by KryptoGO — 企業級安全認證
           </p>
+          {/* Tech partner logos */}
+          <div className="flex items-center justify-center gap-6 mb-6 opacity-40 flex-wrap">
+            {[
+              { name: "OpenAI", slug: "openai" },
+              { name: "Google Cloud", slug: "googlecloud" },
+              { name: "Anthropic", slug: "anthropic" },
+              { name: "Apple", slug: "apple" },
+            ].map((partner) => (
+              <span key={partner.slug} className="inline-flex items-center gap-1.5 text-xs text-text-muted font-medium">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={`https://cdn.simpleicons.org/${partner.slug}/666666`}
+                  alt={partner.name}
+                  width={16}
+                  height={16}
+                  loading="lazy"
+                />
+                {partner.name}
+              </span>
+            ))}
+          </div>
           <div className="flex items-center justify-center gap-6 flex-wrap max-md:gap-4">
             {badges.map((badge) => (
               <Card

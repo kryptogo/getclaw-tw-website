@@ -5,30 +5,30 @@ import { Badge } from "@/components/ui/badge";
 
 const agents = [
   {
-    role: "CEO 助理",
+    role: "CEO 的 AI 員工",
     Icon: IconCEO,
-    desc: "信件分流 + 行事曆管理 + 會議摘要",
+    desc: "24/7 待命，不請假、不漏信、不忘事",
     tasks: ["重要信件篩選與摘要", "智慧排程與衝突偵測", "會議簡報自動生成"],
     delay: 0,
   },
   {
-    role: "CFO 助理",
+    role: "CFO 的 AI 員工",
     Icon: IconFinance,
-    desc: "財務信件分類 + 報表提醒 + 審批通知",
+    desc: "每筆帳都追蹤，每張報表都準時",
     tasks: ["發票與帳單自動歸檔", "月結提醒與報表摘要", "審批流程通知"],
     delay: 0.1,
   },
   {
-    role: "業務助理",
+    role: "業務的 AI 員工",
     Icon: IconSales,
-    desc: "CRM 更新 + 客戶跟進 + 報價追蹤",
+    desc: "不漏追客戶，報價進度自動回報",
     tasks: ["CRM 資料自動同步", "客戶跟進排程提醒", "報價單狀態追蹤"],
     delay: 0.2,
   },
   {
-    role: "行政助理",
+    role: "行政的 AI 員工",
     Icon: IconHandshake,
-    desc: "共用信箱 + 訪客接待 + 行程協調",
+    desc: "信箱、訪客、行程——全自動處理",
     tasks: ["共用信箱分流處理", "訪客行程與接待安排", "跨部門行程協調"],
     delay: 0.3,
   },
@@ -40,13 +40,13 @@ export default function AgentSection() {
       <div className="max-w-[1200px] mx-auto">
         <ScrollReveal className="text-center mb-4">
           <span className="inline-block text-[13px] font-bold text-primary tracking-[0.12em] uppercase mb-4">
-            執行助理
+            AI 員工
           </span>
           <h2 className="text-[clamp(28px,4vw,48px)] font-black leading-[1.3] mb-4">
-            什麼是「AI 執行助理」?
+            雇一個不用發薪水的員工
           </h2>
           <p className="text-text-secondary text-[clamp(15px,1.4vw,18px)] leading-[1.8] max-w-[700px] mx-auto font-light">
-            每個助理負責一個角色，各自獨立、互不干擾。大多數 5–50 人團隊會導入 2–4 個助理。每個助理的工作流程都是我們根據你的實際需求量身設計的——不是套模板，是了解你怎麼工作之後，一個一個幫你打造。
+            每個 AI 員工負責一個角色，24/7 在線、不請假、不離職。大多數 5–50 人團隊會導入 2–4 位。每位員工的工作流程都根據你的實際需求量身設計——不是套模板，是了解你怎麼工作之後，一個一個幫你打造。
           </p>
         </ScrollReveal>
 
