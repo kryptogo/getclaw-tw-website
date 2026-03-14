@@ -4,10 +4,10 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const quotes = [
   {
-    text: "趕快趕快我要我要！之前自己裝了用兩天就放棄，今天聽完才知道原來可以做到這種程度。",
-    author: "陳董",
-    role: "傳產企業主",
-    avatar: "陳",
+    text: "這些對你們來講基礎的設定，對我們就是極大的困難。光是設定這段就已經超過價值了。",
+    author: "林俊哥",
+    role: "地方創生企業 CEO",
+    avatar: "林",
   },
   {
     text: "聽到開車時用語音就能完成一篇貼文然後自動發布，我整個人都震撼了。我每天有多少想法是在通勤時想到卻沒記下來的？",

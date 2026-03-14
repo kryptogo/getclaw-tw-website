@@ -387,7 +387,44 @@ export default function PricingSection() {
           </div>
         </ScrollReveal>
 
-        {/* ── 7. ROI CTA ── */}
+        {/* ── 7. Fee FAQ ── */}
+        <ScrollReveal className="mb-16">
+          <h3 className="text-center text-[clamp(20px,2.5vw,28px)] font-black mb-2">
+            關於費用，客戶最常問的問題
+          </h3>
+          <p className="text-center text-sm text-text-secondary mb-8">
+            來自實際諮詢中最常出現的提問
+          </p>
+          <div className="grid grid-cols-2 gap-6 max-md:grid-cols-1">
+            {[
+              {
+                q: "每次跟 AI 對話都要錢嗎？",
+                a: "如果自己跑，是的——AI 按對話量計費。但 ClawCare 方案已經全包 Token 費用，你不需要煩惱「用太多會超支」。",
+              },
+              {
+                q: "其他人跟我的 AI 講話也會扣我的錢？",
+                a: "是的，如果自行管理 API，所有對話都會消耗你的額度。ClawCare 全包方案就是為了解決這個焦慮——用多少都不另外收費。",
+              },
+              {
+                q: "省錢的做法是什麼？",
+                a: "ClawCare 月費方案比自己管理 API Key 划算得多。我們幫你選最適合的模型組合，在品質和成本之間取得最佳平衡。",
+              },
+              {
+                q: "語音辨識也要額外付費嗎？",
+                a: "Groq Whisper 每日有約 8 小時的免費語音轉文字額度，一般企業絕對夠用。超過的部分也包含在 ClawCare 方案中。",
+              },
+            ].map((item) => (
+              <Card key={item.q}>
+                <CardContent className="p-6">
+                  <p className="font-bold text-text mb-2 text-sm">{item.q}</p>
+                  <p className="text-text-secondary text-sm leading-relaxed">{item.a}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </ScrollReveal>
+
+        {/* ── 8. ROI CTA ── */}
         <ScrollReveal>
           <Card className="border-2 border-primary/20 bg-primary/[0.02]">
             <CardContent className="p-8 max-md:p-6 text-center">

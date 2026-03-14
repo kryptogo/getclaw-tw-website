@@ -24,13 +24,13 @@ const stories = [
     delay: 0.1,
   },
   {
-    scene: "每天早上的 Daily Brief，比秘書還準時",
+    scene: "無 IT 人員的企業，用 LINE 群組管理代辦事項",
     description:
-      "每天早上 8 點，AI 助理自動整理：今日行程、天氣、專案進度（Linear）、值得注意的 Email、重要客戶動態。打開手機就知道今天要做什麼，不用翻五個 App。",
-    role: "CEO / 主管",
-    before: "每天早上花 30 分鐘翻 5 個 App 確認狀態",
-    after: "起床就收到一份整合好的每日簡報",
-    highlight: "行程 + 天氣 + 專案 + Email = 一份簡報",
+      "地方創生企業沒有 IT 人員，CEO 每天在 LINE、Email、Google Chat 之間切來切去。AI 助理加入工作群組後，自動記錄代辦事項、每天早上 8 點推送提醒，重要 Email 直接摘要轉發到 LINE。",
+    role: "中小企業主 / 地方創生",
+    before: "每天重複打開 5 個系統確認有沒有漏掉什麼",
+    after: "所有重要訊息統一由 AI 在 LINE 推送",
+    highlight: "Email + 行事曆 + 代辦 → LINE 一站整合",
     delay: 0.2,
   },
 ];
