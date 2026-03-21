@@ -90,7 +90,7 @@ export default function Navbar() {
   }, []);
 
   // Section IDs that exist on the homepage for smooth scrolling
-  const homeSections = new Set(["use-cases", "pricing", "security", "faq"]);
+  const homeSections = new Set(["use-cases", "security", "faq"]);
 
   const handleNavClick = useCallback(
     (
