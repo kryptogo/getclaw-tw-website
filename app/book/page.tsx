@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -72,6 +73,99 @@ export default function BookPage() {
                   contact@kryptogo.com
                 </a>
               </p>
+            </div>
+          </div>
+        </section>
+
+        {/* What to expect section */}
+        <section className="py-16 px-10 bg-bg max-md:px-6">
+          <div className="max-w-[700px] mx-auto">
+            <h2 className="text-[clamp(24px,4vw,36px)] font-black leading-[1.3] mb-8 text-text text-center">
+              這 15 分鐘會聊什麼？
+            </h2>
+
+            <div className="grid gap-6 mb-10">
+              <div className="bg-bg-white rounded-xl p-6 border border-border">
+                <h3 className="font-bold text-text mb-2">1. 了解你的工作痛點</h3>
+                <p className="text-text-secondary text-sm leading-relaxed">
+                  你每天花最多時間在什麼事情上？哪些事情是「不該由你做，但沒人能幫」的？我們先找出 AI 最能幫上忙的地方。
+                </p>
+              </div>
+              <div className="bg-bg-white rounded-xl p-6 border border-border">
+                <h3 className="font-bold text-text mb-2">2. 評估可行性與場景</h3>
+                <p className="text-text-secondary text-sm leading-relaxed">
+                  根據你的需求，我會當場判斷哪些工作適合 AI 自動化、需要幾個場景、串接哪些工具（LINE、Email、行事曆等）。
+                </p>
+              </div>
+              <div className="bg-bg-white rounded-xl p-6 border border-border">
+                <h3 className="font-bold text-text mb-2">3. 說明費用與時程</h3>
+                <p className="text-text-secondary text-sm leading-relaxed">
+                  費用結構完全透明：設備（約 NT$18,900 起）+ 一次性建置費 + 月費。簽約後 3-5 天就能開始使用第一個功能，完整上線約 2 週。
+                </p>
+              </div>
+              <div className="bg-bg-white rounded-xl p-6 border border-border">
+                <h3 className="font-bold text-text mb-2">4. 回答你的任何問題</h3>
+                <p className="text-text-secondary text-sm leading-relaxed">
+                  資料安全怎麼保障？需要自己買帳號嗎？不想用了怎麼辦？不懂技術能用嗎？任何疑問，當場回答。
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-bg-white rounded-xl p-6 border border-border text-center">
+              <p className="text-text-secondary text-sm mb-1">
+                想先了解更多細節？
+              </p>
+              <Link
+                href="/blog/what-to-expect-in-15min-call"
+                className="text-primary font-bold text-sm hover:underline"
+              >
+                閱讀完整文章：預約那 15 分鐘，我們會聊什麼？ →
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Quick answers */}
+        <section className="py-16 px-10 bg-bg-white max-md:px-6">
+          <div className="max-w-[700px] mx-auto">
+            <h2 className="text-[clamp(20px,3vw,28px)] font-black leading-[1.3] mb-8 text-text text-center">
+              預約前的常見問題
+            </h2>
+
+            <div className="space-y-6 text-sm">
+              <div>
+                <p className="font-bold text-text mb-1">需要準備什麼？</p>
+                <p className="text-text-secondary leading-relaxed">
+                  什麼都不用準備。不用寫需求文件、不用做簡報。帶著你的問題來就好。
+                </p>
+              </div>
+              <div className="border-t border-border pt-6">
+                <p className="font-bold text-text mb-1">費用大概多少？</p>
+                <p className="text-text-secondary leading-relaxed">
+                  首月約 NT$91,900 起（含設備 + 建置 + 第一個月月費），之後每月 NT$25,000 起。月費已包含 AI 運算費用，不用自己買帳號。
+                </p>
+              </div>
+              <div className="border-t border-border pt-6">
+                <p className="font-bold text-text mb-1">我的資料安全嗎？</p>
+                <p className="text-text-secondary leading-relaxed">
+                  資料完全在你自己的機器上處理，不經過第三方雲端。我們通過 ISO 27001 / ISO 27701 / SOC 2 Type 2 認證。
+                </p>
+              </div>
+              <div className="border-t border-border pt-6">
+                <p className="font-bold text-text mb-1">不在台北可以嗎？</p>
+                <p className="text-text-secondary leading-relaxed">
+                  遠端導入全台灣都行。透過線上會議完成所有設定與測試，品質跟到府一樣。
+                </p>
+              </div>
+            </div>
+
+            <div className="text-center mt-8">
+              <Link
+                href="/faq"
+                className="text-primary font-bold text-sm hover:underline"
+              >
+                查看所有常見問題 →
+              </Link>
             </div>
           </div>
         </section>
