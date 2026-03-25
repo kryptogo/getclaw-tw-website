@@ -1,0 +1,221 @@
+---
+title: WhatsApp 頻道設定
+description: 掃一次 QR Code 就能讓你的 AI Agent 接上 WhatsApp — 全球 20 億用戶的即時通訊平台，設定不到十分鐘
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+WhatsApp 是全球使用者最多的即時通訊平台。如果你的 Agent 需要服務海外客戶、跨國團隊、或者你自己就是 WhatsApp 的重度使用者，這個頻道值得接上。設定流程比 LINE 簡單很多 — 掃一次 QR Code 就完成。
+
+---
+
+## WhatsApp 頻道的特性
+
+在開始之前，先了解 WhatsApp 頻道和其他頻道的關鍵差異：
+
+| 特性 | WhatsApp | LINE | Telegram |
+|------|----------|------|----------|
+| 連線方式 | QR Code 配對（類似 WhatsApp Web） | Webhook + Channel Secret | Bot Token + Long Polling |
+| 帳號類型 | 你的個人 WhatsApp 帳號 | 獨立的 LINE Bot 帳號 | 獨立的 Telegram Bot 帳號 |
+| 同時登入限制 | 最多 4 個連結裝置 | 無限制 | 無限制 |
+| 訊息格式 | 純文字 + 基本格式 | 純文字（或 Flex Message） | 原生 Markdown |
+| 串流回應 | 不支援 | 不支援 | 支援 |
+| 群組支援 | 支援 | 支援（需額外設定） | 支援（Forum Topics） |
+
+<Callout type="warn">
+**重要差異**：WhatsApp 頻道使用的是**你自己的 WhatsApp 帳號**，不是獨立的 Bot 帳號。這代表：
+- Agent 發出的訊息會顯示為**你本人**發的
+- 對方看不出來是 AI 在回覆
+- 如果你不希望 Agent 回覆特定聯絡人，需要設定排除規則
+
+這和 LINE Bot / Telegram Bot 的「獨立帳號」模式有本質不同。想清楚再接。
+</Callout>
+
+---
+
+## 前置條件
+
+- OpenClaw 已安裝並完成 onboarding（[Mac mini 安裝指南](/docs/setup/mac-mini-install)）
+- Gateway 已啟動且狀態正常（`openclaw status` 顯示 `running`）
+- 一支裝有 WhatsApp 的手機（用來掃 QR Code）
+
+---
+
+## Step 1：確認 WhatsApp Plugin 已載入
+
+```bash
+openclaw plugins list
+```
+
+在輸出中確認 WhatsApp 顯示為 `loaded` 狀態。WhatsApp plugin 是 OpenClaw 的內建 plugin，正常情況下不需要額外安裝。
+
+<Callout type="error">
+**常見問題：`Unsupported channel: whatsapp`**
+
+如果執行 `openclaw channels login --channel whatsapp` 得到這個錯誤，**通常不是 plugin 沒裝，而是 PATH 沒有正確載入**。
+
+```bash
+which openclaw
+# 應該顯示 ~/.nvm/versions/node/v22.x.x/bin/openclaw
+```
+
+如果 `which openclaw` 顯示 `not found`，請回到 [Mac mini 安裝指南 Step 1](/docs/setup/mac-mini-install#確保-terminal-能找到指令) 確認 `.zshrc` 的 PATH 設定。
+
+這個問題在透過 SSH 安裝後切換到本機 Terminal 操作時特別常見 — SSH 使用 login shell（讀 `~/.zprofile`），本機 Terminal 使用 interactive shell（讀 `~/.zshrc`）。
+</Callout>
+
+---
+
+## Step 2：登入 WhatsApp
+
+```bash
+openclaw channels login --channel whatsapp
+```
+
+終端機會顯示一個 QR Code。拿起手機：
+
+1. 打開 **WhatsApp** → **設定**（或右上角選單）
+2. 點選 **已連結的裝置**（Linked Devices）
+3. 點選 **連結裝置**（Link a Device）
+4. 掃描終端機上的 QR Code
+
+<Callout type="info">
+掃描成功後，終端機會顯示連線確認訊息。Gateway 會自動與你的 WhatsApp 帳號建立連結，並取得一個裝置名稱。
+
+如果 QR Code 過期（約 60 秒），重新執行 `openclaw channels login --channel whatsapp` 即可。
+</Callout>
+
+<Callout type="warn">
+**WhatsApp 最多只能連結 4 個裝置**（不含你的手機）。如果你已經連結了 WhatsApp Web、WhatsApp Desktop 等裝置，可能需要先移除一個。在手機的「已連結的裝置」頁面可以管理。
+</Callout>
+
+---
+
+## Step 3：設定頻道行為
+
+編輯 `~/.openclaw/config.json5`：
+
+```json5
+{
+  channels: {
+    whatsapp: {
+      enabled: true,
+
+      // DM 存取策略
+      dmPolicy: "allowlist",
+      // 可選值：
+      //   "allowlist" — 只回覆白名單中的聯絡人（推薦，最安全）
+      //   "pairing"   — 新使用者需要配對碼
+      //   "open"      — 回覆所有人的訊息（⚠️ 謹慎使用）
+      //   "disabled"  — 關閉 DM 回覆
+
+      // 群組存取策略
+      groupPolicy: "allowlist",
+      // 可選值同 dmPolicy
+
+      // 群組中的觸發方式
+      groupTrigger: "mention",
+      // "mention" — 只在被 @mention 時回應（預設）
+      // "always"  — 回應群組中的每一則訊息
+    }
+  }
+}
+```
+
+<Callout type="warn">
+**強烈建議從 `allowlist` 開始**。因為 WhatsApp 頻道使用你的個人帳號，設成 `open` 代表 Agent 會自動回覆所有傳訊息給你的人 — 包括老闆、客戶、家人。先用白名單測試，確認 Agent 的行為符合預期後再考慮擴大範圍。
+</Callout>
+
+---
+
+## Step 4：驗證
+
+重啟 Gateway 讓設定生效：
+
+```bash
+openclaw gateway restart
+```
+
+確認 WhatsApp 頻道狀態：
+
+```bash
+openclaw status
+```
+
+你應該看到 WhatsApp 顯示為 `connected`。
+
+### 發送測試訊息
+
+用另一支手機（或請朋友）發一條 WhatsApp 訊息給你。如果 `dmPolicy` 設為 `allowlist`，先把測試號碼加入白名單：
+
+```bash
+openclaw channels allowlist add whatsapp +886912345678
+```
+
+發送訊息後，你應該在幾秒內看到 Agent 的回覆出現在對話中。
+
+---
+
+## 常見問題
+
+### QR Code 掃不到
+
+- 確認手機和電腦在**同一個網路**中（部分企業 WiFi 會阻擋）
+- QR Code 有效期約 60 秒，過期後重新執行 login 指令
+- 確認 WhatsApp 是最新版本
+
+### 連線斷開
+
+WhatsApp 的連結裝置機制要求手機定期上線（約每 14 天）。如果你的手機長時間離線，WhatsApp 會自動斷開連結。
+
+斷線後重新連結：
+
+```bash
+openclaw channels login --channel whatsapp
+```
+
+Gateway 的日誌中可以看到斷線的原因：
+
+```bash
+openclaw logs --follow --filter whatsapp
+```
+
+### Agent 回覆了不該回的人
+
+立刻調整 `dmPolicy` 為 `allowlist` 並明確指定允許的號碼。如果需要緊急停止所有 WhatsApp 回覆：
+
+```bash
+openclaw channels disable whatsapp
+```
+
+---
+
+## 語音訊息
+
+WhatsApp 原生支援語音訊息。如果你已經設定了 Groq API Key（[安裝前準備](/docs/setup/prerequisites)），Agent 就能自動將語音訊息轉成文字後處理。
+
+這在行動端特別好用 — 走路、開車時直接對 Agent 說話，比打字快得多。
+
+---
+
+## Gateway Auth 注意事項
+
+<Callout type="error">
+WhatsApp 的連線機制和 LINE Webhook 不同 — 它不是透過 HTTP Webhook 接收訊息，而是透過 WebSocket 長連線。因此 Gateway 的 `auth.mode` 設定**不會影響** WhatsApp 的訊息接收。
+
+但如果你同時使用 LINE 頻道，請注意 `gateway.auth.mode` 設為 `"token"` 會擋掉 LINE 的 Webhook。詳見 [LINE 頻道設定](/docs/channels/line#step-5設定-webhook-url) 中的說明。
+</Callout>
+
+---
+
+## GetClaw 觀點
+
+WhatsApp 頻道的設定是三個頻道裡最簡單的 — 掃個 QR Code 就完成，不需要去開發者後台建 Bot、不需要設定 Webhook URL、不需要搞 Channel Secret。但它也是最需要謹慎的 — 因為用的是你自己的帳號。
+
+我們建議的做法是：**LINE 對客戶、Telegram 對團隊、WhatsApp 對自己**。把 WhatsApp 當成你和 Agent 之間最私密的溝通管道 — 你想到什麼就直接說，Agent 幫你記住、幫你執行。不用開 App、不用登入 Dashboard，打開 WhatsApp 就能用。
+
+如果你是非技術背景的使用者，WhatsApp 可能是你最自然的起點。掃碼、說話、完成。
+
+<Callout type="info">
+WhatsApp 設定完成！建議同時接上 [LINE](/docs/channels/line) 和 [Telegram](/docs/channels/telegram)，讓你的 Agent 覆蓋更多場景。三個頻道共用同一個 Agent 和知識庫，設定一次就搞定。
+</Callout>
