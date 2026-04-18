@@ -10,7 +10,11 @@ import { Callout } from 'fumadocs-ui/components/callout'
 這不是破解，也不是灰色地帶。這是透過官方 OAuth 整合，讓你的訂閱價值最大化。
 
 <Callout type="error">
-**真實案例：$800 美元的教訓。** 社群中最常見的新手錯誤就是直接用 Anthropic Console 的 pay-per-use API Key。一位使用者分享他花了 $800 嘗試 Kimi、Opus、同時跑 8 個 Agent — 全部是按量計費。後來他切換到 Claude Max 訂閱（$100/月），同樣的使用量，費用只剩零頭。**如果你只記住這篇文章的一件事：用訂閱 Token，不要用 API Key。**
+**2026 Q2 重大景觀變化：Anthropic 已限制第三方工具使用 Claude 訂閱 Token。** 過去你可以執行 `claude setup-token` 把 Pro/Max 訂閱 Token 灌進 OpenClaw — 這條路目前對許多第三方工具已被切斷。**Claude Code 官方 CLI 的 OAuth 仍正常運作**，但 OpenClaw 這類第三方 Agent 平台需要評估替代方案：（1）改用 Anthropic API Key 按量計費；（2）切換到其他 provider（GPT-5.4 / Gemini 2.5 Pro / DeepSeek）；（3）混合策略 — 主力工作走 Claude Code OAuth、Agent 路由到其他模型。本頁以下內容假設你正在評估替代路徑。
+</Callout>
+
+<Callout type="warn">
+**真實案例：$800 美元的教訓。** 即使 OAuth 路徑受限，**直接用 Anthropic Console 按量計費仍是最容易燒錢的路**。一位使用者分享他花了 $800 嘗試 Kimi、Opus、同時跑 8 個 Agent — 全部是按量計費。在做出 API Key 決定之前，先讀完[平價模型策略](/docs/cost/budget-models) — 模型路由（複雜任務走 Opus、日常走 Sonnet/Gemini Flash）能把月費砍半。
 </Callout>
 
 ## Antigravity OAuth
@@ -98,9 +102,13 @@ Anthropic 目前提供幾個訂閱層級：
 
 ## GetClaw 觀點
 
-OAuth 策略是入門的最佳起點 — 你已經在付的錢，不用白不用。但我們要誠實說：**當你的使用量成長到一定程度，純靠訂閱額度會不夠用。**
+OAuth 策略過去是入門的最佳起點，但 2026 Q2 之後景觀重組了：**Anthropic 對第三方工具的訂閱存取已大幅收緊**。如果你還在規劃部署，務必把這個變化納入考量 — 不要照半年前的攻略走，那條路可能已經不通。
 
-長期來看，最省錢的組合是：OAuth 訂閱打底 + 平價模型路由處理日常任務 + 少量直接 API 用於關鍵場景。這三層堆疊起來，才是真正的成本最佳化。
+我們現在的建議分流：
+
+- **重度 Claude 使用者** → 訂閱 Claude Pro/Max 走官方 Claude Code，OpenClaw 這邊掛 Anthropic API Key 處理 Agent 任務（兩條路線並行，互不取代）
+- **預算敏感者** → 主力切到 Gemini 2.5 Pro（免費額度寬鬆）或 DeepSeek（極具競爭力的價格），保留少量 Anthropic API 給關鍵推理任務
+- **企業部署** → 多 provider 混合 + 模型路由（複雜走 Opus、日常走 Sonnet/Flash），這是目前實測下成本最低、也最不被單一供應商綁架的架構
 
 <Callout type="info">
 OAuth 策略搞定了「固定成本」的部分。接下來讀 [平價模型策略](/docs/cost/budget-models)，學會怎麼用模型分層把「變動成本」也壓下來。

@@ -146,6 +146,36 @@ openclaw health --json
 
 日誌檔案由 systemd journal 或 macOS 的 unified logging 統一管理。建議設定 log rotation 避免磁碟被日誌吃滿 — 這是另一個聽起來不會發生、但一定會發生的事。
 
+## 每週更新 — 不是建議，是底線
+
+OpenClaw 是快速演進中的開源專案。「快速演進」的另一面是 **CVE 也來得很快**。
+
+最近一次密集事件：**單週爆出九個 CVE，其中一個 CVSS 9.9（接近滿分 10）**。這不是孤例，過去半年類似的密集修補出現過好幾次。
+
+### 建立每週更新節奏
+
+```bash
+# Mac mini / Linux 通用
+openclaw update
+```
+
+把這條指令排進你的週間 routine — 我們建議每週一早上跑一次：
+
+```bash
+# 寫進 crontab，每週一 09:00 自動執行
+0 9 * * 1 openclaw update && openclaw gateway restart
+```
+
+或在 macOS 用 launchd / Linux 用 systemd timer 安排。**不要靠記性**，這種事忘一次就可能讓你的 Agent 暴露在已公開的漏洞中好幾週。
+
+### 訂閱 CVE 通知
+
+至少做一件事：**訂閱 OpenClaw 的 GitHub Security Advisories**（在 repo 頁面 → Security → Advisories → Watch）。新 CVE 公布時你會收到 email，配合每週更新流程能把暴露窗口壓到最小。
+
+<Callout type="warn">
+**舊版本不會自動下架。** 即使新版發布了，你跑的還是舊版 — 漏洞依然存在。`openclaw update` 不會自己跑，這是你的責任。
+</Callout>
+
 ## GetClaw 觀點
 
 GetClaw 團隊持有 **ISO 27001**、**ISO 27701**、**SOC 2 Type 2** 認證。我們理解企業級安全不只是「設定正確」，而是持續的監控、更新、和事件回應。

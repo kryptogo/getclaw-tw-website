@@ -169,6 +169,52 @@ openclaw onboard --install-daemon
 
 我們推薦 Claude Sonnet 作為預設模型 — 速度和品質的最佳平衡。需要更強推理能力時可以在個別 Agent 中切換到 Opus。
 
+### 預載 Skills（重要 — 不要全部跳過）
+
+```
+? Skills to preload (use space to select):
+  ◯ clawhub
+  ◯ mcporter
+  ◯ openai-whisper
+  ◯ model-usage
+  ◯ github
+  ◯ nano-pdf
+```
+
+大多數教學會直接告訴你「裝 clawhub 就好」— **不要照做**。下面這六個 skill 是 OpenClaw 從第一天就該配好的基礎能力，事後補裝會卡在記憶遷移和重啟流程上。
+
+| Skill | 為什麼要在第一天裝 |
+|-------|---------------------|
+| **clawhub** | 整個 skill 市集的入口；不裝你之後連別的 skill 都找不到 |
+| **mcporter** | MCP 工具路由；任何要接 Notion / Slack / Drive 的整合都靠它 |
+| **openai-whisper** | 語音轉文字；Telegram 的語音訊息殺手級體驗就是這個 |
+| **model-usage** | 即時追蹤每個 Agent 的 token 消耗 — 沒有它你會在月底被帳單嚇到 |
+| **github** | 任何用到 git 的工作流（不管是 code 還是文件版本控制）都需要 |
+| **nano-pdf** | PDF 讀取；客戶寄合約/報告過來時你不會想臨時處理 |
+
+<Callout type="info">
+**Notion / ElevenLabs / Anthropic 額外整合等選項先全部跳過**。等你跑穩了、確認真的需要再裝 — 第一天裝太多反而會延長 onboarding 時間和踩坑機率。
+</Callout>
+
+### 啟用所有四個 Hooks
+
+```
+? Enable hooks (recommended: all):
+  ◉ boot-md
+  ◉ bootstrap-extra-files
+  ◉ command-logger
+  ◉ session-memory
+```
+
+Hooks 是 OpenClaw 在 Agent 生命週期的關鍵節點自動觸發的腳本。**全部打勾** — 它們各自負責一段你後面一定會需要的基礎建設：
+
+| Hook | 做什麼 |
+|------|--------|
+| **boot-md** | Agent 啟動時自動載入 SOUL/USER/AGENTS 等設定檔 |
+| **bootstrap-extra-files** | 自動建立 workspace 目錄結構（Inbox、Archive 等） |
+| **command-logger** | 記錄 Agent 執行過的所有指令，事後稽核或除錯時是救命繩 |
+| **session-memory** | 跨 session 維持上下文，避免「Agent 突然忘了上次聊什麼」 |
+
 ### 設定 Gateway Token
 
 ```

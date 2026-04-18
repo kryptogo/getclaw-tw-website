@@ -181,15 +181,22 @@ Agent 會自動完成安裝。
 很多使用者在跟 Agent 聊了一週之後才裝 QMD，結果發現 Agent 經常忘記之前的對話。先裝好，省得回頭。
 </Callout>
 
-### SOUL.md / USER.md — 你的 Agent 人格檔案
+### Kickstart 五檔案模型 — 你的 Agent 人格與行為基底
 
-OpenClaw 用三個檔案定義 Agent 的個性和記憶：
+過去我們只強調 SOUL/USER/MEMORY 三個檔案，但實戰下來缺了「行為手冊」這一層 — Agent 知道你是誰，但不知道**該不該打斷你、什麼時機主動回報、遇到模糊指令該不該追問**。社群中有一個由 jordymaui 維護的 `kickstart` skill 把這套擴展成五個檔案，覆蓋率更完整：
 
 | 檔案 | 位置 | 用途 |
 |------|------|------|
 | `SOUL.md` | `agents/<agentId>/agent/` | Agent 的性格、說話風格、關注的事 |
 | `USER.md` | `agents/<agentId>/agent/` | 你的個人資訊 — 姓名、職業、偏好、習慣 |
+| `AGENTS.md` | `agents/<agentId>/agent/` | **行為手冊** — 何時開口、何時保持安靜、如何處理記憶、模糊指令的處理規則 |
+| `TOOLS.md` | `agents/<agentId>/agent/` | **本機特定設定** — 攝影機名稱、API 端點、裝置資訊，所有獨屬於你環境的設定 |
+| `HEARTBEAT.md` | `agents/<agentId>/agent/` | **主動清單** — Agent 週期性檢視的待辦項目，讓它從被動回應升級為主動行動 |
 | `MEMORY.md` | `agents/<agentId>/agent/` | 長期記憶，Agent 自動更新 |
+
+<Callout type="info">
+**直接安裝 kickstart**：在對話中告訴你的 Agent「請從 clawhub 安裝 jordymaui 的 kickstart skill」，它會建立這五個檔案的骨架並引導你逐一填寫 — 比手刻快得多。
+</Callout>
 
 你可以手動編輯這些檔案，但更聰明的做法是**讓 Agent 採訪你**。在第一次對話中，發送類似這樣的訊息：
 
